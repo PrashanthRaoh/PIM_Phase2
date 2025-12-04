@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="UseCaseReview Owner(failed)">
+    <classes>
+      <class name="Phase2_Test_Scripts.TC_001_UseCaseReview_Override">
+        <methods>
+          <include name="initReport"/>
+          <include name="OverrideUsecaseReview"/>
+          <include name="setUp"/>
+          <include name="publishReport"/>
+        </methods>
+      </class> <!-- Phase2_Test_Scripts.TC_001_UseCaseReview_Override -->
+    </classes>
+  </test> <!-- UseCaseReview Owner(failed) -->
+</suite> <!-- Failed suite [Suite] -->
