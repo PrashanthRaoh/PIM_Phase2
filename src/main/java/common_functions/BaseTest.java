@@ -59,7 +59,7 @@ public class BaseTest {
 	@BeforeClass
 	public void setUp(String UseCaseOwner) throws IOException {
 		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 		driver.manage().window().maximize();
 		utils = new Utils(driver,extentTest);
 		loginPage = new Login_Page(driver);

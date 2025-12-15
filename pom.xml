@@ -5,7 +5,7 @@
 	<groupId>pim.phase2.automation</groupId>
 	<artifactId>pim.phase2.automation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+ <packaging>war</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

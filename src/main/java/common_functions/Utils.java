@@ -101,20 +101,8 @@ public class Utils  {
 		String fullPath = BaseTest.reportDirPath + "/" + relativePath;
 		File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 	    FileUtils.copyFile(src, new File(fullPath));
-
 	    return relativePath;
-		
 	}
-//	public static String Takescreenshot(WebDriver driver) throws IOException {
-//		Date today = new Date();
-//		SimpleDateFormat SIMPDFORMAT = new SimpleDateFormat("ddMMYY_HHmmss");
-//		String date = SIMPDFORMAT.format(today);
-//		File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-//		File Destinationfilepath = new File("./Screenshots/ " + date + ".png");
-//		FileUtils.copyFile(src, Destinationfilepath);
-//		String destinationpath = Destinationfilepath.getAbsolutePath();
-//		return destinationpath;
-//	}
 
 	/*******************
 	 * Get Class Name method
@@ -176,13 +164,13 @@ public class Utils  {
 	
 	public static <T> Map<String, List<T>> ShowList_Item_Differences(List<T> pre, List<T> post) {
 		 List<T> removed = new ArrayList<>(pre);
-		    removed.removeAll(post);  // Items in pre but not in post
+		    removed.removeAll(post);  
 
 		    List<T> added = new ArrayList<>(post);
-		    added.removeAll(pre);     // Items in post but not in pre
+		    added.removeAll(pre);
 
 		    List<T> retained = new ArrayList<>(pre);
-		    retained.retainAll(post); // Items common to both
+		    retained.retainAll(post); 
 
 		    Map<String, List<T>> result = new HashMap<>();
 		    result.put("removed", removed);
