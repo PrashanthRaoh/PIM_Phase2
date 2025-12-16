@@ -1,5 +1,7 @@
 package pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -127,4 +129,68 @@ public class CBT_Page {
 			    .findElement(By.cssSelector("#refresh")); 
 	}
 	
+	
+	public WebElement CBT_Usecasetab_Commonelements() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='currentApp_home_rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='app-dashboard-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#rock-my-todos")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#rock-my-todos-tabs"));
+	}
+	
+	public List<WebElement> CBT_HomePage_Tabs() {
+		return CBT_Usecasetab_Commonelements().getShadowRoot()
+				.findElements(By.cssSelector("div > div.base-grid-structure-child-1 > .pebbleTabGroup> pebble-tab"));
+	}
+	
+	public List<WebElement> CBT_UsecaseapprovalTab_Items() {
+		return CBT_Usecasetab_Commonelements().getShadowRoot()
+				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
+				.findElements(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary"));
+	}
+	
+	public WebElement Holdattrib_Ruletriggered() {
+		return Common_Summary_items1().getShadowRoot()
+	    .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+	    .findElement(By.cssSelector(".attribute-list-container > div > pebble-accordion"))
+	    .findElement(By.cssSelector("[name='cbtholdattributelistruletriggered'] > rock-attribute")).getShadowRoot()
+	    .findElement(By.cssSelector(".attribute.list.referencelist"))
+	    .findElement(By.cssSelector(".attribute-main.attribute-non-coalesced-label.attribute-non-editable-label"))
+	    .findElement(By.cssSelector(".attribute-edit > #input")).getShadowRoot()
+	    .findElement(By.cssSelector(".attribute-control")).getShadowRoot()
+	    .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+	    .findElement(By.cssSelector(".d-flex"))
+	    .findElement(By.cssSelector("pebble-tags")).getShadowRoot()
+	    .findElement(By.cssSelector(".container"));
+	}
+	
+	public WebElement OnholdRuletriggeredblock() {
+		return Common_Summary_items1().getShadowRoot().findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#input")).getShadowRoot()
+				.findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+				.findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container > pebble-tags"))
+				.getShadowRoot().findElement(By.cssSelector(".container"));
+
+	}
+	
+	public WebElement Tabclose_Xmark() {
+		return driver.findElement(By.cssSelector("#app"))
+			    .getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
+			    .getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
+			    .getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
+			    .getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
+			    .getShadowRoot().findElement(By.cssSelector("#rockTabs"))
+			    .getShadowRoot().findElement(By.cssSelector("#tab-QuickSearchAttributes > div > div.tab-title > span.dynamic-close"));
+	}
 }
