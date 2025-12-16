@@ -4,7 +4,8 @@
   <test name="CBTUseCaseOwner">
 	  <parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
     <classes>
-      <class name="Phase2_Test_Scripts.TC_001_UseCaseReview_Override"/>
+      <!--<class name="Phase2_Test_Scripts.TC_001_UseCaseReview_Override"/>-->
+      <class name="Phase2_Test_Scripts.TC_002_EntityNeedsUsecasereview"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
