@@ -5,7 +5,8 @@
 	  <parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
     <classes>
       <!--<class name="Phase2_Test_Scripts.TC_001_UseCaseReview_Override"/>-->
-      <class name="Phase2_Test_Scripts.TC_002_EntityNeedsUsecasereview"/>
+<!--      <class name="Phase2_Test_Scripts.TC_002_EntityNeedsUsecasereview"/>-->
+  		  <class name="Phase2_Test_Scripts.TC_004_UCOReviewworkflowonHold"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
