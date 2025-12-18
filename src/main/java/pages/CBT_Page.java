@@ -13,7 +13,6 @@ public class CBT_Page {
 	public CBT_Page(WebDriver driver) {
 		this.driver = driver;
 	}
-	
 	public WebElement Common_Summary_items1() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 		.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -21,7 +20,6 @@ public class CBT_Page {
 		.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
 		.findElement(By.cssSelector("#rockDetailTabs"));
 	}
-	
 	public WebElement Common_Summary_items2() {
 		return Common_Summary_items1().getShadowRoot()
 			 .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
@@ -45,12 +43,10 @@ public class CBT_Page {
 	}
 	
 	public WebElement SellableMaterial_needtofix_grid() {
-		return Common_Summary_items2().getShadowRoot()
-				.findElement(By.cssSelector("#accordion\\ 0 > div"));
+		return Common_Summary_items2().getShadowRoot().findElement(By.cssSelector("#accordion\\ 0 > div"));
 	}
 	public WebElement Summarythings_General() {
-		return Common_Summary_items2().getShadowRoot()
-				.findElement(By.cssSelector("#accordion\\ 1 > div"));
+		return Common_Summary_items2().getShadowRoot().findElement(By.cssSelector("#accordion\\ 1 > div"));
 	}
 
 	public WebElement Catalog_Bearing_Tool_Usecase_Int_CommonElement(){
@@ -113,9 +109,8 @@ public class CBT_Page {
 				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#entityTitlebar")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
-				.findElement(By.cssSelector("#rockTitle > div.title-text > div.breadcrumb-wrapper > rock-breadcrumb"))
-				.getShadowRoot().findElement(By.cssSelector(
-						"div > div > span.breadcrumb-link.flex-nowrap.item-2 > span.breadcrumb-data.text-ellipsis"));
+				.findElement(By.cssSelector("#rockTitle > div.title-text > div.breadcrumb-wrapper > rock-breadcrumb")).getShadowRoot()
+				.findElement(By.cssSelector("div > div > span.breadcrumb-link.flex-nowrap.item-2 > span.breadcrumb-data.text-ellipsis"));
 	}
 	
 	public WebElement CBT_Workflow_Refresh_btn() {
@@ -128,7 +123,6 @@ public class CBT_Page {
 			    .findElement(By.cssSelector("#toolbar")).getShadowRoot()
 			    .findElement(By.cssSelector("#refresh")); 
 	}
-	
 	
 	public WebElement CBT_Usecasetab_Commonelements() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
@@ -183,7 +177,6 @@ public class CBT_Page {
 				.getShadowRoot().findElement(By.cssSelector(".container"));
 
 	}
-	
 	public WebElement Tabclose_Xmark() {
 		return driver.findElement(By.cssSelector("#app"))
 			    .getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
@@ -193,4 +186,19 @@ public class CBT_Page {
 			    .getShadowRoot().findElement(By.cssSelector("#rockTabs"))
 			    .getShadowRoot().findElement(By.cssSelector("#tab-QuickSearchAttributes > div > div.tab-title > span.dynamic-close"));
 	}
+	
+	
+	public WebElement SelectAttrib_Hold_Block() {
+		return Common_Summary_items1().getShadowRoot()
+		    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		    .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+		    .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+		    .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+		    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+		    .findElement(By.cssSelector("#input")).getShadowRoot()
+		    .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+		    .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+		    .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
+	}
+	
 }
