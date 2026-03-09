@@ -187,7 +187,6 @@ public class CBT_Page {
 			    .getShadowRoot().findElement(By.cssSelector("#tab-QuickSearchAttributes > div > div.tab-title > span.dynamic-close"));
 	}
 	
-	
 	public WebElement SelectAttrib_Hold_Block() {
 		return Common_Summary_items1().getShadowRoot()
 		    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()

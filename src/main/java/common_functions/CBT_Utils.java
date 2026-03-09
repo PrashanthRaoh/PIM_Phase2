@@ -7,8 +7,6 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import pages.BSAPIE_Page;
 import pages.CBT_Page;
 
 public class CBT_Utils {
@@ -17,9 +15,6 @@ public class CBT_Utils {
 	public CBT_Utils(WebDriver driver) {
 		this.driver = driver;
 	}
-
-	
-	
 
 public static Map<String, Object> getWorkflowDetails(WebDriver driver) {
     Map<String, Object> data = new HashMap<>();

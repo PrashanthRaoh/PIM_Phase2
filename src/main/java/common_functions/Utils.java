@@ -179,4 +179,16 @@ public class Utils  {
 
 		    return result;
 	}
+	
+	
+	
+	public WebElement findShadowElement(String... selectors) {
+	    WebElement element = driver.findElement(By.cssSelector(selectors[0]));
+
+	    for (int i = 1; i < selectors.length; i++) {
+	        element = element.getShadowRoot().findElement(By.cssSelector(selectors[i]));
+	    }
+
+	    return element;
+	}
 }
