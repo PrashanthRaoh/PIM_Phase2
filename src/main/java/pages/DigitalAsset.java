@@ -61,12 +61,6 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#eds_pebbleItem_itemSelected_havingno > div"));
 	}
 
-//	public WebElement HasFilterimagesdropdown() {
-//		return generalDropdown_second().getShadowRoot().findElement(By.cssSelector("#dropdown")).getShadowRoot()
-//				.findElement(By.cssSelector("#input")).getShadowRoot()
-//				.findElement(By.cssSelector("#labelAndInputContainer"));
-//	}
-
 	public WebElement RelationshipMaindropdown_Obj() {
 		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipButton"))
 				.getShadowRoot().findElement(By.cssSelector("#simpleButton"));
@@ -75,8 +69,7 @@ public class DigitalAsset {
 	public WebElement HasImagesDropdownvalue() {
 		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipModelLov"))
 				.getShadowRoot()
-				.findElement(By.cssSelector(
-						"div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
+				.findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
 				.getShadowRoot().findElement(By.cssSelector("#grid")).getShadowRoot()
 				.findElement(By.cssSelector("#lit-grid"))
 				.findElement(By.cssSelector("[ref='centerContainer'] > [ref='eViewport'] > [ref='eContainer']"))
@@ -84,7 +77,8 @@ public class DigitalAsset {
 	}
 
 	public WebElement Apply_btn_onFilter() {
-		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#confirmButton")).getShadowRoot()
+		return generalDropdown_First().getShadowRoot()
+				.findElement(By.cssSelector("#confirmButton")).getShadowRoot()
 				.findElement(By.cssSelector("#simpleButton"));
 	}
 

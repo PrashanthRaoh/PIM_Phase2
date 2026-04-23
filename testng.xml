@@ -12,7 +12,8 @@
   <test name="CBTUseCaseOwner">
 	  <parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
     <classes>
-       <class name="Phase2.CBTUseCases.TC_001_RecordmovesoutoftheReviewUseCaseSelection"/>
+       <!--<class name="Phase2.CBTUseCases.TC_001_RecordmovesoutoftheReviewUseCaseSelection"/>-->
+        <class name="Phase2.CBTUseCases.TC_002_VerifyAutoApprove_Attributes"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

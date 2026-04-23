@@ -32,13 +32,12 @@ import pages.DigitalAsset;
 import pages.HomePage;
 import pages.SearchPage2;
 import pages.SummaryPage;
-
 /*************************************************************************
  * TC_001_RecordmovesoutoftheReviewUseCaseSelection Description:
- * Review Usecase Selection -> Apply "Catalog Bearing Tool Usecase[Int]?" filter ->
- * Pick a record -> Set "Catalog Bearing Tool Usecase[Int]?" (Override) to Yes ->
+ * Review Use case Selection -> More details - > UCO Review Selection Discrepancies ->
+ * Pick a record -> Set "Catalog Bearing Tool Use case[Int]?" (Override) to Yes ->
  * Save changes -> Verify success banner -> Refresh workflow ->
- * Entity moves from "Review Usecase Selection" to "Pending Usecase Approval - Catalog Bearing Tool"
+ * Entity moves from "Review Use case Selection" to "Pending Use case Approval - Catalog Bearing Tool"
  * -> status is updated to Yes.
  *************************************************************************/
 @Test(groups = { "CBTUseCaseOwner" })
@@ -59,7 +58,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		DigitalAsset digitalssetPage = new DigitalAsset(driver);
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
 		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_001_RecordmovesoutoftheReviewUseCaseSelection.txt";
-
 		utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");
 		test.pass("Home Page of CBT is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
@@ -76,14 +74,13 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			System.out.println("Tab " + (i + 1) + " name: " + tabName);
 			tabNames.add(tabName);
 		}
-		/*********************************
-		 * Get Tab names in CBT home page
-		 ************************************/
+//		/*********************************
+//		 * Get Tab names in CBT home page
+//		 ************************************/
 		System.out.println("All tab names: " + tabNames);
 		for (int i = 0; i < tabNames.size(); i++) {
 			if (tabNames.contains("New Sellable Material(s)")) {
-				WebElement spanElement = tabs.get(tabNames.indexOf("New Sellable Material(s)"))
-						.findElement(By.cssSelector("[class='tab-title-content'] > [class='tab-title'] > span"));
+				WebElement spanElement = tabs.get(tabNames.indexOf("New Sellable Material(s)")).findElement(By.cssSelector("[class='tab-title-content'] > [class='tab-title'] > span"));
 				spanElement.click();
 				System.out.println("Clicked on 'New Sellable Material(s)' tab");
 				Thread.sleep(1000);
@@ -110,11 +107,15 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			 * Click on Review Use case Selection
 			 **************************************************************/
 			if (actualText.contains("Review Usecase Selection")) {
-				js.executeScript("arguments[0].scrollIntoView({block: 'center'});", innerDiv);
+				cbtpage.MoreDetailsReviewUsecaseSelection().click();
+				Thread.sleep(1000);
+				WebElement innerDiv1 = cbtpage.UCOReviewSelectionDiscrepanciesCBT_Link();
+				Thread.sleep(1000);
+				js.executeScript("arguments[0].scrollIntoView({block: 'center'});", innerDiv1);
 				try {
-					innerDiv.click();
+					innerDiv1.click();
 				} catch (Exception e) {
-					js.executeScript("arguments[0].click();", innerDiv);
+					js.executeScript("arguments[0].click();", innerDiv1);
 				}
 				Thread.sleep(5000);
 				break;
@@ -126,34 +127,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		 * Wait till rows appears
 		 **************************************************************/
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-		/***************************************************************
-		 * Apply the filter Catalog Bearing Tool Use case[Int]?
-		 **************************************************************/
-		searchPage.getFilterButton().click();
-		Thread.sleep(2000);
-		utils.waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
-		searchPage.Search_MaterialType().sendKeys("Catalog Bearing Tool Usecase[Int]?");
-		Thread.sleep(2000);
-		utils.waitForElement(() -> digitalssetPage.SellableProductStatus(), "clickable");
-		test.pass("Catalog Bearing Tool Usecase[Int]? filter applied successfully");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		digitalssetPage.SellableProductStatus().click();
-		Thread.sleep(2000);
-		utils.waitForElement(() -> digitalssetPage.Status_Approved_dropdownvalue(), "clickable");
-		cbtpage.CBTIntFilterElement().click();
-		Thread.sleep(2000);
-		cbtpage.HasNoItemsOption().click();
-		Thread.sleep(2000);
-		test.pass("Catalog Bearing Tool Usecase[Int]? has no items filter applied successfully");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		digitalssetPage.Status_Apply_btn().click();
-		/***************************************************************
-		 * Wait till rows appears after applying Yes filter
-		 **************************************************************/
-		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-		test.pass("After applying Has No value filter-- entities listed ");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
 		/***************************************************************
 		 * From the rows pick one record and Edit it
 		 **************************************************************/
@@ -203,9 +176,9 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		Thread.sleep(2000);
 		data.put("Material ID", matid);
 
-		/*******************************************
-		 * Get work flows that are visible after approval and print the names of the work flows
-		 ******************************************/
+//		/*******************************************
+//		 * Get work flows that are visible after approval and print the names of the work flows
+//		 ******************************************/
 		List<WebElement> allSteps = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
@@ -289,6 +262,7 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		Thread.sleep(2000);
 		digitalssetPage.ImageRequired_Yes().click();
 		Thread.sleep(2000);
+		
 		/*************************************************
 		 * --------- Save ------ *
 		 ************************************************/
@@ -318,8 +292,10 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		test.pass("Banner appeared with the text : " + bannerText);
 		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		Thread.sleep(5000);
+		
 		// Hard assert: fail if banner does not contain "data saved"
 		Assert.assertTrue( bannerText != null && bannerText.toLowerCase().contains("data saved"),"❌ Expected banner text to contain 'data saved', but got: " + bannerText);
+
 		/*******************************************
 		 * Refresh the record
 		 ******************************************/
@@ -332,13 +308,14 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 				.findElement(By.cssSelector("#toolbar")).getShadowRoot()
 				.findElement(By.cssSelector("#refresh"));
 
-		
 		Workflow_Refresh_btn.click();
 		Thread.sleep(5000);
 		test.pass("Refreshed transaction to get the latest workflow status");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		
 		/*******************************************
-		 * After clicking the refresh button and waiting for the page to update  Re-fetch workflow steps
+		 * After clicking the refresh button and waiting for the page to update Re-fetch
+		 * workflow steps
 		 ******************************************/
 		List<WebElement> allStepsAfterRefresh = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -351,10 +328,10 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 
 		List<WebElement> visibleStepsAfterRefresh = allStepsAfterRefresh.stream().filter(WebElement::isDisplayed).collect(Collectors.toList());
 		System.out.println("✅ Workflow steps after refresh: " + visibleStepsAfterRefresh.size());
-
-		/*******************************************
-		 * Find and print the active step after refresh
-		 ******************************************/
+//
+//		/*******************************************
+//		 * Find and print the active step after refresh
+//		 ******************************************/
 		for (int i = 0; i < allStepsAfterRefresh.size(); i++) {
 			WebElement step = allStepsAfterRefresh.get(i);
 			SearchContext stepShadow = step.getShadowRoot();
@@ -368,10 +345,10 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 				test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			}
 		}
-
-		/*******************************************
-		 * Catalog Bearing Tool Use case[Int]? has now Yes as value
-		 ******************************************/
+//
+//		/*******************************************
+//		 * Catalog Bearing Tool Use case[Int]? has now Yes as value
+//		 ******************************************/
 		String ucsecaseint_Readonly = cbtpage.CBTUsecase_Int__Readonly().getText();
 		try {
 		    Assert.assertTrue(ucsecaseint_Readonly.equals("Yes"),"❌ Catalog Bearing Tool Use case[Int]? value did not change to Yes after saving, current value: " + ucsecaseint_Readonly);

@@ -1,4 +1,4 @@
-package Phase2_Scripts;
+package Phase2_Scripts_Key_Flags;
 
 import java.io.IOException;
 import java.time.Duration;
