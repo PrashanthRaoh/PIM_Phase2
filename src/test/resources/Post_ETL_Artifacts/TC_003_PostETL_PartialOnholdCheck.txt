@@ -1,0 +1,5 @@
+ "Material ID" = "000000000101775362"
+ "CBT Sellable Product Status" = "Approved"
+ "CBT Approved but OnHold items" = "No OnHold items"
+ "Total OnHold Items" = "0"
+---------------------------------------

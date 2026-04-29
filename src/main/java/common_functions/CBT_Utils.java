@@ -1,12 +1,21 @@
 package common_functions;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+
 import pages.CBT_Page;
 
 public class CBT_Utils {
@@ -14,6 +23,7 @@ public class CBT_Utils {
 	CBT_Page cbtpage = new CBT_Page(driver);
 	public CBT_Utils(WebDriver driver) {
 		this.driver = driver;
+		
 	}
 
 public static Map<String, Object> getWorkflowDetails(WebDriver driver) {
@@ -104,5 +114,7 @@ public static Map<String, Object> getWorkflowDetails(WebDriver driver) {
 		return recordStatus;
 	}
 
-
+	
+	
+	
 }

@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 import com.aventstack.extentreports.ExtentTest;
@@ -165,30 +168,35 @@ public class Utils  {
 	public static <T> Map<String, List<T>> ShowList_Item_Differences(List<T> pre, List<T> post) {
 		 List<T> removed = new ArrayList<>(pre);
 		    removed.removeAll(post);  
-
 		    List<T> added = new ArrayList<>(post);
 		    added.removeAll(pre);
-
 		    List<T> retained = new ArrayList<>(pre);
 		    retained.retainAll(post); 
-
 		    Map<String, List<T>> result = new HashMap<>();
 		    result.put("removed", removed);
 		    result.put("added", added);
 		    result.put("retained", retained);
-
 		    return result;
 	}
 	
-	
-	
 	public WebElement findShadowElement(String... selectors) {
 	    WebElement element = driver.findElement(By.cssSelector(selectors[0]));
-
 	    for (int i = 1; i < selectors.length; i++) {
 	        element = element.getShadowRoot().findElement(By.cssSelector(selectors[i]));
 	    }
-
 	    return element;
 	}
+	
+	public boolean isElementPresent(Supplier<WebElement> elementSupplier, String visibility) {
+	    try {
+	        WebElement element = elementSupplier.get();
+	        if (element != null && element.isDisplayed()) {
+	            return true;
+	        }
+	    } catch (NoSuchElementException | StaleElementReferenceException ignored) {
+	    }
+	    return false;
+	}
+	
+	
 }

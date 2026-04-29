@@ -13,7 +13,12 @@
 	  <parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
     <classes>
        <!--<class name="Phase2.CBTUseCases.TC_001_RecordmovesoutoftheReviewUseCaseSelection"/>-->
-        <class name="Phase2.CBTUseCases.TC_002_VerifyAutoApprove_Attributes"/>
+        <!--<class name="Phase2.CBTUseCases.TC_002_VerifyAutoApprove_Attributes"/>-->
+        <!--<class name="Phase2.CBTUseCases.TC_003_List_CBTHOLD_attribute_List_Rule_Triggered"/>-->
+        
+       <!-- ***************** POST-ETL Scripts *************** -->
+        <!--<class name="Post_ETL_Scripts.TC_003_PostETL_PartialOnholdCheck"/>-->
+        <class name="Post_ETL_Scripts.TC_003_Second_PostETL_PartialOnholdCheck"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

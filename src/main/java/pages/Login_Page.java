@@ -41,8 +41,8 @@ public class Login_Page {
 	}
 
 	public void LaunchSite() {
-		driver.get("https://timkends.syndigo.com/?idp=timkends_auth0_idp");
-//		driver.get("https://timkenfs.syndigo.com/?idp=timkenfs_auth0_go");
+//		driver.get("https://timkends.syndigo.com/?idp=timkends_auth0_idp");
+		driver.get("https://timkenfs.syndigo.com/?idp=timkenfs_auth0_go");
 	}
 
 	public void clickSubmit() {

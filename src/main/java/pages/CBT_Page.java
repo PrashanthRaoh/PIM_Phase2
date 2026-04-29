@@ -13,7 +13,6 @@ public class CBT_Page {
 	public CBT_Page(WebDriver driver) {
 		this.driver = driver;
 	}
-
 	public WebElement Common_Summary_items1() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -126,8 +125,9 @@ public class CBT_Page {
 				.findElement(By.cssSelector("[id^='currentApp_home_rs']")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='app-dashboard-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos"))
-				.getShadowRoot().findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-my-todos")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rock-my-todos-tabs"));
 	}
 
@@ -330,17 +330,28 @@ public class CBT_Page {
 	        .findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div > pebble-lov-item")).getShadowRoot()
 	        .findElement(By.cssSelector("div > div"));
 	}
+
 	public WebElement CBT_Approved_Option() {
-		return SameParent().getShadowRoot()
-			    .findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
-			    .findElement(By.cssSelector("#entityLov")).getShadowRoot()
-			    .findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).getShadowRoot()
-			    .findElement(By.cssSelector("#grid")).getShadowRoot()
-			    .findElement(By.cssSelector(
-			        "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > " +
-			        "div.ag-root.ag-unselectable.ag-layout-normal > " +
-			        "div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > " +
-			        "div.ag-center-cols-clipper > div > div > div[row-index='1']"
-			    ));
+		return SameParent().getShadowRoot().findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
+				.findElement(By.cssSelector("#entityLov")).getShadowRoot()
+				.findElement(By.cssSelector(
+						"div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
+				.getShadowRoot().findElement(By.cssSelector("#grid")).getShadowRoot().findElement(
+						By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > "
+								+ "div.ag-root.ag-unselectable.ag-layout-normal > "
+								+ "div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > "
+								+ "div.ag-center-cols-clipper > div > div > div[row-index='1']"));
 	}
+	
+	public WebElement CBTUsecase_Tab_Homescreen() {
+		return CBT_Usecasetab_Commonelements().getShadowRoot()
+		        .findElement(By.cssSelector("div.base-grid-structure-child-1 #tab-cbtusecaseapproval"));
+	}
+	public WebElement CBTRuleTriggered_HoldAttribute() {
+		return  CBT_Usecasetab_Commonelements().getShadowRoot()
+		        .findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("pebble-list-view > pebble-list-item:nth-child(3) > my-todo-summary")).getShadowRoot()
+		        .findElement(By.cssSelector("#workflowMetadataContainer"));
+	}
+	
 }

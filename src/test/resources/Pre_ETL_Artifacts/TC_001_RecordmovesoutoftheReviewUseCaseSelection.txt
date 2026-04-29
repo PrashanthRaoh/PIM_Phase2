@@ -1,7 +1,0 @@
- "Material ID" = "0000000000104202601"
- "CBT Sellable Product Status" = "OnHoldSystem" "Material ID" = "000000000190014549"
- "CBT Sellable Product Status" = "OnHoldSystem"
----------------------------------------
- "Material ID" = "000000000190037150"
- "CBT Sellable Product Status" = "OnHoldSystem"
----------------------------------------
