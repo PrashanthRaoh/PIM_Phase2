@@ -156,9 +156,7 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		int min = 0;
 		int max = arrrowsdefined.size();
 		int randnum = rand.nextInt(max - min) + min;
-
 		System.out.println("Row chosen is " + randnum);
-
 		WebElement RowByRow = arrrowsdefined.get(randnum);
 		String SellableMaterialDescription = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
 		String matid = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
@@ -175,10 +173,9 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		Thread.sleep(2000);
 		data.put("Material ID", matid);
-
-//		/*******************************************
-//		 * Get work flows that are visible after approval and print the names of the work flows
-//		 ******************************************/
+		/*******************************************
+		 * Get work flows that are visible after approval and print the names of the work flows
+		 ******************************************/
 		List<WebElement> allSteps = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
@@ -201,15 +198,12 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			WebElement step = allSteps.get(i);
 			SearchContext stepShadow = step.getShadowRoot();
 			String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span")).getAttribute("title");
-
 			boolean isActive = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
 			System.out.println((i + 1) + ": " + actualTitle + (isActive ? " (🟢 Active)" : ""));
 
 			if (isActive && actualTitle.equals(expectedTitle)) {
 				activeStep = step;
-			}
-		}
-
+			}}
 		if (activeStep == null) {
 			throw new AssertionError("❌ Expected active step '" + expectedTitle + "' not found.");
 		}
@@ -242,7 +236,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			test.pass("Clicked on UCO: Review Selection Discrepancies - Catalog Bearing Tool");
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			flagfound = true;
-
 		} else {
 			System.out.println("Data list not found in New Sellable Material(s) section .");
 		}
@@ -254,7 +247,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		if (flagfound = false) {
 			throw new AssertionError("❌ 'UCO: Review Selection Discrepancies - Catalog Bearing Tool' not found in any section.");
 		}
-
 		/*******************************************
 		 * Catalog Bearing Tool Use case[Int]? (Override) to Yes and save
 		 ******************************************/
@@ -295,60 +287,16 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		
 		// Hard assert: fail if banner does not contain "data saved"
 		Assert.assertTrue( bannerText != null && bannerText.toLowerCase().contains("data saved"),"❌ Expected banner text to contain 'data saved', but got: " + bannerText);
-
 		/*******************************************
 		 * Refresh the record
 		 ******************************************/
-		WebElement Workflow_Refresh_btn = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
-				.findElement(By.cssSelector("#entityManageHeader")).getShadowRoot()
-				.findElement(By.cssSelector("#entityActions")).getShadowRoot()
-				.findElement(By.cssSelector("#toolbar")).getShadowRoot()
-				.findElement(By.cssSelector("#refresh"));
-
-		Workflow_Refresh_btn.click();
+		cbtpage.CBT_Workflow_Refresh_btn().click();
 		Thread.sleep(5000);
 		test.pass("Refreshed transaction to get the latest workflow status");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		
 		/*******************************************
-		 * After clicking the refresh button and waiting for the page to update Re-fetch
-		 * workflow steps
+		 * Catalog Bearing Tool Use case[Int]? has now Yes as value
 		 ******************************************/
-		List<WebElement> allStepsAfterRefresh = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
-				.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
-				.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
-				.findElements(By.cssSelector("pebble-step"));
-
-		List<WebElement> visibleStepsAfterRefresh = allStepsAfterRefresh.stream().filter(WebElement::isDisplayed).collect(Collectors.toList());
-		System.out.println("✅ Workflow steps after refresh: " + visibleStepsAfterRefresh.size());
-//
-//		/*******************************************
-//		 * Find and print the active step after refresh
-//		 ******************************************/
-		for (int i = 0; i < allStepsAfterRefresh.size(); i++) {
-			WebElement step = allStepsAfterRefresh.get(i);
-			SearchContext stepShadow = step.getShadowRoot();
-			String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span")).getAttribute("title");
-
-			boolean isActive = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
-			System.out.println((i + 1) + ": " + actualTitle + (isActive ? " (🟢 Active)" : ""));
-
-			if (isActive) {
-				test.pass("Active workflow step after refresh is: " + actualTitle);
-				test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-			}
-		}
-//
-//		/*******************************************
-//		 * Catalog Bearing Tool Use case[Int]? has now Yes as value
-//		 ******************************************/
 		String ucsecaseint_Readonly = cbtpage.CBTUsecase_Int__Readonly().getText();
 		try {
 		    Assert.assertTrue(ucsecaseint_Readonly.equals("Yes"),"❌ Catalog Bearing Tool Use case[Int]? value did not change to Yes after saving, current value: " + ucsecaseint_Readonly);
@@ -383,7 +331,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			BSAPIE_PO.Tabclose_Xmark().click();
 			Thread.sleep(4000);
-
 		} else {
 			System.out.println("🔴 There was no status field found for the record");
 			test.fail("No status field found found");
@@ -398,7 +345,6 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 			    .getShadowRoot().findElement(By.cssSelector("#rockTabs"))
 			    .getShadowRoot().findElements(By.cssSelector("[class='base-grid-structure-child-1'] > #rockTabs > pebble-tab"));
 
-			// Get the last tab
 			WebElement lastTab = lasttabs.get(lasttabs.size() - 1);
 
 			// Find the close button within the last tab and click it
@@ -409,3 +355,45 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename,data);
 	}
 }
+
+
+
+
+
+
+///*******************************************
+////* After clicking the refresh button and waiting for the page to update Re-fetch
+////* workflow steps
+///// 
+///// Not required as its covered under another function
+// */
+// */
+////******************************************/
+//List<WebElement> allStepsAfterRefresh = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+//		.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+//		.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+//		.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+//		.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+//		.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+//		.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+//		.findElements(By.cssSelector("pebble-step"));
+//
+//List<WebElement> visibleStepsAfterRefresh = allStepsAfterRefresh.stream().filter(WebElement::isDisplayed).collect(Collectors.toList());
+//System.out.println("✅ Workflow steps after refresh: " + visibleStepsAfterRefresh.size());
+//
+///*******************************************
+//* Find and print the active step after refresh
+//******************************************/
+//for (int i = 0; i < allStepsAfterRefresh.size(); i++) {
+//	WebElement step = allStepsAfterRefresh.get(i);
+//	SearchContext stepShadow = step.getShadowRoot();
+//	String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span")).getAttribute("title");
+//
+//	boolean isActive = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
+//	System.out.println((i + 1) + ": " + actualTitle + (isActive ? " (🟢 Active)" : ""));
+//
+//	if (isActive) {
+//		test.pass("Active workflow step after refresh is: " + actualTitle);
+//		test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+//	}
+//}

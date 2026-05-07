@@ -1,10 +1,18 @@
 package pages;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import com.aventstack.extentreports.Status;
+
+import common_functions.Utils;
 
 public class CBT_Page {
 
@@ -165,8 +173,7 @@ public class CBT_Page {
 				.findElement(By.cssSelector(".attribute-list-container > div > pebble-accordion"))
 				.findElement(By.cssSelector("[name='cbtholdattributelistruletriggered'] > rock-attribute"))
 				.getShadowRoot().findElement(By.cssSelector(".attribute.list.referencelist"))
-				.findElement(
-						By.cssSelector(".attribute-main.attribute-non-coalesced-label.attribute-non-editable-label"))
+				.findElement(By.cssSelector(".attribute-main.attribute-non-coalesced-label.attribute-non-editable-label"))
 				.findElement(By.cssSelector(".attribute-edit > #input")).getShadowRoot()
 				.findElement(By.cssSelector(".attribute-control")).getShadowRoot()
 				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
@@ -353,5 +360,55 @@ public class CBT_Page {
 		        .findElement(By.cssSelector("pebble-list-view > pebble-list-item:nth-child(3) > my-todo-summary")).getShadowRoot()
 		        .findElement(By.cssSelector("#workflowMetadataContainer"));
 	}
+	
+	public WebElement thingDomainOptionByText(String expectedText) {
+    WebElement centerCols = SameParent().getShadowRoot()
+            .findElement(By.cssSelector("#attributeModelLov_thing")).getShadowRoot()
+            .findElement(By.cssSelector("#modelLov_thing")).getShadowRoot()
+            .findElement(By.cssSelector("div.base-grid-structure.p-relative.hideLovHeader > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
+            .getShadowRoot()
+            .findElement(By.cssSelector("#grid")).getShadowRoot()
+            .findElement(By.cssSelector("div.ag-center-cols-container"));
+
+    List<WebElement> rows = centerCols.findElements(By.cssSelector("div.ag-row"));
+    for (WebElement row : rows) {
+        WebElement lovItem = row.findElement(By.cssSelector("pebble-lov-item"));
+        WebElement label = lovItem.getShadowRoot().findElement(By.cssSelector("div > div"));
+        String actualText = label.getText().trim();
+        if (expectedText.equalsIgnoreCase(actualText)) {
+            return label;
+        }
+    }
+    throw new RuntimeException("Filter attribute not found: " + expectedText);
+}
+
+	public  List<WebElement> AllHoldAttributeList() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot().findElement(By.cssSelector("#rockTabs"))
+				.getShadowRoot().findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#input"))
+				.getShadowRoot().findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+				.findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container > pebble-tags"))
+				.getShadowRoot().findElements(By.cssSelector("pebble-tag, [id^='tag']"));
+	}
+
+	public WebElement btn_SendBacktoUsecase() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+		        .findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("#action-button-sendbackforusecaseapproval")).getShadowRoot()
+		        .findElement(By.cssSelector("#buttonTextBox"));
+	}
+	
 	
 }

@@ -83,8 +83,7 @@ public class Utils  {
 			try {
 				String screenshotPath = Takescreenshot(driver);
 				if (test != null) {
-					test.fail("Wait failed: " + e.getMessage(),
-						MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
+					test.fail("Wait failed: " + e.getMessage(),MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
 				}
 			} catch (IOException io) {
 				io.printStackTrace();
