@@ -16,12 +16,14 @@
        
         <!--<class name="Phase2.CBTUseCases.TC_003_List_CBTHOLD_attribute_List_Rule_Triggered"/>-->
         <!--<class name="Phase2.CBTUseCases.TC_004_UCOReviewUserPuts_workflowonHold"/>-->
-        <class name="Phase2.CBTUseCases.TC_005_List_HoldAttributes"/>
-        
          <!--<class name="Phase2.CBTUseCases.TC_002_VerifyAutoApprove_Attributes"/>-->
+        <!--  <class name="Phase2.CBTUseCases.TC_005_ListAllHoldAttributes"/>-->
+        <class name="Phase2.CBTUseCases.TC_007_Validating_CBTUsecasescenarios_Toggle"/>
         
        <!-- ***************** POST-ETL Scripts *************** -->
         <!--<class name="Post_ETL_Scripts.TC_003_PostETL_PartialOnholdCheck"/>-->
+<!--        <class name="Post_ETL_Scripts.TC_005a_PostETL_Partial_HoldAttributes"/>-->
+        <!--<class name="Post_ETL_Scripts.TC_005b_PostETL_Complete_HoldAttributes2"/>-->
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

@@ -410,5 +410,47 @@ public class CBT_Page {
 		        .findElement(By.cssSelector("#buttonTextBox"));
 	}
 	
+	public List<WebElement> CBTOverrideElements() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+		        .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+		        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+		        .findElements(By.cssSelector("[id^='rs']"));
+	}
 	
+	public WebElement DropdownCommonElement() {
+
+	    return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+	        .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+	        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+	        .findElements(By.cssSelector("[id^='rs']")).get(2).getShadowRoot()
+	        .findElement(By.cssSelector("#input")).getShadowRoot()
+	        .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+	        .findElement(By.cssSelector("#lov")).getShadowRoot()
+	        .findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).getShadowRoot()
+	        .findElement(By.cssSelector("#grid"));
+	}
+	public WebElement YesOption() {
+		return DropdownCommonElement()
+				.getShadowRoot().findElement(By.cssSelector("#lit-grid >div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed> div.ag-root.ag-unselectable.ag-layout-normal> div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper"))
+			    .findElement(By.cssSelector("[row-index='1']"));
+	}
+	public WebElement NoOption() {
+		return DropdownCommonElement()
+				.getShadowRoot().findElement(By.cssSelector("#lit-grid >div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed> div.ag-root.ag-unselectable.ag-layout-normal> div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper"))
+			    .findElement(By.cssSelector("[row-index='0']"));
+	}
 }

@@ -34,7 +34,6 @@ public class CBT_Utils {
     private final Utils utils;
     private final CBT_Page cbtPage;
     private final SearchPage2 searchPage;
-    private ExtentTest test;
 
     // Backward-compatible constructor
     public CBT_Utils(WebDriver driver) {
@@ -294,7 +293,6 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
 	Assert.fail("Unable to select a stable row from grid");
 	return result;
 }
-
 public static String getActiveWorkflowAfterRefresh(WebDriver driver, CBT_Page cbtpage, ExtentTest test)
 		throws IOException {
 	/*******************************************
@@ -306,10 +304,8 @@ public static String getActiveWorkflowAfterRefresh(WebDriver driver, CBT_Page cb
 	} catch (InterruptedException e) {
 		Thread.currentThread().interrupt();
 	}
-
 	test.pass("Refreshed transaction to get the latest workflow status");
 	test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
 	/*******************************************
 	 * Re-fetch workflow steps after refresh
 	 ******************************************/
@@ -324,19 +320,14 @@ public static String getActiveWorkflowAfterRefresh(WebDriver driver, CBT_Page cb
 
 	System.out.println("✅ Workflow steps after refresh: " + allStepsAfterRefresh.size());
 	String activeStepTitle = null;
-
 	/*******************************************
 	 * Identify active step
 	 ******************************************/
 	for (WebElement step : allStepsAfterRefresh) {
 		SearchContext stepShadow = step.getShadowRoot();
-
-		String actualTitle = stepShadow
-				.findElement(
-						By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
+		String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
 				.getAttribute("title");
 		boolean isActive = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
-
 		if (isActive) {
 			activeStepTitle = actualTitle;
 			test.pass("Active workflow step after refresh is: " + actualTitle);
@@ -357,15 +348,14 @@ public List<String> getOnHoldAttributeTags(WebElement holdListContainer, String 
         List<WebElement> moreValuesElems = new ArrayList<>();
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(8));
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
             moreValuesElems = shortWait.until(d -> {
                 List<WebElement> elems = holdListContainer.getShadowRoot().findElements(By.cssSelector("div > .more-values-message"));
                 return elems.isEmpty() ? null : elems;
             });
         } catch (Exception ignored) {
-            // Optional element; continue with direct tag read
         } finally {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30)); 
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30)); // set to your framework implicit wait
         }
         if (!moreValuesElems.isEmpty() && moreValuesElems.get(0).isDisplayed()) {
             WebElement moreValuesList = moreValuesElems.get(0);
@@ -378,9 +368,9 @@ public List<String> getOnHoldAttributeTags(WebElement holdListContainer, String 
         } else {
             test.pass(contextName + " items listed directly");
         }
-        List<WebElement> tagElements = holdListContainer.getShadowRoot().findElements(By.cssSelector("#pebble-tag .attribute-name, .tag-item-container .attribute-name"));
-        for (WebElement tag : tagElements) {
-            String text = tag.getText().trim();
+        List<WebElement> tagHosts = cbtPage.AllHoldAttributeList();
+        for (WebElement tagHost : tagHosts) {
+            String text = tagHost.getShadowRoot().findElement(By.cssSelector("#pebble-tag .attribute-name, .tag-item-container .attribute-name")).getText().trim();
             if (!text.isEmpty()) {
                 tagTexts.add(text);
             }
@@ -390,5 +380,64 @@ public List<String> getOnHoldAttributeTags(WebElement holdListContainer, String 
         System.out.println("Failed to read " + contextName + " items: " + e.getMessage());
     }
     return tagTexts;
+}
+public void applyCatalogUsecaseIntFilterByLabel(String filterLabel) {
+    applySearchFilter(
+            filterLabel,
+            () -> cbtPage.thingDomainOptionByText(filterLabel),
+            () -> cbtPage.CBTUcasecaseInt_Yes_Option(),
+            () -> cbtPage.CBTUsecase_IntApply_btn(),
+            2000);
+}
+
+// New convenience wrapper for Auto filter
+public void applyCatalogUsecaseIntAutoYesFilter() {
+    applyCatalogUsecaseIntFilterByLabel("Catalog Bearing Tool Usecase[Int]? (Auto)");
+}
+
+
+/*****************************************************************
+ * Returns the current displayed value for a CBT attribute by its label text from the
+ * Override/Auto section in the summary screen.
+ *
+ * <p>How it works:
+ * <ul>
+ *   <li>Scans all attribute rows returned by {@code cbtPage.CBTOverrideElements()}.</li>
+ *   <li>Reads each row label from the attribute view wrapper.</li>
+ *   <li>When the label matches {@code expectedLabel} (case-insensitive), reads the first tag value.</li>
+ * </ul>
+ *
+ * @param expectedLabel exact label to search (e.g. "Catalog Bearing Tool Usecase[Int]? (Auto)")
+ * @return matched attribute value; "NOT_FOUND" if value container is not readable;
+ *         "LABEL_NOT_FOUND" if no row matches the given label
+ *******************************************/
+public String getCbtAttributeValue(String expectedLabel) {
+    List<WebElement> rsItems = cbtPage.CBTOverrideElements();
+
+    for (WebElement rs : rsItems) {
+        String label = rs.getShadowRoot()
+                .findElement(By.cssSelector("#input")).getShadowRoot()
+                .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+                .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+                .findElement(By.cssSelector("#collection_container_wrapper > div.attribute-view-wrapper > span"))
+                .getAttribute("innerText");
+
+        if (label != null && label.trim().equalsIgnoreCase(expectedLabel.trim())) {
+            try {
+                return rs.getShadowRoot()
+                        .findElement(By.cssSelector("#input")).getShadowRoot()
+                        .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+                        .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+                        .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container > pebble-tags")).getShadowRoot()
+                        .findElement(By.cssSelector("#tag0")).getShadowRoot()
+                        .findElement(By.cssSelector("#pebble-tag"))
+                        .getAttribute("innerText")
+                        .trim();
+            } catch (Exception e) {
+                return "NOT_FOUND";
+            }
+        }
+    }
+    return "LABEL_NOT_FOUND";
 }
 }
