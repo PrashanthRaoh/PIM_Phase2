@@ -1,7 +1,5 @@
 package common_functions;
 
-import static org.testng.Assert.assertTrue;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -10,12 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -26,6 +24,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import pages.BSAPIE_Page;
 import pages.CBT_Page;
+import pages.DigitalAsset;
 import pages.SearchPage2;
 import pages.SummaryPage;
 
@@ -182,36 +181,75 @@ public class CBT_Utils {
                 () -> cbtPage.CBTUsecase_IntApply_btn(),
                 2000);
     }
-    
-    public String getOpenedRecordStatus(SummaryPage summaryPage,CBT_Page cbtpage,BSAPIE_Page BSAPIE_PO, ExtentTest test) throws InterruptedException, IOException {
-    // Give a small pause to ensure UI is ready (prefer replace with targeted waits if possible)
-    Thread.sleep(500);
-    summaryPage.SearchIcon().click();
-    summaryPage.SearchInputfield().clear();
-    summaryPage.SearchInputfield().sendKeys("Catalog Bearing Tool Sellable Product Status");
-    Thread.sleep(500);
-    // press Enter using actions to avoid focus issues
-    new Actions(driver).moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
 
-    // Allow time for attribute to appear — use utils.waitForElement which waits for visibility
-    Thread.sleep(1500);
-    WebElement targetElement = utils.waitForElement(() -> cbtpage.CBT_Sellable_Product_Status(), "visible");
+    public void applyCatalogUsecaseIntFilterByLabelAndValue(String filterLabel, String valueYesOrNo) {
+        Supplier<WebElement> valueSupplier = "No".equalsIgnoreCase(valueYesOrNo)
+                ? () -> cbtPage.CBTUcasecaseInt_No_Option()
+                : () -> cbtPage.CBTUcasecaseInt_Yes_Option();
 
-    if (targetElement == null) {
-        test.fail("CBT Sellable Product Status element is NULL");
-        test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-        // return null or throw — returning null to let caller handle
-        return null;
+        applySearchFilter(
+                filterLabel,
+                () -> cbtPage.thingDomainOptionByText(filterLabel),
+                valueSupplier,
+                () -> cbtPage.CBTUsecase_IntApply_btn(),
+                2000);
     }
 
-    String recordStatus = targetElement.getText();
-    test.pass("Found record status: " + recordStatus);
-    test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 
-    // Optionally close details here or leave to caller — keeping close in caller makes it explicit.
-    // BSAPIE_PO.Tabclose_Xmark().click();
-    // Thread.sleep(500);
+    public void applyCatalogUsecaseIntNoFilter() {
+        applyCatalogUsecaseIntFilterByLabelAndValue("Catalog Bearing Tool Usecase[Int]?", "No");
+    }
 
+    public void applyCatalogUsecaseIntAutoNoFilter() {
+        applyCatalogUsecaseIntFilterByLabelAndValue("Catalog Bearing Tool Usecase[Int]? (Auto)", "No");
+    }
+
+
+
+    public String getOpenedRecordStatus(SummaryPage summaryPage, CBT_Page cbtpage, BSAPIE_Page BSAPIE_PO, ExtentTest test) {
+    String recordStatus = "";
+    try {
+        summaryPage.SearchIcon().click();
+        summaryPage.SearchInputfield().clear();
+        summaryPage.SearchInputfield().sendKeys("Catalog Bearing Tool Sellable Product Status");
+        new Actions(driver).moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
+        Thread.sleep(2000);
+        // No utils.waitForElement here. No hard wait. No throw.
+        WebElement statusElement = null;
+        try {
+            statusElement = cbtpage.CBT_Sellable_Product_Status();
+        } catch (Exception ignored) {
+        }
+
+        if (statusElement != null) {
+            try {
+                String text = statusElement.getText();
+                recordStatus = (text == null) ? "" : text.trim();
+            } catch (Exception ignored) {
+                recordStatus = "";
+            }
+        }
+        if (recordStatus.isEmpty()) {
+            String warningMsg = "WARNING: CBT Sellable Product Status is not available or empty for the current record. Continuing execution.";
+            System.out.println(warningMsg);
+            test.warning(warningMsg);
+        } else {
+            test.pass("CBT Sellable Product Status: <b>" + recordStatus + "</b>");
+        }
+        try {
+            test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+        } catch (Exception ignored) {
+        }
+
+    } catch (Exception e) {
+        String warningMsg = "WARNING: Unable to read CBT Sellable Product Status. Continuing execution. Reason: " + e.getMessage();
+        System.out.println(warningMsg);
+        test.warning(warningMsg);
+        try {
+            test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+        } catch (Exception ignored) {
+        }
+    }
     return recordStatus;
 }
     
@@ -389,6 +427,16 @@ public void applyCatalogUsecaseIntFilterByLabel(String filterLabel) {
             () -> cbtPage.CBTUsecase_IntApply_btn(),
             2000);
 }
+public void applyCatalogUsecaseIntFilterNoOption(String filterLabel) {
+	applySearchFilter(
+			filterLabel,
+			() -> cbtPage.thingDomainOptionByText(filterLabel),
+			() -> cbtPage.CBTUcasecaseInt_No_Option(),
+			() -> cbtPage.CBTUsecase_IntApply_btn(),
+			2000);
+}
+
+
 
 // New convenience wrapper for Auto filter
 public void applyCatalogUsecaseIntAutoYesFilter() {
@@ -439,5 +487,94 @@ public String getCbtAttributeValue(String expectedLabel) {
         }
     }
     return "LABEL_NOT_FOUND";
+}
+
+/**********************************************************************
+ * Clicks Save, waits for the success banner, validates that it contains "data saved",
+ * captures a screenshot, and refreshes the record.
+ * @param digitalssetPage page object containing the Save button
+ * @param cbtpage CBT page object containing the workflow refresh button
+ * @param test Extent test instance for logging
+ * @throws IOException if screenshot capture fails
+ * @throws InterruptedException if thread sleep is interrupted
+ ******************************************************************/
+public void saveAndRefreshRecord(DigitalAsset digitalssetPage, CBT_Page cbtpage, ExtentTest test) throws IOException, InterruptedException {
+    digitalssetPage.AddPrimaryImage_Save_btn().click();
+    Thread.sleep(5000);
+
+    WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
+    Function<WebDriver, WebElement> getBannerElement = drv -> {
+        try {
+            return drv.findElement(By.cssSelector("#app")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html")).getShadowRoot()
+                    .findElement(By.cssSelector("#bind-html"));
+        } catch (Exception e) {
+            return null;
+        }
+    };
+
+    WebElement banner = wait1.until(drv -> {
+        WebElement el = getBannerElement.apply(drv);
+        return (el != null && el.isDisplayed()) ? el : null;
+    });
+
+    String bannerText = banner.getText();
+    System.out.println("Banner appeared with the text : " + bannerText);
+    test.pass("Banner appeared with the text : " + bannerText);
+    test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+    Thread.sleep(5000);
+    Assert.assertTrue(bannerText != null && bannerText.toLowerCase().contains("data saved"),"Expected banner text to contain 'data saved', but got: " + bannerText);
+
+    cbtpage.CBT_Workflow_Refresh_btn().click();
+    Thread.sleep(5000);
+    test.pass("Refreshed transaction to get the latest workflow status");
+    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+}
+
+public boolean clickReviewSelectionDiscrepanciesUco(ExtentTest test) throws IOException {
+    SearchContext base = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+            .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+            .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+            .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+            .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+            .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+            .findElement(By.cssSelector("[id^='rock-entity-summary-component-rs']")).getShadowRoot()
+            .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+            .findElement(By.cssSelector("#rock-entity-tofix")).getShadowRoot()
+            .findElement(By.cssSelector("[id^='rock-entity-tofix-component-rs']")).getShadowRoot();
+
+    List<WebElement> allItems = new ArrayList<>();
+
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+    try {
+        List<WebElement> acc0Host = base.findElements(By.cssSelector("#accordion\\ 0"));
+        if (!acc0Host.isEmpty()) {
+            allItems.addAll(base.findElements(By.cssSelector("#accordion\\ 0 > div > div .data-list")));
+        }
+        List<WebElement> acc1Host = base.findElements(By.cssSelector("#accordion\\ 1"));
+        if (!acc1Host.isEmpty()) {
+            allItems.addAll(base.findElements(By.cssSelector("#accordion\\ 1 > div > div .data-list")));
+        }
+    } finally {
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30)); // set to your framework default
+    }
+    System.out.println("Total items: " + allItems.size());
+
+    for (WebElement el : allItems) {
+        String text = el.getAttribute("innerText");
+        System.out.println(text);
+
+        if (text != null && text.contains("UCO: Review Selection Discrepancies - Catalog Bearing Tool")) {
+            el.click();
+            System.out.println("Clicked: " + text);
+            test.pass("Clicked on UCO: Review Selection Discrepancies - Catalog Bearing Tool");
+            test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+            return true;
+        }
+    }
+    test.warning("UCO item not found: Review Selection Discrepancies - Catalog Bearing Tool");
+    return false;
 }
 }

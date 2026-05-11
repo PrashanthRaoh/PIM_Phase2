@@ -77,13 +77,6 @@ public class CBT_Page {
 				.findElements(By.cssSelector("[id^='rs']")).get(2);
 	}
 
-	public WebElement CBT_Override2() {
-		return CBT_Override1().getShadowRoot().findElement(By.cssSelector("#input")).getShadowRoot()
-				.findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
-				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
-				.findElement(By.cssSelector("#collection_container_wrapper")).findElement(By.cssSelector(".d-flex"));
-	}
-
 	public WebElement Override_Yes_Option() {
 		return CBT_Override1().getShadowRoot().findElement(By.cssSelector("#input")).getShadowRoot()
 				.findElement(By.cssSelector("bedrock-lov")).getShadowRoot().findElement(By.cssSelector("#lov"))
@@ -194,7 +187,6 @@ public class CBT_Page {
 				.getShadowRoot().findElement(By.cssSelector(".container"));
 
 	}
-
 	public WebElement Tabclose_Xmark() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -319,6 +311,13 @@ public class CBT_Page {
 				.getShadowRoot()
 				.findElement(By.cssSelector("div > div"));
 	}
+	public WebElement CBTUcasecaseInt_No_Option() {
+		return SameParent().getShadowRoot().findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
+				.findElement(By.cssSelector("#entityLov")).getShadowRoot()
+				.findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).getShadowRoot()
+				.findElement(By.cssSelector("#grid")).getShadowRoot()
+				.findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div[row-index='0']"));
+	}
 	
 	public WebElement CBTUsecase_IntApply_btn() {
 	    return SameParent().getShadowRoot()
@@ -341,8 +340,7 @@ public class CBT_Page {
 	public WebElement CBT_Approved_Option() {
 		return SameParent().getShadowRoot().findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
 				.findElement(By.cssSelector("#entityLov")).getShadowRoot()
-				.findElement(By.cssSelector(
-						"div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
+				.findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
 				.getShadowRoot().findElement(By.cssSelector("#grid")).getShadowRoot().findElement(
 						By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > "
 								+ "div.ag-root.ag-unselectable.ag-layout-normal > "
@@ -425,7 +423,6 @@ public class CBT_Page {
 	}
 	
 	public WebElement DropdownCommonElement() {
-
 	    return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 	        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 	        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
@@ -452,5 +449,14 @@ public class CBT_Page {
 		return DropdownCommonElement()
 				.getShadowRoot().findElement(By.cssSelector("#lit-grid >div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed> div.ag-root.ag-unselectable.ag-layout-normal> div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper"))
 			    .findElement(By.cssSelector("[row-index='0']"));
+	}
+	
+	public WebElement CBT_UsecaseInt_Override_RemoveNoOption() {
+		return CBT_Override1().getShadowRoot().
+				findElement(By.cssSelector("#input")).getShadowRoot()
+			    .findElement(By.cssSelector("bedrock-lov")).getShadowRoot().findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+			    .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container > pebble-tags")).getShadowRoot()
+			    .findElement(By.cssSelector("#tag0")).getShadowRoot()
+			    .findElement(By.cssSelector("#pebble-tag > div.close-icon"));
 	}
 }
