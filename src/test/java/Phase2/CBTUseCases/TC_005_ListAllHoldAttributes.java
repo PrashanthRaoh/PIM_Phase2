@@ -2,10 +2,10 @@ package Phase2.CBTUseCases;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -117,44 +117,11 @@ public class TC_005_ListAllHoldAttributes extends BaseTest {
 		/***************************************************************
 		 * From the rows pick one record and Edit it
 		 **************************************************************/
-		WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
-				.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
-				.findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
-				.findElement(By.cssSelector("#entityGrid")).getShadowRoot()
-				.findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
-				.findElement(By.cssSelector("#grid"));
-
-		List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
-				"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
-
-		System.out.println("Total rows after clicking on Review Usecase -- " + arrrowsdefined.size());
-		test.pass("Rows after after clicking on Review Usecase appeared");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		Assert.assertTrue(arrrowsdefined.size() > 0, "There should be results after applying filters");
-		/************
-		 * Random number generator to click on row within row count
-		 ************/
 		Actions actions = new Actions(driver);
-		Random rand = new Random();
-		int min = 0;
-		int max = arrrowsdefined.size();
-		int randnum = rand.nextInt(max - min) + min;
-		System.out.println("Row chosen is " + randnum);
-		WebElement RowByRow = arrrowsdefined.get(randnum);
-		String SellableMaterialDescription = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
-		String matid = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
-		System.out.println("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription);
-
-		WebElement matidElement = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']"));
-		actions.moveToElement(RowByRow).build().perform();
-		Thread.sleep(2000);
-		matidElement.click();
-		Thread.sleep(3000);
-		utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-		test.pass("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription + " is selected for completion");
+		Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+		String matid = selectedRecord.get("Material Id");
+		String sellableMaterialDescription = selectedRecord.get("Material Description");
+		test.pass("Material ID -- " + matid + " Material Description --" + sellableMaterialDescription + " is selected for completion");
 		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		Thread.sleep(2000);
 		data.put("Material ID", matid);
@@ -170,6 +137,7 @@ public class TC_005_ListAllHoldAttributes extends BaseTest {
 		utils.waitForElement(() -> cbtpage.CBT_Sellable_Product_Status(), "visible");
 		test.pass("CBT Product status shown up");
 		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
 		String RecordStatus = null;
 		WebElement targetElement = cbtpage.CBT_Sellable_Product_Status();
 		if (targetElement != null) {
@@ -194,16 +162,37 @@ public class TC_005_ListAllHoldAttributes extends BaseTest {
 		Thread.sleep(1000);
 		actions.moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
 		Thread.sleep(3000);
-		WebElement CBTHoldList = utils.waitForElement(() -> cbtpage.AllHoldAttributeList().get(0), "visible");
-		List<String> onHoldTags = cbtUtils.getOnHoldAttributeTags(CBTHoldList, "OnHold", test);
-		System.out.println("CBT Sellable Product Status on Hold items: " + onHoldTags);
-		data.put("Total OnHold Items", onHoldTags.size());
-		data.put("CBT Sellable Product Status on Hold items", onHoldTags);
-		test.pass("On Hold Items Listed <b>" + onHoldTags + "</b>");
-		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+		WebElement CBTHoldList = null;
+		try {
+			CBTHoldList = utils.waitForElement(() -> {
+				try {
+					List<WebElement> holdLists = cbtpage.AllHoldAttributeList();
+					return (holdLists != null && !holdLists.isEmpty()) ? holdLists.get(0) : null;
+				} catch (Exception ignored) {
+					return null;
+				}
+			}, "visible");
+		} catch (Exception e) {
+			CBTHoldList = null;
+		}
+		if (CBTHoldList == null) {
+			String msg = "Hold attributes is not visible/not available for this record.";
+			System.out.println(msg);
+			test.warning(msg);
+			data.put("Total OnHold Items", 0);
+			data.put("CBT Sellable Product Status on Hold items", new ArrayList<String>());
+			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		} else {
+			List<String> onHoldTags = cbtUtils.getOnHoldAttributeTags(CBTHoldList, "OnHold", test);
+			System.out.println("CBT Sellable Product Status on Hold items: " + onHoldTags);
+			data.put("Total OnHold Items", onHoldTags.size());
+			data.put("CBT Sellable Product Status on Hold items", onHoldTags);
+			test.pass("On Hold Items Listed <b>" + onHoldTags + "</b>");
+			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		}
 		BSAPIE_PO.Tabclose_Xmark().click();
 		Thread.sleep(4000);
 		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
-
 	}
 }

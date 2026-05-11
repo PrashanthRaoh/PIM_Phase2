@@ -68,7 +68,7 @@ public class BaseTest {
 		homePage = new HomePage(driver);
 	}
 	
-//	@AfterClass
+	@AfterClass
 	public void Logout() throws InterruptedException {
 		homePage.AppHeader_Administrator().click();
 		Thread.sleep(1000);

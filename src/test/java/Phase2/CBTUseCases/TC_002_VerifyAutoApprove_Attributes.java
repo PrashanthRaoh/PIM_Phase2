@@ -1,7 +1,7 @@
 package Phase2.CBTUseCases;
 
 /*************************************************************************
- * TC_002_TC_002_VerifyAutoApprove_Attributes
+ * TC_002_VerifyAutoApprove_Attributes
  * The user applies filter Catalog Bearing Tool Usecase[Int]? Is "Yes" and 
  * "Catalog Bearing Tool Sellable Product Status" is "Approved"
  * The entity should be removed from the workflow Catalog Bearing Tool Use Case Approval
@@ -41,8 +41,7 @@ public class TC_002_VerifyAutoApprove_Attributes extends BaseTest {
 		String className = this.getClass().getSimpleName();
 		System.out.println(className);
 		test = BaseTest.extentreport.createTest(className);
-		test.assignAuthor(System.getProperty("user.name")).assignCategory("Regression")
-				.assignDevice(System.getenv("COMPUTERNAME"));
+		test.assignAuthor(System.getProperty("user.name")).assignCategory("Regression").assignDevice(System.getenv("COMPUTERNAME"));
 
 		homePage = new HomePage(driver);
 		CBT_Page cbtpage = new CBT_Page(driver);
@@ -90,6 +89,7 @@ public class TC_002_VerifyAutoApprove_Attributes extends BaseTest {
 //				cbtpage.CBTUsecase_IntApply_btn().click();
 
 		cbtUtils.applyCatalogUsecaseIntYesFilter();
+		Thread.sleep(2000);
 		cbtUtils.applySellableProductStatusApprovedFilter();
 
 //		/**************************************************************
@@ -230,17 +230,14 @@ public class TC_002_VerifyAutoApprove_Attributes extends BaseTest {
 
 			boolean isActive = classAttr != null && classAttr.toLowerCase().contains("active");
 			System.out.println("Step: " + text + (isActive ? "  <-- ACTIVE" : ""));
-
 			if (isActive) {
 				activeStep = text;
 			}
-
 			// ❌ unwanted validation
 			if (text.contains("Catalog Bearing Tool Use Case Approval")) {
 				System.out.println("UNWANTED STEP FOUND: " + text);
 				test.warning("Unexpected workflow step present: " + text);
-				test.log(Status.INFO,
-						MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			}
 		}
 		test.pass("Active workflow step: " + (activeStep != null ? activeStep : "NOT FOUND"));

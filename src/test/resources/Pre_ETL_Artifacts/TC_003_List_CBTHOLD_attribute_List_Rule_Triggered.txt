@@ -1,5 +1,5 @@
- "Material ID" = "000000000101775362"
+ "Material ID" = "000000000101679499"
  "CBT Sellable Product Status" = "OnHoldSystem"
- "Total OnHold Items" = "4"
- "CBT Sellable Product Status on Hold items" = ["Housing Backing Diameter (in)","Housing Backing Diameter (mm)","Shaft Backing Diameter (in)","Shaft Backing Diameter (mm)"]
+ "Total OnHold Items" = "2"
+ "CBT Sellable Product Status on Hold items" = ["Tolerance System","Tolerance System Code"]
 ---------------------------------------

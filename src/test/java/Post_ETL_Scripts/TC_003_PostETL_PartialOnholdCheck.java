@@ -1,5 +1,6 @@
 package Post_ETL_Scripts;
 
+import static common_functions.BaseTest.utils;
 import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,6 +16,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import common_functions.BaseTest;
+import common_functions.CBT_Utils;
 import common_functions.NotepadManager;
 import common_functions.Utils;
 import pages.BSAPIE_Page;
@@ -45,6 +47,7 @@ public class TC_003_PostETL_PartialOnholdCheck extends BaseTest {
 		SummaryPage summaryPage = new SummaryPage(driver);
 		SearchPage2 searchPage = new SearchPage2(driver);
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
+		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
 		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_003_List_CBTHOLD_attribute_List_Rule_Triggered.txt";
 		String POST_ETL_Filename = "/Post_ETL_Artifacts/TC_003_PostETL_PartialOnholdCheck.txt";
 
@@ -72,40 +75,11 @@ public class TC_003_PostETL_PartialOnholdCheck extends BaseTest {
 				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 				Thread.sleep(5000);
 
-				WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-						.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-						.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
-						.findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
-						.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#entityGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
-						.findElement(By.cssSelector("#grid"));
-
-				utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-
-				List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
-						"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
-
-				System.out.println("Total rows after clicking on Pending Usecase Approval - BSA PIE Inprogress status -- "+ arrrowsdefined.size());
-				test.pass("Rows after after clicking on Pending Usecase Approval - BSA PIE Inprogress status appeared");
-				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				assertTrue("There should be results after applying filters with Inprogress status",arrrowsdefined.size() > 0);
-
-				WebElement RowByRow = arrrowsdefined.get(0);
-				String SellableMaterialDescription = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
-				String matid = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
-				System.out.println("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription);
-
-				WebElement matidElement = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']"));
-				actions.moveToElement(RowByRow).build().perform();
-				Thread.sleep(500);
-				matidElement.click();
+				Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+				String matid = selectedRecord.get("Material Id");
+				data.put("Material ID", matid);
 				Thread.sleep(3000);
-
 				utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-				test.pass("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription+ " is selected for verification");
-				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 				Thread.sleep(3000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -113,81 +87,78 @@ public class TC_003_PostETL_PartialOnholdCheck extends BaseTest {
 				test.log(Status.FAIL,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			}
 			/***********************************************
-			 * Check if the material is in OnHoldSystem
+			 * The entity should be removed from  Catalog Bearing Tool Use Case Approval workflow 
 			 **********************************************/
-			summaryPage.SearchIcon().click();
-			summaryPage.SearchInputfield().sendKeys("Catalog Bearing Tool Sellable Product Status");
-			Thread.sleep(1000);
-			actions.moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
-			Thread.sleep(3000);
-			WebElement targetElement = null;
-			String RecordStatus = null;
-			try {
-				targetElement = utils.waitForElement(() -> cbtpage.CBT_Sellable_Product_Status(), "visible");
-			} catch (Exception e) {
-				test.fail("CBT Sellable Product Status element did NOT appear");
-				test.log(Status.FAIL,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				Assert.fail("CBT Sellable Product Status element not found");
-			}
-			if (targetElement == null) {
-				test.fail("CBT Sellable Product Status element is NULL");
-				test.log(Status.FAIL,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				Assert.fail("CBT Sellable Product Status element is null");
-			}
-
-			test.pass("CBT Product status shown up");
-			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
-			RecordStatus = targetElement.getText();
-			System.out.println("Status is : " + RecordStatus);
-			test.pass("Status of the " + Matid + " is  : - <b>" + RecordStatus + "</b>");
-			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			String RecordStatus = cbtUtils.getOpenedRecordStatus(summaryPage, cbtpage, BSAPIE_PO, test);
+			data.put("Material ID", Matid);
+			data.put("CBT Sellable Product Status", RecordStatus == null ? "" : RecordStatus);
 			BSAPIE_PO.Tabclose_Xmark().click();
 			Thread.sleep(4000);
-			data.put("Material ID", Matid);
-			data.put("CBT Sellable Product Status", RecordStatus);
 
 			if (RecordStatus != null) {
 				List<String> onHoldItems = new ArrayList<>();
-				if (RecordStatus.trim().equalsIgnoreCase("OnHoldSystem")) {
-					test.info("Record is in OnHoldSystem, fetching hold attributes");
-					onHoldItems = fetchOnHoldItems(actions, cbtpage, summaryPage);
-					data.put("Total OnHold Items", onHoldItems.size());
-					data.put("CBT Sellable Product Status on Hold items", onHoldItems);
-					test.fail("OnHold items: " + onHoldItems);
-					test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-					NotepadManager.ReadWriteNotepad(POST_ETL_Filename, data);
-				}
-				else if (RecordStatus.trim().equalsIgnoreCase("Approved")) {
-				    test.info("Record is APPROVED, validating if any OnHold items still exist");
-				    onHoldItems = fetchOnHoldItems(actions, cbtpage, summaryPage);
-				    data.put("CBT Sellable Product Status", "Approved");
-				    if (onHoldItems.size() > 0) {
-				        test.warning("Approved BUT still has OnHold items");
-				        data.put("CBT Approved but OnHold items", onHoldItems);
-				        data.put("Total OnHold Items", onHoldItems.size());
-				        test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				String normalizedStatus = RecordStatus.trim();
 
-				    } else {
-				        test.pass("No OnHold items found for APPROVED record");
-				        data.put("CBT Approved but OnHold items", "No OnHold items");
-				        data.put("Total OnHold Items", 0);
-				    }
-				    NotepadManager.ReadWriteNotepad(POST_ETL_Filename, data);
+				if ("Approved".equalsIgnoreCase(normalizedStatus)) {
+					test.pass("Record status is APPROVED as expected.");
+					data.put("CBT Sellable Product Status", "Approved");
+
+					test.info( "Validating if any OnHold items still exist for APPROVED record");
+					onHoldItems = fetchOnHoldItems(actions, cbtpage, summaryPage);
+
+					if (onHoldItems.size() > 0) {
+						test.warning("Approved BUT still has OnHold items");
+						data.put("CBT Approved but OnHold items", onHoldItems);
+						data.put("Total OnHold Items", onHoldItems.size());
+						test.log(Status.WARNING, MediaEntityBuilder .createScreenCaptureFromPath( Utils.Takescreenshot(driver)) .build());
+					} else {
+						test.pass("No OnHold items found for APPROVED record");
+						data.put("CBT Approved but OnHold items", "No OnHold items");
+						data.put("Total OnHold Items", 0);
+					}
+
+					String activeWorkflow = CBT_Utils .getActiveWorkflowAfterRefresh(driver, cbtpage, test);
+					data.put("Active Workflow", activeWorkflow == null ? "" : activeWorkflow);
+
+					if (activeWorkflow == null || activeWorkflow.trim().isEmpty()) {
+						test.warning("Active workflow is empty/not found.");
+					} else {
+						test.pass("Active workflow: <b>" + activeWorkflow + "</b>");
+					}
+					NotepadManager.ReadWriteNotepad(POST_ETL_Filename, data);
+
+				} else {
+					test.fail("Record status is not Approved. Actual status: " + normalizedStatus);
+					data.put("CBT Sellable Product Status", normalizedStatus);
+
+					String activeWorkflow = CBT_Utils .getActiveWorkflowAfterRefresh(driver, cbtpage, test);
+					data.put("Active Workflow", activeWorkflow == null ? "" : activeWorkflow);
+
+					if (activeWorkflow == null || activeWorkflow.trim().isEmpty()) {
+						test.pass("Active workflow is empty/not found.");
+					} else {
+						test.info("Active workflow: " + activeWorkflow);
+					}
+					NotepadManager.ReadWriteNotepad(POST_ETL_Filename, data);
 				}
 				BSAPIE_PO.Tabclose_Xmark().click();
 				Thread.sleep(4000);
 			}
-		}
 	}
+}	
 	
+	
+	
+	
+/***********************************************
+Function to fetch On Hold Items
+**********************************************/
 	private List<String> fetchOnHoldItems(Actions actions, CBT_Page cbtpage, SummaryPage summaryPage) throws Exception {
 	    summaryPage.SearchIcon().click();
 	    summaryPage.SearchInputfield().sendKeys("Catalog Bearing Tool - HOLD attribute List (Rule Triggered)");
 	    Thread.sleep(1000);
 	    actions.moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
 	    Thread.sleep(3000);
-
 	    // Wait for the element conditionally
 	    boolean isElementPresent = utils.isElementPresent(() -> cbtpage.CBT_Hold_Attributes_list(), "visible");
 

@@ -1,11 +1,9 @@
 package Post_ETL_Scripts;
 
-import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -41,7 +39,7 @@ public class TC_005a_PostETL_Partial_HoldAttributes extends BaseTest {
 		SearchPage2 searchPage = new SearchPage2(driver);
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
 		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
-		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_005_List_HoldAttributes.txt";
+		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_005_ListAllHoldAttributes.txt";
 		String POST_ETL_Filename = "/Post_ETL_Artifacts/TC_005a_PostETL_Partial_HoldAttributes.txt";
 
 		homePage.clickSearch_Products_Button().click();
@@ -58,51 +56,22 @@ public class TC_005a_PostETL_Partial_HoldAttributes extends BaseTest {
 				searchPage.searchthingdomain_Input_Mat_Id().click();
 				searchPage.searchthingdomain_Input_Mat_Id().clear();
 				searchPage.searchthingdomain_Input_Mat_Id().sendKeys(Matid);
-				searchPage.searchthingdomain_Input_Mat_Id().sendKeys(Keys.ENTER);
+				searchPage.searchthingdomain_Input_Mat_Id() .sendKeys(Keys.ENTER);
 				test.pass("Material id " + Matid + " is searched in Search thing domain");
-				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath( Utils.Takescreenshot(driver)).build());
 				Thread.sleep(5000);
-				WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-						.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-						.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
-						.findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
-						.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#entityGrid")).getShadowRoot()
-						.findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
-						.findElement(By.cssSelector("#grid"));
 
-				utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-
-				List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
-						"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
-
-				System.out.println("Total rows after clicking on Pending Usecase Approval - BSA PIE Inprogress status -- "+ arrrowsdefined.size());
-				test.pass("Rows after after clicking on Pending Usecase Approval - BSA PIE Inprogress status appeared");
-				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				assertTrue("There should be results after applying filters with Inprogress status",arrrowsdefined.size() > 0);
-
-				WebElement RowByRow = arrrowsdefined.get(0);
-				String SellableMaterialDescription = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
-				String matid = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
-				System.out.println("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription);
-
-				WebElement matidElement = RowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']"));
-				actions.moveToElement(RowByRow).build().perform();
-				Thread.sleep(500);
-				matidElement.click();
+				Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+				String matid = selectedRecord.get("Material Id");
+				data.put("Material ID", matid);
 				Thread.sleep(3000);
 				utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-				test.pass("Material ID -- " + matid + " Material Description --" + SellableMaterialDescription+ " is selected for verification");
-				test.log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 				Thread.sleep(3000);
-				data.put("Material ID", matid);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				test.fail("Material id -- " + Matid + " details was not retrieved");
-				test.log(Status.FAIL,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath( Utils.Takescreenshot(driver)).build());
 			}
-
 			/**********************
 			 * Search for Catalog Bearing Tool Sellable Product Status It should be On Hold User
 			 *********************/

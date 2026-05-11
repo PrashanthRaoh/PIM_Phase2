@@ -165,21 +165,23 @@ public class CBT_Utils {
         clickWhenClickable(applyButtonSupplier);
     }
     
-    public void applyCatalogUsecaseIntYesFilter() {
+    public void applyCatalogUsecaseIntYesFilter() throws InterruptedException {
         applySearchFilter(
                 "Catalog Bearing Tool Usecase[Int]?",
                 () -> cbtPage.thingDomainOptionByText("Catalog Bearing Tool Usecase[Int]?"),
                 () -> cbtPage.CBTUcasecaseInt_Yes_Option(),
                 () -> cbtPage.CBTUsecase_IntApply_btn(),
-                2000);
+                500);
+        Thread.sleep(2000);
     }
-    public void applySellableProductStatusApprovedFilter() {
+    public void applySellableProductStatusApprovedFilter() throws InterruptedException {
         applySearchFilter(
                 "Catalog Bearing Tool Sellable Product Status",
                 () -> cbtPage.thingDomainOptionByText("Catalog Bearing Tool Sellable Product Status"),
                 () -> cbtPage.CBT_Approved_Option(),
                 () -> cbtPage.CBTUsecase_IntApply_btn(),
-                2000);
+                500);
+        Thread.sleep(2000);
     }
 
     public void applyCatalogUsecaseIntFilterByLabelAndValue(String filterLabel, String valueYesOrNo) {
@@ -203,7 +205,6 @@ public class CBT_Utils {
     public void applyCatalogUsecaseIntAutoNoFilter() {
         applyCatalogUsecaseIntFilterByLabelAndValue("Catalog Bearing Tool Usecase[Int]? (Auto)", "No");
     }
-
 
 
     public String getOpenedRecordStatus(SummaryPage summaryPage, CBT_Page cbtpage, BSAPIE_Page BSAPIE_PO, ExtentTest test) {
@@ -253,12 +254,9 @@ public class CBT_Utils {
     return recordStatus;
 }
     
-public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage, SummaryPage summaryPage,
-		ExtentTest test) throws InterruptedException, IOException {
-
+public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage, SummaryPage summaryPage,ExtentTest test) throws InterruptedException, IOException {
 	Map<String, String> result = new LinkedHashMap<>();
 	Actions actions = new Actions(driver);
-
 	final int maxAttempts = 3;
 	int attempt = 0;
 
@@ -266,9 +264,6 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
 		attempt++;
 		try {
 			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-
-			// Re-locate grid and rows each attempt (avoid storing WebElements across DOM
-			// changes)
 			WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 					.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 					.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
@@ -282,8 +277,7 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
 			List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
 					"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
 
-			// wait until at least one row is present (simple loop—Utils doesn't expose list
-			// wait)
+			// wait until at least one row is present (simple loop—Utils doesn't expose list  wait)
 			int tries = 0;
 			while (arrrowsdefined.size() == 0 && tries < 10) {
 				Thread.sleep(300);
@@ -292,7 +286,6 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
 				tries++;
 			}
 			org.testng.Assert.assertTrue(arrrowsdefined.size() > 0, "There should be results after applying filters");
-
 			// Choose random row index AFTER we have fresh rows
 			Random rand = new Random();
 			int randnum = rand.nextInt(arrrowsdefined.size());
@@ -307,13 +300,10 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
 			actions.moveToElement(rowByRow).build().perform();
 			Thread.sleep(300); // small delay to allow hover effects
 			matidElement.click();
-
 			// Wait for the summary page to be visible
 			utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-
 			test.pass("Material ID -- " + matid + " Material Description -- " + sellableMaterialDescription + " is selected and opened");
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
 			result.put("Material Id", matid);
 			result.put("Material Description", sellableMaterialDescription);
 			return result;
@@ -576,5 +566,18 @@ public boolean clickReviewSelectionDiscrepanciesUco(ExtentTest test) throws IOEx
     }
     test.warning("UCO item not found: Review Selection Discrepancies - Catalog Bearing Tool");
     return false;
+}
+
+public WebElement Save_CBT_Transactions() {
+	return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+    .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+    .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+    .findElement(By.cssSelector("#next")).getShadowRoot()
+    .findElement(By.cssSelector("#buttonTextBox"));
 }
 }

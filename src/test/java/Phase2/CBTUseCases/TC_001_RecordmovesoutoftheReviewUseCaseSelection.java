@@ -24,6 +24,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.google.common.base.Function;
 import common_functions.BaseTest;
+import common_functions.CBT_Utils;
 import common_functions.NotepadManager;
 import common_functions.Utils;
 import pages.BSAPIE_Page;
@@ -57,6 +58,8 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		SearchPage2 searchPage = new SearchPage2(driver);
 		DigitalAsset digitalssetPage = new DigitalAsset(driver);
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
+		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
+		
 		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_001_RecordmovesoutoftheReviewUseCaseSelection.txt";
 		utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");
 		test.pass("Home Page of CBT is displayed");
@@ -117,7 +120,7 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 				} catch (Exception e) {
 					js.executeScript("arguments[0].click();", innerDiv1);
 				}
-				Thread.sleep(5000);
+				Thread.sleep(3000);
 				break;
 			}
 		}
@@ -254,46 +257,45 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		Thread.sleep(2000);
 		digitalssetPage.ImageRequired_Yes().click();
 		Thread.sleep(2000);
-		
 		/*************************************************
 		 * --------- Save ------ *
 		 ************************************************/
-		digitalssetPage.AddPrimaryImage_Save_btn().click();
-		Thread.sleep(5000);
-		/*************************************************
-		 * --------- Wait for the banner to appear --------
-		 ************************************************/
-		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
-		Function<WebDriver, WebElement> getBannerElement = drv -> {
-			try {
-				return drv.findElement(By.cssSelector("#app")).getShadowRoot().findElement(By.cssSelector("[id^='rs']"))
-						.getShadowRoot().findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html"))
-						.getShadowRoot().findElement(By.cssSelector("#bind-html"));
-			} catch (Exception e) {
-				return null;
-			}
-		};
-
-		WebElement banner = wait1.until(drv -> {
-			WebElement el = getBannerElement.apply(drv);
-			return (el != null && el.isDisplayed()) ? el : null;
-		});
-
-		String bannerText = banner.getText();
-		System.out.println("✅ Banner appeared with the text : " + bannerText);
-		test.pass("Banner appeared with the text : " + bannerText);
-		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		Thread.sleep(5000);
+//		digitalssetPage.AddPrimaryImage_Save_btn().click();
+//		Thread.sleep(5000);
+//		/*************************************************
+//		 * --------- Wait for the banner to appear --------
+//		 ************************************************/
+//		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
+//		Function<WebDriver, WebElement> getBannerElement = drv -> {
+//			try {
+//				return drv.findElement(By.cssSelector("#app")).getShadowRoot().findElement(By.cssSelector("[id^='rs']"))
+//						.getShadowRoot().findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html"))
+//						.getShadowRoot().findElement(By.cssSelector("#bind-html"));
+//			} catch (Exception e) {
+//				return null;
+//			}
+//		};
+//
+//		WebElement banner = wait1.until(drv -> {
+//			WebElement el = getBannerElement.apply(drv);
+//			return (el != null && el.isDisplayed()) ? el : null;
+//		});
+//
+//		String bannerText = banner.getText();
+//		System.out.println("✅ Banner appeared with the text : " + bannerText);
+//		test.pass("Banner appeared with the text : " + bannerText);
+//		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+//		Thread.sleep(5000);
+//		
+//		// Hard assert: fail if banner does not contain "data saved"
+//		Assert.assertTrue( bannerText != null && bannerText.toLowerCase().contains("data saved"),"❌ Expected banner text to contain 'data saved', but got: " + bannerText);
+//		/*******************************************
+//		 * Refresh the record
+//		 ******************************************/
+//		cbtpage.CBT_Workflow_Refresh_btn().click();
+//		Thread.sleep(5000);
 		
-		// Hard assert: fail if banner does not contain "data saved"
-		Assert.assertTrue( bannerText != null && bannerText.toLowerCase().contains("data saved"),"❌ Expected banner text to contain 'data saved', but got: " + bannerText);
-		/*******************************************
-		 * Refresh the record
-		 ******************************************/
-		cbtpage.CBT_Workflow_Refresh_btn().click();
-		Thread.sleep(5000);
-		test.pass("Refreshed transaction to get the latest workflow status");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		cbtUtils.saveAndRefreshRecord(digitalssetPage, cbtpage, test);
 		/*******************************************
 		 * Catalog Bearing Tool Use case[Int]? has now Yes as value
 		 ******************************************/
@@ -312,88 +314,28 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		/**************************
 		 * Verify the status of the record. It should be on hold or Approved
 		 **************************/
-		Thread.sleep(1000);
-		summaryPage.SearchIcon().click();
-		summaryPage.SearchInputfield().sendKeys("Catalog Bearing Tool Sellable Product Status");
-		Thread.sleep(1000);
-		actions.moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
-		Thread.sleep(3000);
-		utils.waitForElement(() -> cbtpage.CBT_Sellable_Product_Status(), "visible");
-		test.pass("CBT Product status shown up");
-		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		String RecordStatus = null;
-		
-		WebElement targetElement = cbtpage.CBT_Sellable_Product_Status();
-		if (targetElement != null) {
-			System.out.println("Status is : " + targetElement.getText());
-			RecordStatus = targetElement.getText();
-			test.pass("Status of the " + matid + " is  : - <b>" + RecordStatus + "</b>");
-			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-			BSAPIE_PO.Tabclose_Xmark().click();
-			Thread.sleep(4000);
-		} else {
-			System.out.println("🔴 There was no status field found for the record");
-			test.fail("No status field found found");
-			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		}
-		data.put("CBT Sellable Product Status", RecordStatus);
-		List<WebElement> lasttabs = driver.findElement(By.cssSelector("#app"))
-			    .getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
-			    .getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
-			    .getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
-			    .getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
-			    .getShadowRoot().findElement(By.cssSelector("#rockTabs"))
-			    .getShadowRoot().findElements(By.cssSelector("[class='base-grid-structure-child-1'] > #rockTabs > pebble-tab"));
+		String currentRecordStatus = cbtUtils.getOpenedRecordStatus(summaryPage, cbtpage, BSAPIE_PO, test);
+		String normalizedStatus = currentRecordStatus == null ? "" : currentRecordStatus.trim();
+		data.put("CBT Sellable Product Status", normalizedStatus);
 
-			WebElement lastTab = lasttabs.get(lasttabs.size() - 1);
+		Assert.assertTrue("Approved".equalsIgnoreCase(normalizedStatus) || "OnHoldSystem".equalsIgnoreCase(normalizedStatus),"Expected status to be either Approved or OnHoldSystem, but got: " + normalizedStatus);
 
-			// Find the close button within the last tab and click it
-			WebElement closeButton = lastTab.findElement(By.cssSelector(".tab-title-content > .tab-title > span.dynamic-close"));
-			closeButton.click();
-			Thread.sleep(4000);
+		BSAPIE_PO.Tabclose_Xmark().click();
+		Thread.sleep(4000);
+		data.put("CBT Sellable Product Status", currentRecordStatus);
 
-		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename,data);
+	/******************************************************************
+	 * Verify active workflow after refresh
+	 ******************************************************************/
+		String activeWorkflow = CBT_Utils.getActiveWorkflowAfterRefresh(driver, cbtpage, test);
+	    data.put("Active Workflow", activeWorkflow == null ? "" : activeWorkflow);
+	    if (activeWorkflow == null || activeWorkflow.trim().isEmpty()) {
+	    	System.out.println("Active workflow is empty/not found. ");
+	        test.warning("Active workflow is empty/not found.");
+	    } else {
+	        System.out.println("Active Workflow after setting Catalog Bearing Tool Usecase[Int]? (Override) to Yes is  : " + activeWorkflow);
+	        test.pass("Active Workflow after setting Catalog Bearing Tool Usecase[Int]? (Override) to Yes is: <b>" + activeWorkflow + "</b>");
+	    }
+	NotepadManager.ReadWriteNotepad(PRE_ETL_Filename,data);
 	}
 }
-
-
-
-
-
-
-///*******************************************
-////* After clicking the refresh button and waiting for the page to update Re-fetch
-////* workflow steps
-///// 
-///// Not required as its covered under another function
-// */
-// */
-////******************************************/
-//List<WebElement> allStepsAfterRefresh = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-//		.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-//		.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
-//		.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
-//		.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
-//		.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
-//		.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
-//		.findElements(By.cssSelector("pebble-step"));
-//
-//List<WebElement> visibleStepsAfterRefresh = allStepsAfterRefresh.stream().filter(WebElement::isDisplayed).collect(Collectors.toList());
-//System.out.println("✅ Workflow steps after refresh: " + visibleStepsAfterRefresh.size());
-//
-///*******************************************
-//* Find and print the active step after refresh
-//******************************************/
-//for (int i = 0; i < allStepsAfterRefresh.size(); i++) {
-//	WebElement step = allStepsAfterRefresh.get(i);
-//	SearchContext stepShadow = step.getShadowRoot();
-//	String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span")).getAttribute("title");
-//
-//	boolean isActive = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
-//	System.out.println((i + 1) + ": " + actualTitle + (isActive ? " (🟢 Active)" : ""));
-//
-//	if (isActive) {
-//		test.pass("Active workflow step after refresh is: " + actualTitle);
-//		test.log(Status.INFO,MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//	}
-//}
