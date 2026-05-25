@@ -28,7 +28,6 @@ public class CBT_Page {
 				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rockDetailTabs"));
 	}
-
 	public WebElement Common_Summary_items2() {
 		return Common_Summary_items1().getShadowRoot().findElement(By.cssSelector("#rockTabs")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rock-entity-summary-component-rs']")).getShadowRoot()
@@ -458,5 +457,28 @@ public class CBT_Page {
 			    .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container > pebble-tags")).getShadowRoot()
 			    .findElement(By.cssSelector("#tag0")).getShadowRoot()
 			    .findElement(By.cssSelector("#pebble-tag > div.close-icon"));
+	}
+	
+	public WebElement CBT_RelationshipTab() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("#tab-relationships > div > div.tab-title > span"));
+	}
+	
+	public WebElement CBT_EngineeringPartNumber() {
+		return Common_Summary_items1().getShadowRoot()
+			    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+			    .findElement(By.cssSelector("#entityRelationshipSearchResult_hasengineeredpart")).getShadowRoot()
+			    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+			    .findElement(By.cssSelector("#bedrock_grid_hasengineeredpart")).getShadowRoot()
+			    .findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+			    .findElement(By.cssSelector("#grid")).getShadowRoot()
+			    .findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div.ag-cell.ag-cell-not-inline-editing.ag-cell-auto-height.grid-link.ag-cell-value"));
 	}
 }

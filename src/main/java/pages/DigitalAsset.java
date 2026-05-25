@@ -65,6 +65,17 @@ public class DigitalAsset {
 		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipButton"))
 				.getShadowRoot().findElement(By.cssSelector("#simpleButton"));
 	}
+	
+	public WebElement HasEnginerringPartNumber_dropdown() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+	    .findElement(By.cssSelector("#relationships-hasengineeredpartowned"));
+	}
+	
 
 	public WebElement HasImagesDropdownvalue() {
 		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipModelLov"))

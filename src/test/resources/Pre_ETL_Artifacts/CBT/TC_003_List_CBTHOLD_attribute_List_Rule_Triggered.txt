@@ -1,0 +1,5 @@
+ "Material ID" = "000000000100375816"
+ "CBT Sellable Product Status" = "OnHoldSystem"
+ "Total OnHold Items" = "2"
+ "CBT Sellable Product Status on Hold items" = ["Construction Style Code","Locking Type"]
+---------------------------------------

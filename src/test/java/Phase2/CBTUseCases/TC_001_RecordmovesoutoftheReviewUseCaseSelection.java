@@ -60,7 +60,7 @@ public class TC_001_RecordmovesoutoftheReviewUseCaseSelection extends BaseTest {
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
 		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
 		
-		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_001_RecordmovesoutoftheReviewUseCaseSelection.txt";
+		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/CBT/" + className+".txt";
 		utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");
 		test.pass("Home Page of CBT is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());

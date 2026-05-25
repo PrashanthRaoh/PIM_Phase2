@@ -1,5 +1,0 @@
- "Material ID" = "000000000101679499"
- "CBT Sellable Product Status" = "OnHoldSystem"
- "Total OnHold Items" = "2"
- "CBT Sellable Product Status on Hold items" = ["Tolerance System","Tolerance System Code"]
----------------------------------------

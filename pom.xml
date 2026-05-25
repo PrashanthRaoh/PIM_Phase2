@@ -6,28 +6,48 @@
 	<artifactId>pim.phase2.automation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+
+	<properties>
+		<!-- Centralized versions -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.release>9</maven.compiler.release>
+		<selenium.version>4.23.1</selenium.version>
+		<poi.version>5.4.1</poi.version>
+		<commons.io.version>2.18.0</commons.io.version>
+		<testng.version>7.8.0</testng.version>
+		<jackson.version>2.15.0</jackson.version>
+		<extentreports.version>5.1.2</extentreports.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>4.23.1</version>
+			<version>${selenium.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.2.5</version>
+			<version>${poi.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.18.0</version>
+			<version>${commons.io.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>7.8.0</version>
+			<version>${testng.version}</version>
 		</dependency>
 
 		<dependency>
@@ -39,31 +59,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.15.0</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
-			<version>5.1.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>5.4.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>5.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>pim.automation.framework</groupId>
-			<artifactId>pim.automation.framework</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${extentreports.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -85,8 +87,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<source>9</source>
-					<target>9</target>
+					<!-- Use <release> when possible to control target platform and module-info handling -->
+					<release>${maven.compiler.release}</release>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -17,14 +17,21 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+
+import pages.DigitalAsset;
+import pages.SearchPage2;
 
 public class Utils  {
 	private WebDriver driver;
@@ -36,7 +43,7 @@ public class Utils  {
 	public Utils(WebDriver driver, ExtentTest test) {
 		this.driver = driver;
 		this.test = test;
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
 
 	/*****************************************************
@@ -197,5 +204,169 @@ public class Utils  {
 	    return false;
 	}
 	
+
+	public void applyBinaryFilters(Map<String, String> filters, SearchPage2 searchPage, DigitalAsset digitalAsset) throws Exception {
+		for (Map.Entry<String, String> entry : filters.entrySet()) {
+			applyBinaryFilter(entry.getKey(), entry.getValue(), searchPage, digitalAsset);
+		}
+	}
 	
+	public void applyBinaryFilter(String filterName, String filterValue, SearchPage2 searchPage, DigitalAsset digitalAsset) throws Exception {
+		String normalizedValue = normalizeBinaryValue(filterValue);
+		searchPage.getFilterButton().click();
+		waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
+		WebElement materialTypeSearch = searchPage.Search_MaterialType();
+		materialTypeSearch.clear();
+		materialTypeSearch.sendKeys(filterName);
+		Thread.sleep(1000);
+
+		clickFilterAttribute(filterName);
+		Thread.sleep(1000);
+		clickYesNoValue(normalizedValue);
+		Thread.sleep(1000);
+		if (test != null) {
+			test.pass("Selected filter: " + filterName + " = " + normalizedValue);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+
+		digitalAsset.Status_Apply_btn().click();
+		Thread.sleep(2000);
+		waitForElement(() -> searchPage.getgrid(), "clickable");
+		Thread.sleep(2000);
+		if (test != null) {
+			test.pass("Applied filter: " + filterName + " = " + normalizedValue);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+	}
+	private void clickFilterAttribute(String filterName) throws InterruptedException {
+		WebElement attributeGrid = findShadowElement(
+				"#app",
+				"#contentViewManager",
+				"[id^='currentApp_search-thing_']",
+				"[id^='app-entity-discovery-component-']",
+				"#entitySearchDiscoveryGrid",
+				"#entitySearchFilter",
+				"#search-filter",
+				"#attributeModelLov_thing",
+				"#modelLov_thing",
+				"div.base-grid-structure.p-relative.hideLovHeader > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid",
+				"#grid"
+		);
+		List<WebElement> items = attributeGrid.getShadowRoot().findElements(By.cssSelector("pebble-lov-item"));
+		if (items.isEmpty()) {
+			throw new RuntimeException("No filter attributes displayed for: " + filterName);
+		}
+		Actions actions = new Actions(driver);
+		for (WebElement item : items) {
+			String text = item.getText().trim();
+			if (text.equalsIgnoreCase(filterName) || text.toLowerCase().contains(filterName.toLowerCase())) {
+				actions.moveToElement(item).perform();
+				item.click();
+				return;
+			}
+		}
+		actions.moveToElement(items.get(0)).perform();
+		items.get(0).click();
+		Thread.sleep(1000);
+	}
+
+	private void clickYesNoValue(String filterValue) {
+		WebElement valueGrid = findShadowElement(
+				"#app",
+				"#contentViewManager",
+				"[id^='currentApp_search-thing_']",
+				"[id^='app-entity-discovery-component-']",
+				"#entitySearchDiscoveryGrid",
+				"#entitySearchFilter",
+				"#search-filter",
+				"#rockEntityLov",
+				"#entityLov",
+				"div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid",
+				"#grid"
+		);
+
+		List<WebElement> items = valueGrid.getShadowRoot().findElements(By.cssSelector("pebble-lov-item"));
+		if (items.isEmpty()) {
+			throw new RuntimeException("No Yes/No values displayed for filter");
+		}
+		for (WebElement item : items) {
+			if (item.getText().trim().equalsIgnoreCase(filterValue)) {
+				item.click();
+				return;
+			}
+		}
+		throw new RuntimeException("Filter value not found in LOV: " + filterValue);
+	}
+	private String normalizeBinaryValue(String value) {
+		if (value == null) {
+			throw new IllegalArgumentException("Filter value cannot be null. Allowed values: Yes/No");
+		}
+		if (value.equalsIgnoreCase("Yes")) {
+			return "Yes";
+		}
+		if (value.equalsIgnoreCase("No")) {
+			return "No";
+		}
+		throw new IllegalArgumentException("Unsupported filter value: " + value + ". Allowed values: Yes/No");
+	}
+
+	public void removeAllAppliedFilterTabs() throws IOException {
+		WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+		int removedCount = 0;
+
+		for (int attempt = 0; attempt < 10; attempt++) {
+			try {
+				WebElement filterTags = findShadowElement(
+						"#app",
+						"#contentViewManager",
+						"[id^='currentApp_search-thing_']",
+						"[id^='app-entity-discovery-component-']",
+						"#entitySearchDiscoveryGrid",
+						"#entitySearchFilter",
+						"#search-filter",
+						"#filter-tags"
+				);
+
+				List<WebElement> tags = filterTags.getShadowRoot().findElements(By.cssSelector("[id^='tag']"));
+				if (tags.isEmpty()) {
+					break;
+				}
+
+				boolean removedInThisPass = false;
+				Actions actions = new Actions(driver);
+				for (WebElement tag : tags) {
+					try {
+						WebElement pebbleTag = tag.getShadowRoot().findElement(By.cssSelector("#pebble-tag"));
+						((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", pebbleTag);
+						actions.moveToElement(pebbleTag).pause(Duration.ofMillis(300)).perform();
+
+						List<WebElement> closeIcons = tag.getShadowRoot().findElements(By.cssSelector("#pebble-tag > div.hoveredActions > span:nth-child(3) > pebble-icon"));
+						if (closeIcons.isEmpty()) {
+							continue;
+						}
+						WebElement closeIcon = closeIcons.get(0);
+						shortWait.until(ExpectedConditions.elementToBeClickable(closeIcon)).click();
+						removedCount++;
+						removedInThisPass = true;
+						break;
+					} catch (Exception ignored) {
+					}
+				}
+				if (!removedInThisPass) {
+					break;
+				}
+			} catch (Exception e) {
+				break;
+			}
+		}
+		if (test != null) {
+			if (removedCount > 0) {
+				test.info("Removed " + removedCount + " applied filter tab(s)");
+				test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+			} else {
+				test.info("No applied filter tabs found to remove");
+				test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+			}
+		}
+	}
 }

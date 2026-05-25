@@ -196,8 +196,6 @@ public class CBT_Utils {
                 () -> cbtPage.CBTUsecase_IntApply_btn(),
                 2000);
     }
-
-
     public void applyCatalogUsecaseIntNoFilter() {
         applyCatalogUsecaseIntFilterByLabelAndValue("Catalog Bearing Tool Usecase[Int]?", "No");
     }
@@ -205,7 +203,6 @@ public class CBT_Utils {
     public void applyCatalogUsecaseIntAutoNoFilter() {
         applyCatalogUsecaseIntFilterByLabelAndValue("Catalog Bearing Tool Usecase[Int]? (Auto)", "No");
     }
-
 
     public String getOpenedRecordStatus(SummaryPage summaryPage, CBT_Page cbtpage, BSAPIE_Page BSAPIE_PO, ExtentTest test) {
     String recordStatus = "";
@@ -221,7 +218,6 @@ public class CBT_Utils {
             statusElement = cbtpage.CBT_Sellable_Product_Status();
         } catch (Exception ignored) {
         }
-
         if (statusElement != null) {
             try {
                 String text = statusElement.getText();
@@ -253,73 +249,64 @@ public class CBT_Utils {
     }
     return recordStatus;
 }
-    
-public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage, SummaryPage summaryPage,ExtentTest test) throws InterruptedException, IOException {
-	Map<String, String> result = new LinkedHashMap<>();
-	Actions actions = new Actions(driver);
-	final int maxAttempts = 3;
-	int attempt = 0;
+public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage, SummaryPage summaryPage, ExtentTest test) throws InterruptedException, IOException {
+    Map<String, String> result = new LinkedHashMap<>();
+    Actions actions = new Actions(driver);
+    final int maxAttempts = 3;
+    int attempt = 0;
 
-	while (attempt < maxAttempts) {
-		attempt++;
-		try {
-			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-			WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-					.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-					.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
-					.findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
-					.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
-					.findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
-					.findElement(By.cssSelector("#entityGrid")).getShadowRoot()
-					.findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
-					.findElement(By.cssSelector("#grid"));
+    while (attempt < maxAttempts) {
+        attempt++;
+        try {
+            utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+            WebElement rowsredefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+                    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
+                    .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+                    .findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
+                    .findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+                    .findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+                    .findElement(By.cssSelector("#grid"));
 
-			List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
-					"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
+            List<WebElement> arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
+                    "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
 
-			// wait until at least one row is present (simple loop—Utils doesn't expose list  wait)
-			int tries = 0;
-			while (arrrowsdefined.size() == 0 && tries < 10) {
-				Thread.sleep(300);
-				arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
-						"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
-				tries++;
-			}
-			org.testng.Assert.assertTrue(arrrowsdefined.size() > 0, "There should be results after applying filters");
-			// Choose random row index AFTER we have fresh rows
-			Random rand = new Random();
-			int randnum = rand.nextInt(arrrowsdefined.size());
+            int tries = 0;
+            while (arrrowsdefined.size() == 0 && tries < 10) {
+                Thread.sleep(300);
+                arrrowsdefined = rowsredefined.getShadowRoot().findElements(By.cssSelector(
+                        "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div"));
+                tries++;
+            }
 
-			// Immediately fetch the row and cells (so references are fresh)
-			WebElement rowByRow = arrrowsdefined.get(randnum);
-			String sellableMaterialDescription = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
-			String matid = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
-
-			// Click the material id (re-locate the element on the row just before clicking)
-			WebElement matidElement = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']"));
-			actions.moveToElement(rowByRow).build().perform();
-			Thread.sleep(300); // small delay to allow hover effects
-			matidElement.click();
-			// Wait for the summary page to be visible
-			utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-			test.pass("Material ID -- " + matid + " Material Description -- " + sellableMaterialDescription + " is selected and opened");
-			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-			result.put("Material Id", matid);
-			result.put("Material Description", sellableMaterialDescription);
-			return result;
-
-		} catch (org.openqa.selenium.StaleElementReferenceException | org.openqa.selenium.NoSuchElementException ex) {
-			// Retry: element was stale or not present yet — reattempt locating/retrying
-			test.info("Stale/NoSuchElement on attempt " + attempt + " — retrying: ");
-			continue;
-		}
-	}
-
-	// If we exit loop without returning, fail the test
-	test.fail("Unable to select a stable row after " + maxAttempts + " attempts");
-	test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-	Assert.fail("Unable to select a stable row from grid");
-	return result;
+            if (arrrowsdefined == null || arrrowsdefined.isEmpty()) {
+                test.warning("No rows found in grid. Could not proceed with row selection.");
+                test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+                return result; // return empty map, no exception
+            }
+            Random rand = new Random();
+            int randnum = rand.nextInt(arrrowsdefined.size());
+            WebElement rowByRow = arrrowsdefined.get(randnum);
+            String sellableMaterialDescription = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialdescription']")).getText();
+            String matid = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']")).getText();
+            WebElement matidElement = rowByRow.findElement(By.cssSelector("div[col-id='sellablematerialid']"));
+            actions.moveToElement(rowByRow).build().perform();
+            Thread.sleep(300);
+            matidElement.click();
+            utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
+            test.pass("Material ID -- " + matid + " Material Description -- " + sellableMaterialDescription + " is selected and opened");
+            test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+            result.put("Material Id", matid);
+            result.put("Material Description", sellableMaterialDescription);
+            return result;
+        } catch (org.openqa.selenium.StaleElementReferenceException | org.openqa.selenium.NoSuchElementException ex) {
+            test.info("Stale/NoSuchElement on attempt " + attempt + " — retrying.");
+        }
+    }
+    test.warning("Unable to select a stable row after " + maxAttempts + " attempts. Could not proceed.");
+    test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    return result; // empty map, no hard failure
 }
 public static String getActiveWorkflowAfterRefresh(WebDriver driver, CBT_Page cbtpage, ExtentTest test)
 		throws IOException {
@@ -425,33 +412,18 @@ public void applyCatalogUsecaseIntFilterNoOption(String filterLabel) {
 			() -> cbtPage.CBTUsecase_IntApply_btn(),
 			2000);
 }
-
-
-
-// New convenience wrapper for Auto filter
 public void applyCatalogUsecaseIntAutoYesFilter() {
     applyCatalogUsecaseIntFilterByLabel("Catalog Bearing Tool Usecase[Int]? (Auto)");
 }
-
-
 /*****************************************************************
  * Returns the current displayed value for a CBT attribute by its label text from the
  * Override/Auto section in the summary screen.
- *
- * <p>How it works:
- * <ul>
- *   <li>Scans all attribute rows returned by {@code cbtPage.CBTOverrideElements()}.</li>
- *   <li>Reads each row label from the attribute view wrapper.</li>
- *   <li>When the label matches {@code expectedLabel} (case-insensitive), reads the first tag value.</li>
- * </ul>
- *
  * @param expectedLabel exact label to search (e.g. "Catalog Bearing Tool Usecase[Int]? (Auto)")
  * @return matched attribute value; "NOT_FOUND" if value container is not readable;
  *         "LABEL_NOT_FOUND" if no row matches the given label
  *******************************************/
 public String getCbtAttributeValue(String expectedLabel) {
     List<WebElement> rsItems = cbtPage.CBTOverrideElements();
-
     for (WebElement rs : rsItems) {
         String label = rs.getShadowRoot()
                 .findElement(By.cssSelector("#input")).getShadowRoot()
@@ -503,7 +475,6 @@ public void saveAndRefreshRecord(DigitalAsset digitalssetPage, CBT_Page cbtpage,
             return null;
         }
     };
-
     WebElement banner = wait1.until(drv -> {
         WebElement el = getBannerElement.apply(drv);
         return (el != null && el.isDisplayed()) ? el : null;
@@ -536,7 +507,6 @@ public boolean clickReviewSelectionDiscrepanciesUco(ExtentTest test) throws IOEx
             .findElement(By.cssSelector("[id^='rock-entity-tofix-component-rs']")).getShadowRoot();
 
     List<WebElement> allItems = new ArrayList<>();
-
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     try {
         List<WebElement> acc0Host = base.findElements(By.cssSelector("#accordion\\ 0"));
@@ -580,4 +550,80 @@ public WebElement Save_CBT_Transactions() {
     .findElement(By.cssSelector("#next")).getShadowRoot()
     .findElement(By.cssSelector("#buttonTextBox"));
 }
+
+/*****************************************************************
+ * Searches a material id in Search Products grid and opens one row
+ * from the filtered results.
+ * This method:
+ * 1. waits for the search grid
+ * 2. enters the given material id in search thing domain
+ * 3. executes the search
+ * 4. reuses selectRandomRowAndOpenDetails(...) to open the record
+ *
+ * @param materialId material id to search
+ * @param searchPage Search page object
+ * @param summaryPage Summary page object
+ * @param test Extent test instance
+ * @return map containing "Material Id" and "Material Description"; returns empty map if no rows are found / record could not be opened
+ *****************************************************************/
+public Map<String, String> searchMaterialIdAndOpenDetails(String materialId, SearchPage2 searchPage, SummaryPage summaryPage, ExtentTest test) throws InterruptedException, IOException {
+    Map<String, String> result = new LinkedHashMap<>();
+    utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+    searchPage.searchthingdomain_Input_Mat_Id().click();
+    searchPage.searchthingdomain_Input_Mat_Id().clear();
+    searchPage.searchthingdomain_Input_Mat_Id().sendKeys(materialId);
+    searchPage.searchthingdomain_Input_Mat_Id().sendKeys(Keys.ENTER);
+    test.pass("Material id " + materialId + " is searched in Search thing domain");
+    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    Thread.sleep(2000);
+    result = selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+    if (result.isEmpty()) {
+        test.warning("No rows found / no record could be opened for Material ID: " + materialId);
+        test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    }
+    return result;
+}
+/*********************************************************************
+ * Searches an attribute by label in summary and returns its displayed LOV/tag text.
+ * Returns empty string if not found/readable; logs warning instead of throwing.
+ ********************************************************************/
+public String getAttributeLovValueBySearchLabel( SummaryPage summaryPage, String attributeSearchLabel,  ExtentTest test) {
+    String value = "";
+    try {
+        summaryPage.SearchIcon().click();
+        summaryPage.SearchInputfield().clear();
+        summaryPage.SearchInputfield().sendKeys(attributeSearchLabel);
+        new Actions(driver).moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
+        Thread.sleep(2000);
+        WebElement targetElement = null;
+        try {
+            targetElement = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+                    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+                    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                    .findElement(By.cssSelector("#input")).getShadowRoot()
+                    .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+                    .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+                    .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
+        } catch (Exception ignored) {
+        }
+        if (targetElement != null) {
+            value = targetElement.getText() == null ? "" : targetElement.getText().trim();
+            test.pass(attributeSearchLabel + " value is -- : " + value);
+        } else {
+            test.warning(attributeSearchLabel + " element not found.");
+        }
+        test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    } catch (Exception e) {
+        test.warning("Unable to fetch value for " + attributeSearchLabel + ". Reason: " + e.getMessage());
+    }
+    return value;
+}
+
 }

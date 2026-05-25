@@ -104,7 +104,6 @@ public class NotepadManager {
 		Files.write(path, content.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
 		System.out.println("File Overwritten with latest value");
 	}
-
 	/*********************************
 	 * Get the output as a list of Material IDs
 	 *********************************/
@@ -114,11 +113,9 @@ public class NotepadManager {
 			System.out.println("File not found: " + fileName);
 			return Collections.emptyList();
 		}
-
 		List<String> lines = Files.readAllLines(path);
 		Pattern pattern = Pattern.compile("\"Material ID\"\\s*=\\s*\"([^\"]+)\"");
 		List<String> materialIds = new LinkedList<>();
-
 		for (String line : lines) {
 			Matcher matcher = pattern.matcher(line);
 			if (matcher.find()) {
@@ -127,6 +124,27 @@ public class NotepadManager {
 		}
 		return materialIds;
 	}
+/*********************************
+ * Fetch the first Material ID from the notepad file
+ * @param fileName relative file path under src/test/resources/
+ * @return first matched Material ID, or null if file/key is not found
+ *********************************/
+public static String FetchMaterialID(String fileName) throws IOException {
+	Path path = Paths.get("src/test/resources/" + fileName);
+	if (!Files.exists(path)) {
+		System.out.println("File not found: " + fileName);
+		return null;
+	}
+	List<String> lines = Files.readAllLines(path);
+	Pattern pattern = Pattern.compile("\"Material ID\"\\s*=\\s*\"([^\"]+)\"");
+	for (String line : lines) {
+		Matcher matcher = pattern.matcher(line);
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+	}
+	return null;
+}
 
 	/*********************************
 	 * Get the output as a list of Key

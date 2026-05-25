@@ -44,8 +44,8 @@ public class TC_005b_PostETL_Complete_HoldAttributes extends BaseTest {
         CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
         homePage = new HomePage(driver);
 
-        String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_005_ListAllHoldAttributes.txt";
-        String POST_ETL_Filename = "/Post_ETL_Artifacts/TC_005b_PostETL_Complete_HoldAttributes2.txt";
+        String PRE_ETL_Filename = "/Pre_ETL_Artifacts/CBT/TC_005_ListAllHoldAttributes.txt";
+        String POST_ETL_Filename = "/Post_ETL_Artifacts/CBT/TC_005b_PostETL_Complete_HoldAttributes2.txt";
 
         homePage.clickSearch_Products_Button().click();
         Thread.sleep(3000);
