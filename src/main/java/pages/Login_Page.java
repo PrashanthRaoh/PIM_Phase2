@@ -32,11 +32,13 @@ public class Login_Page {
 
 	public void enterEmail(String email) {
 		WebElement emailElement = wait.until(ExpectedConditions.elementToBeClickable(emailField));
+		emailElement.click();
 		emailElement.sendKeys(email);
 	}
 
 	public void enterPassword(String password) {
 		WebElement emailElement = wait.until(ExpectedConditions.elementToBeClickable(passwordfield));
+		emailElement.click();
 		emailElement.sendKeys(password);
 	}
 

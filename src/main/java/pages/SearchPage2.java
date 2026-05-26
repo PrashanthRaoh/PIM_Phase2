@@ -297,9 +297,17 @@ public class SearchPage2 {
 				.findElement(By.cssSelector("#entityTitlebar")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rockTitle > div.title-text > div.breadcrumb-wrapper > rock-breadcrumb"))
-				.getShadowRoot().findElement(By.cssSelector(
-						"div > div > span.breadcrumb-link.flex-nowrap.item-2 > span.breadcrumb-data.text-ellipsis > span.subtitle"));
-
+				.getShadowRoot().findElement(By.cssSelector( "div > div > span.breadcrumb-link.flex-nowrap.item-2 > span.breadcrumb-data.text-ellipsis > span.subtitle"));
+	}
+	public WebElement Search_things_BreadCrum_Admin() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#entityTitlebar")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rockTitle > div.title-text > div.breadcrumb-wrapper > rock-breadcrumb")).getShadowRoot()
+				.findElement(By.cssSelector( "div > div > span.breadcrumb-link.flex-nowrap.item-1"));
 	}
 	public WebElement rowsdisplayedtext() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()

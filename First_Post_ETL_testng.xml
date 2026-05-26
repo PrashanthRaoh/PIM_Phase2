@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PIM_Phase2 Automation_Suite">
+	<test name="BSAPIEOwner">
+		<parameter name="UseCaseOwner" value="BSAPIEowner" />
+		<classes>
+			<!--<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />-->
+			<!--<class name="First_Post_ETL_KeyFlags.TC02_Post_ETL_BsaY_CbtY_MunN" />-->
+			<!--<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" /> -->
+			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
+			<!--<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />
+			<!---->
+		</classes>
+	</test>
+	<test name="CBTUseCaseOwner">
+		<parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
+		<classes>
+			<!--<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />
+			<class name="First_Post_ETL_KeyFlags.TC02_Post_ETL_BsaY_CbtY_MunN" />
+			<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" />-->
+			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
+			<!--<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />
+			<!---->
+
+		</classes>
+	</test>
+</suite>

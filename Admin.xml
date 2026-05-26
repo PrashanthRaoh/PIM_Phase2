@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PIM_Phase2 Automation_Suite">
+	<test name="BSAPIEOwner">
+		<parameter name="UseCaseOwner" value="SystemAdmin" />
+		<classes>
+			<class name="Admin_Module.TC01_Admin_BsaN_CbtN_MunN" />
+			<class name="Admin_Module.TC02_BsaY_CbtY_MunN" />
+			<class name="Admin_Module.TC03_BsaY_CbtN_MunN" />
+			<class name="Admin_Module.TC04_BsaN_CbtY_MunN" />
+			<class name="Admin_Module.TC05_BsaN_CbtY_PropN" />
+			<class name="Admin_Module.TC06_BsaY_CbtY_PropN" />
+			<class name="Admin_Module.TC07_BsaN_CbtY_PropN" />
+			<!---->
+		</classes>
+	</test>
+</suite>

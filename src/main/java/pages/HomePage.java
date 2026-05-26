@@ -19,8 +19,9 @@ public class HomePage {
 	}
 
 	public WebElement HomePage_SearchButton() {
-		WebElement searchBtn = driver.findElement(RootElement).getShadowRoot().findElement(By.cssSelector("[id^='rs']"))
-				.getShadowRoot().findElement(By.cssSelector("#navMenu")).getShadowRoot()
+		WebElement searchBtn = driver.findElement(RootElement).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#navMenu")).getShadowRoot()
 				.findElement(By.cssSelector("#pageMenuIcon_1"));
 		return searchBtn;
 	}
@@ -31,47 +32,18 @@ public class HomePage {
 				.findElement(By.cssSelector("#navMenu")).getShadowRoot()
 				.findElement(By.cssSelector("#pageMenuIcon_2 > a.menu-icon.page-title-icon"));
 	}
+	public WebElement clickSearch_Products_Button_Admin() throws InterruptedException {
+		return driver.findElement(RootElement).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#navMenu")).getShadowRoot()
+				.findElement(By.cssSelector("#pageMenuIcon_3 > a.menu-icon.page-title-icon"));
+	}
 	public WebElement clickSearch_Products_Button_Digital() throws InterruptedException {
 		return driver.findElement(RootElement).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#navMenu")).getShadowRoot()
 				.findElement(By.cssSelector("#pageMenuIcon_3"));
 	}
-
-
-
-//	public void Select_Tab_By_Name(String tabName) throws InterruptedException {
-//		tablist_Homescreen = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-//				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
-//				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
-//				.findElement(By.cssSelector("#rock-saved-searches")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='rock-saved-searches-component-']")).getShadowRoot()
-//				.findElement(By.cssSelector("#rock-saved-searches-tabs"));
-//
-//		utils.waitForElement(tablist_Homescreen, "clickable");
-//
-//		WebElement TabtobeSelected = tablist_Homescreen.getShadowRoot().findElement(By.cssSelector("#tab-" + tabName));
-//		TabtobeSelected.click();
-//		Thread.sleep(3000);
-//	}
-
-//	public void SelectTab_ByName_ToDos_Tab(String tabName) throws InterruptedException {
-//		String tb1 = tabName.replaceAll("\\s", "").toLowerCase();
-//		WebElement tablist_My_Todos_Homescreen = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-//				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
-//				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
-//				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos"))
-//				.getShadowRoot().findElement(By.cssSelector("[id^='rock-my-todos-component-']")).getShadowRoot()
-//				.findElement(By.cssSelector("#rock-my-todos-tabs"));
-//
-//		utils.waitForElement(tablist_My_Todos_Homescreen, "clickable");
-//		tablist_My_Todos_Homescreen.getShadowRoot().findElement(By.cssSelector("#tab-" + tb1 + " > div")).click();
-//	}
 
 	public WebElement EntityDataImports_DropDown_Object() throws InterruptedException {
 		WebElement EntityDataImports_Dropdown = driver.findElement(By.cssSelector("#app")).getShadowRoot()
@@ -242,5 +214,40 @@ public class HomePage {
 		 return HomepageTabRootElement().getShadowRoot()
 	    .findElement(By.cssSelector("#tab-bsapieusecaseapproval"))
 	    .findElement(By.cssSelector("div"));
+	}
+	public WebElement DeleteButton_Admin() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#entityManageHeader")).getShadowRoot()
+			    .findElement(By.cssSelector("#entityActions")).getShadowRoot()
+			    .findElement(By.cssSelector("#toolbar")).getShadowRoot()
+			    .findElement(By.cssSelector("#delete"));
+	}
+
+	public WebElement Confirmation_Dialog() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#confirmationDialog")).getShadowRoot()
+				.findElement(By.cssSelector("#dialog"));
+	}
+	public WebElement Confirmation_Text() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#confirmationDialog > p"));
+	}
+
+	public WebElement Confirm_Delete_button() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#confirmationDialog")).getShadowRoot()
+				.findElement(By.cssSelector(".btn.btn-success"));
 	}
 }

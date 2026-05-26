@@ -1,0 +1,5 @@
+ "Material ID" = "000000000101775362"
+ "CBT Sellable Product Status" = "OnHoldSystem"
+ "Total OnHold Items" = "5"
+ "CBT Sellable Product Status on Hold items" = ["Lubricant Type","Tolerance System","Tolerance System Code","Weight - Product Only (kg)","Weight - Product Only (lbs)"]
+---------------------------------------

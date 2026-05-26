@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -143,13 +144,23 @@ public class Utils  {
 	    String bannerText = banner.getText();
 	    System.out.println("✅ Banner appeared with the text : " + bannerText);
 
-	    // Wait for banner to disappear
-	    new WebDriverWait(driver, Duration.ofSeconds(10)).until(drv -> {
-	        WebElement el = getBannerElement.apply(drv);
-	        return el == null || !el.isDisplayed();
-	    });
+	    // Best-effort wait: proceed if toast disappears OR if a new toast replaces it.
+	    String capturedText = bannerText == null ? "" : bannerText.trim();
+	    try {
+	    	new WebDriverWait(driver, Duration.ofSeconds(10)).until(drv -> {
+	    		WebElement el = getBannerElement.apply(drv);
+	    		if (el == null || !el.isDisplayed()) {
+	    			return true;
+	    		}
+	    		String currentText = el.getText();
+	    		String normalizedCurrentText = currentText == null ? "" : currentText.trim();
+	    		return !normalizedCurrentText.equals(capturedText);
+	    	});
+	    	System.out.println("✅ Banner disappeared or changed.");
+	    } catch (TimeoutException ignored) {
+	    	System.out.println("⚠ Banner did not disappear/change within wait window. Proceeding with captured text.");
+	    }
 
-	    System.out.println("✅ Banner disappeared.");
 	    return bannerText;
 	}
 	

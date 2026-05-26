@@ -1,0 +1,3 @@
+ "Applied Filters" = "BSA PIE Usecase?=No, Catalog Bearing Tool Usecase[Int]?=Yes, Proprietary Indicator=No"
+ "Material ID" = "000000000190068360"
+---------------------------------------

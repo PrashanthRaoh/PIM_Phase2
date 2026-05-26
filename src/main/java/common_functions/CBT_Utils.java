@@ -25,6 +25,7 @@ import com.aventstack.extentreports.Status;
 import pages.BSAPIE_Page;
 import pages.CBT_Page;
 import pages.DigitalAsset;
+import pages.HomePage;
 import pages.SearchPage2;
 import pages.SummaryPage;
 
@@ -626,4 +627,97 @@ public String getAttributeLovValueBySearchLabel( SummaryPage summaryPage, String
     return value;
 }
 
+
+public String clickDeleteAndConfirm(HomePage homePage, ExtentTest test) throws IOException, InterruptedException {
+  boolean isDeleteButtonVisible = utils.isElementPresent(() -> homePage.DeleteButton_Admin(), "visible");
+  if (!isDeleteButtonVisible) {
+    test.fail("Delete button is not present for System admin");
+    test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    Assert.fail("Delete button is not present for System admin");
+  }
+
+  homePage.DeleteButton_Admin().click();
+  test.pass("Delete button is present for System admin and clicked");
+  test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+  boolean isConfirmationDialogVisible = utils.isElementPresent(() -> homePage.Confirmation_Dialog(), "visible");
+  String confirmationText = "";
+  if (isConfirmationDialogVisible) {
+    utils.waitForElement(() -> homePage.Confirmation_Dialog(), "visible");
+    confirmationText = homePage.Confirmation_Text().getText().trim();
+    test.pass("Delete confirmation dialog appeared. Text: " + confirmationText);
+    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+    homePage.Confirm_Delete_button().click();
+    Thread.sleep(1000);
+    test.pass("Clicked Yes on delete confirmation dialog");
+    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+    String deleteBannerText = Utils.waitForBannerAndGetText(driver, Duration.ofSeconds(15));
+    String normalizedBanner = deleteBannerText == null ? "" : deleteBannerText.trim();
+    String expectedBanner = "Sellable Product deleted";
+    test.pass("Delete banner text: " + normalizedBanner);
+    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    Assert.assertEquals(normalizedBanner, expectedBanner, "Unexpected delete banner text after confirming deletion. Actual: " + normalizedBanner);
+  } else {
+    test.fail("Delete confirmation dialog did not appear after clicking Delete");
+    test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+  }
+
+//  Assert.assertTrue(isConfirmationDialogVisible, "Delete confirmation dialog should appear after clicking Delete");
+  return confirmationText;
+}
+
+public boolean verifyDeletedMaterialNotListed(SearchPage2 searchPage, String matid, ExtentTest test)
+    throws IOException, InterruptedException {
+  searchPage.Search_things_BreadCrum_Admin().click();
+  Thread.sleep(2000);
+  utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+  test.pass("Navigated back to search thing");
+  test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+  searchPage.searchthingdomain_Input_Mat_Id().click();
+  searchPage.searchthingdomain_Input_Mat_Id().clear();
+  searchPage.searchthingdomain_Input_Mat_Id().sendKeys(matid);
+  searchPage.searchthingdomain_Input_Mat_Id().sendKeys(Keys.ENTER);
+  Thread.sleep(5000);
+
+  boolean hasNoElements = false;
+  try {
+    String txt = searchPage.rowsdisplayedtext().getText();
+    String result = txt.split(" / ")[1];
+    int zerorows = Integer.parseInt(result);
+    System.out.println(zerorows);
+    hasNoElements = zerorows == 0;
+    if (hasNoElements) {
+      test.pass(matid + " Deletion is successfull . Hence not visible");
+      test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    } else {
+      test.fail(matid + " Deletion is NOT successfull. Please verify");
+      test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    }
+  } catch (Exception e) {
+    WebElement rowsredefined2 = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+        .findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
+        .findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
+        .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+        .findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
+        .findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+        .findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+        .findElement(By.cssSelector("#grid"));
+    List<WebElement> arrrowsdefined2 = rowsredefined2.getShadowRoot().findElements(By.cssSelector(
+        "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div> div.ag-row.ag-row-even.ag-row-level-0"));
+    hasNoElements = arrrowsdefined2.isEmpty();
+    if (!hasNoElements) {
+      System.out.println("Records found for the search criteria");
+      test.fail(matid + " completion is NOT 100%. Please verify");
+      test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    } else {
+      test.pass(matid + " not listed in grid after deletion");
+      test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+    }
+  }
+  return hasNoElements;
+}
 }
