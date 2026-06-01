@@ -77,6 +77,7 @@ public class TC01_BsaN_CbtN_MunN extends BaseTest {
                 .collect(java.util.stream.Collectors.joining(", "));
         data.put("Applied Filters", appliedFiltersText);
         data.put("Material ID", matid);
+        Thread.sleep(4000);
         NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
 
 //            utils.removeAllAppliedFilterTabs();

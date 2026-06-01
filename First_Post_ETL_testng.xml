@@ -9,7 +9,9 @@
 			<!--<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" /> -->
 			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />-->
-			<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />
+			<!--<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />-->
+<!--			<class name="First_Post_ETL_KeyFlags.TC07_Post_ETL_BsaN_CbtY_PropN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC08_Post_ETL_BsaY_CbtY_PropN" />
 			<!---->
 		</classes>
 	</test>
@@ -21,7 +23,9 @@
 			<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />-->
-			<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />
+			<!--<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />-->
+<!--			<class name="First_Post_ETL_KeyFlags.TC07_Post_ETL_BsaN_CbtY_PropN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC08_Post_ETL_BsaY_CbtY_PropN" />
 			<!---->
 
 		</classes>

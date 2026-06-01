@@ -1,8 +1,9 @@
-package First_Post_ETL_KeyFlags;
+package Second_Post_ETL_Key_Flags;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentTest;
@@ -19,10 +20,10 @@ import pages.SearchPage2;
 import pages.SummaryPage;
 /*****************************************************************************************
  Validates post-ETL key flags for a selected material (BSAPIE and CBT logins):
- Munitions Indicator = Yes,
- BSA PIE Sellable Product Status = Approved
+ Check if the sellable has updated value  
+"Proprietary Indicator" value to "Yes"
  ****************************************************************************************/
-public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
+public class TC05_Second_Post_ETL_BsaN_CbtY_PropN extends BaseTest{
 	public ExtentTest test;
 	Map<String, Object> data = new LinkedHashMap<>();
 	@Test
@@ -45,8 +46,8 @@ public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 //		utils.waitForElement(() -> homePage.BSAPIEUsecaseApprovalTab(), "visible");
 		
-		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC03_BsaY_CbtN_MunN.txt";
-//		String POST_ETL_Filename = "/Post_ETL_Artifacts/Key_Flags/TC03_BsaY_CbtN_MunN.txt";
+		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC05_BsaN_CbtY_PropN.txt";
+		String POST_ETL_Filename = "/Post_ETL_Artifacts/Key_Flags/TC05_BsaN_CbtY_PropN.txt";
 
 		String Matid = NotepadManager.FetchMaterialID(PRE_ETL_Filename);
 		System.out.println("Fetched Material ID: " + Matid);
@@ -73,32 +74,21 @@ public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
 		}
 		summaryPage.SearchIcon().click();
 		Thread.sleep(1000);
+		
 		/*****************************************************************
-		  1) Validate Munitions Indicator = Yes
+		  Check if the sellable has updated value  "Proprietary Indicator" value to "Yes"
 		 **************************************************************** */		
-		String munitionsIndicatorValue = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Munitions Indicator", test);
-		System.out.println("Munitions Indicator is " + munitionsIndicatorValue + " Expected is YES");
-		if ("Yes".equalsIgnoreCase(munitionsIndicatorValue == null ? "" : munitionsIndicatorValue.trim()))
+		String ProprietaryIndicatorValue = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Proprietary Indicator", test);
+		System.out.println("Proprietary Indicator is " + ProprietaryIndicatorValue + " Expected is YES");
+		if ("Yes".equalsIgnoreCase(ProprietaryIndicatorValue == null ? "" : ProprietaryIndicatorValue.trim()))
 		{
-			test.pass("Munitions Indicator is " + munitionsIndicatorValue +  " as expected.");
+			test.pass("Proprietary Indicator Value is " + ProprietaryIndicatorValue +  " as expected.");
 		}
 		else {
-			test.fail("Munitions Indicator is NOT Yes. Actual: " + munitionsIndicatorValue);
+			test.fail("Proprietary Indicator Value is NOT Yes. Actual: " + ProprietaryIndicatorValue);
 		}
-		//Assert.assertEquals(munitionsIndicatorValue == null ? "" : munitionsIndicatorValue.trim(), "Yes", "Expected Munitions Indicator to be Yes, but got: " + munitionsIndicatorValue);
-		/*****************************************************************
-		  2) BSA PIE Sellable Product Status = Approved
-		 **************************************************************** */
-		String bsaPieStatus = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Sellable Product Status", test);
-		System.out.println("BSA PIE Sellable Product Status " + bsaPieStatus + " as expected");
-		if ("Approved".equalsIgnoreCase(bsaPieStatus == null ? "" : bsaPieStatus.trim())) {
-			test.pass("BSA PIE Sellable Product Status is Approved as expected.");
-		}
-		else
-		{
-			test.fail("BSA PIE Sellable Product Status is NOT Approved. Actual: " + bsaPieStatus);
-		}
-		//Assert.assertEquals(bsaPieStatus == null ? "" : bsaPieStatus.trim(), "Approved", "Expected BSA PIE Sellable Product Status to be Approved, but got: " + bsaPieStatus);
+//		Assert.assertEquals(ProprietaryIndicatorValue == null ? "" : ProprietaryIndicatorValue.trim(), "Yes", "Expected Proprietary Indicator to be Yes, but got: " + ProprietaryIndicatorValue);
+		
 		BSAPIE_PO.Tabclose_Xmark().click();
 		Thread.sleep(4000);
 	}

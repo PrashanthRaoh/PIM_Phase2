@@ -91,7 +91,7 @@ public class TC04_Post_ETL_BsaN_CbtY_MunN extends BaseTest{
 		  2) Catalog Bearing Tool Sellable Product Status = Approved
 		 **************************************************************** */
 		String CBT_Status = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Catalog Bearing Tool Sellable Product Status", test);
-		System.out.println("Catalog Bearing Tool Sellable Product Status " + CBT_Status + " Approved is expected");
+		System.out.println("Catalog Bearing Tool Sellable Product Status " + CBT_Status + " as expected");
 		if ("Approved".equalsIgnoreCase(CBT_Status == null ? "" : CBT_Status.trim())) {
 			test.pass("Catalog Bearing Tool Sellable Product Status is Approved as expected.");
 		}

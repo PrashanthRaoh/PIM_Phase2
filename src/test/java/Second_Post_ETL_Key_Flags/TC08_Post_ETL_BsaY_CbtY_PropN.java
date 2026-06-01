@@ -1,8 +1,9 @@
-package First_Post_ETL_KeyFlags;
+package Second_Post_ETL_Key_Flags;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentTest;
@@ -19,10 +20,9 @@ import pages.SearchPage2;
 import pages.SummaryPage;
 /*****************************************************************************************
  Validates post-ETL key flags for a selected material (BSAPIE and CBT logins):
- Munitions Indicator = Yes,
- BSA PIE Sellable Product Status = Approved
+ Check if the sellable has updated value  
  ****************************************************************************************/
-public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
+public class TC08_Post_ETL_BsaY_CbtY_PropN extends BaseTest{
 	public ExtentTest test;
 	Map<String, Object> data = new LinkedHashMap<>();
 	@Test
@@ -45,8 +45,8 @@ public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 //		utils.waitForElement(() -> homePage.BSAPIEUsecaseApprovalTab(), "visible");
 		
-		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC03_BsaY_CbtN_MunN.txt";
-//		String POST_ETL_Filename = "/Post_ETL_Artifacts/Key_Flags/TC03_BsaY_CbtN_MunN.txt";
+		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC08_BsaY_CbtN_PropN.txt";
+//		String POST_ETL_Filename = "/Post_ETL_Artifacts/Key_Flags/TC05_BsaN_CbtY_PropN.txt";
 
 		String Matid = NotepadManager.FetchMaterialID(PRE_ETL_Filename);
 		System.out.println("Fetched Material ID: " + Matid);
@@ -74,31 +74,31 @@ public class TC03_Post_ETL_BsaY_CbtN_MunN extends BaseTest{
 		summaryPage.SearchIcon().click();
 		Thread.sleep(1000);
 		/*****************************************************************
-		  1) Validate Munitions Indicator = Yes
+		  1) Validate BSA PIE Usecase? = No
 		 **************************************************************** */		
-		String munitionsIndicatorValue = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Munitions Indicator", test);
-		System.out.println("Munitions Indicator is " + munitionsIndicatorValue + " Expected is YES");
-		if ("Yes".equalsIgnoreCase(munitionsIndicatorValue == null ? "" : munitionsIndicatorValue.trim()))
+		String BSAPIEUsecase_Value = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Usecase?", test);
+		System.out.println("BSA PIE Usecase? is " + BSAPIEUsecase_Value + " Expected is No");
+		if ("No".equalsIgnoreCase(BSAPIEUsecase_Value == null ? "" : BSAPIEUsecase_Value.trim()))
 		{
-			test.pass("Munitions Indicator is " + munitionsIndicatorValue +  " as expected.");
+			test.pass("BSA PIE Usecase? is " + BSAPIEUsecase_Value +  " as expected.");
 		}
 		else {
-			test.fail("Munitions Indicator is NOT Yes. Actual: " + munitionsIndicatorValue);
+			test.fail("BSA PIE Usecase? is NOT No . Actual: " + BSAPIEUsecase_Value);
 		}
-		//Assert.assertEquals(munitionsIndicatorValue == null ? "" : munitionsIndicatorValue.trim(), "Yes", "Expected Munitions Indicator to be Yes, but got: " + munitionsIndicatorValue);
+		Assert.assertEquals(BSAPIEUsecase_Value == null ? "" : BSAPIEUsecase_Value.trim(), "No", "Expected Munitions Indicator to be No, but got: " + BSAPIEUsecase_Value);
 		/*****************************************************************
-		  2) BSA PIE Sellable Product Status = Approved
+		  2) BSA PIE Sellable Product Status = MunitionSyndicated
 		 **************************************************************** */
 		String bsaPieStatus = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Sellable Product Status", test);
 		System.out.println("BSA PIE Sellable Product Status " + bsaPieStatus + " as expected");
-		if ("Approved".equalsIgnoreCase(bsaPieStatus == null ? "" : bsaPieStatus.trim())) {
-			test.pass("BSA PIE Sellable Product Status is Approved as expected.");
+		if ("MunitionSyndicated".equalsIgnoreCase(bsaPieStatus == null ? "" : bsaPieStatus.trim())) {
+			test.pass("BSA PIE Sellable Product Status is MunitionSyndicated as expected.");
 		}
 		else
 		{
-			test.fail("BSA PIE Sellable Product Status is NOT Approved. Actual: " + bsaPieStatus);
+			test.fail("BSA PIE Sellable Product Status is NOT MunitionSyndicated. Actual: " + bsaPieStatus);
 		}
-		//Assert.assertEquals(bsaPieStatus == null ? "" : bsaPieStatus.trim(), "Approved", "Expected BSA PIE Sellable Product Status to be Approved, but got: " + bsaPieStatus);
+		Assert.assertEquals(bsaPieStatus == null ? "" : bsaPieStatus.trim(), "MunitionSyndicated", "Expected BSA PIE Sellable Product Status to be MunitionSyndicated, but got: " + bsaPieStatus);
 		BSAPIE_PO.Tabclose_Xmark().click();
 		Thread.sleep(4000);
 	}

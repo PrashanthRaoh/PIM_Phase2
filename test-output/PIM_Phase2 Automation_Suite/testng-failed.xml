@@ -2,16 +2,31 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [PIM_Phase2 Automation_Suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="BSAPIEOwner(failed)">
-    <parameter name="UseCaseOwner" value="SystemAdmin"/>
+    <parameter name="UseCaseOwner" value="BSAPIEowner"/>
     <classes>
-      <class name="Admin_Module.TC01_Admin_BsaN_CbtN_MunN">
+      <class name="Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN">
         <methods>
           <include name="initReport"/>
+          <include name="Post_ETL_BsaY_CbtN_MunN" invocation-numbers="0"/>
           <include name="setUp"/>
-          <include name="Post_ETL_BsaN_CbtN_MunN"/>
+          <include name="Logout"/>
           <include name="publishReport"/>
         </methods>
-      </class> <!-- Admin_Module.TC01_Admin_BsaN_CbtN_MunN -->
+      </class> <!-- Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN -->
     </classes>
   </test> <!-- BSAPIEOwner(failed) -->
+  <test thread-count="5" name="CBTUseCaseOwner(failed)">
+    <parameter name="UseCaseOwner" value="CBTUseCaseOwner"/>
+    <classes>
+      <class name="Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN">
+        <methods>
+          <include name="initReport"/>
+          <include name="Post_ETL_BsaY_CbtN_MunN" invocation-numbers="0"/>
+          <include name="Logout"/>
+          <include name="setUp"/>
+          <include name="publishReport"/>
+        </methods>
+      </class> <!-- Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN -->
+    </classes>
+  </test> <!-- CBTUseCaseOwner(failed) -->
 </suite> <!-- Failed suite [PIM_Phase2 Automation_Suite] -->

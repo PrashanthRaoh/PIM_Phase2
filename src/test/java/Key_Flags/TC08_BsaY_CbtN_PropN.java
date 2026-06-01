@@ -18,19 +18,18 @@ import pages.SummaryPage;
 
 /****************************************************************************
  * filter attribute 
- * "BSA PIE Usecase? =No", 
+ * "BSA PIE Usecase? =Yes", 
  * Catalog Bearing Tool Usecase[Int]? =No 
  * Proprietary Indicator="No".
  ****************************************************************************/
 
-public class TC05_BsaN_CbtY_PropN extends BaseTest {
+public class TC08_BsaY_CbtN_PropN extends BaseTest {
     ExtentTest test;
     Utils utils;
     HomePage homePage;
     SearchPage2 searchPage;
     DigitalAsset digitalssetPage;
     Actions actions;
-
    
     @Test(groups = { "BSAPIEowner" })
     public void BsaN_CbtY_MunN() throws Exception {
@@ -61,7 +60,7 @@ public class TC05_BsaN_CbtY_PropN extends BaseTest {
 			 Apply the filters
 			 ********************************************/ 
     	    Map<String, String> filters = new LinkedHashMap<>();
-    	    filters.put("BSA PIE Usecase?", "No");
+    	    filters.put("BSA PIE Usecase?", "Yes");
     	    filters.put("Catalog Bearing Tool Usecase[Int]?", "No");
     	    filters.put("Proprietary Indicator", "No");
     	    utils.applyBinaryFilters(filters, searchPage, digitalssetPage);
@@ -82,9 +81,9 @@ public class TC05_BsaN_CbtY_PropN extends BaseTest {
 				.collect(java.util.stream.Collectors.joining(", "));
 		data.put("Applied Filters", appliedFiltersText);
 		data.put("Material ID", matid);
-		Thread.sleep(4000);
-		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
 
+		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
+		Thread.sleep(4000);
 		homePage.clickSearch_Products_Button().click();
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 		test.pass("Search thing domain displayed");

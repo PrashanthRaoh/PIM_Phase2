@@ -106,7 +106,7 @@ public class TC06_Post_ETL_BsaY_CbtY_PropN extends BaseTest{
 		  3) BSA PIE Sellable Product Status = Approved
 		 **************************************************************** */
 		String BSAPIE_Status = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Sellable Product Status", test);
-		System.out.println("BSA PIE Sellable Product Status " + BSAPIE_Status + " Approved is expected");
+		System.out.println("BSA PIE Sellable Product Status " + BSAPIE_Status + " as expected");
 		if ("Approved".equalsIgnoreCase(BSAPIE_Status == null ? "" : BSAPIE_Status.trim())) {
 			test.pass("BSA PIE Sellable Product Status is Approved as expected.");
 		}

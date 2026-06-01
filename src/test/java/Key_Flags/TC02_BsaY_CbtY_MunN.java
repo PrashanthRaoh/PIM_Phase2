@@ -79,7 +79,7 @@ public class TC02_BsaY_CbtY_MunN extends BaseTest {
                     .collect(java.util.stream.Collectors.joining(", "));
             data.put("Applied Filters", appliedFiltersText);
     		data.put("Material ID", matid);
-    	    
+    		Thread.sleep(4000);
     		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
     	    
 			homePage.clickSearch_Products_Button().click();

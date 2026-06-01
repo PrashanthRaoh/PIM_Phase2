@@ -4,13 +4,14 @@
    <test name="BSAPIEOwner">
         <parameter name="UseCaseOwner" value="BSAPIEowner" />
     <classes>
-			<!--<class name="Phase2_Scripts_Key_Flags.TC01_BsaN_CbtN_MunN" />-->
-			<class name="Phase2_Scripts_Key_Flags.TC02_BsaY_CbtY_MunN" />
-            <!--<class name="Phase2_Scripts_Key_Flags.TC03_BsaY_CbtN_MunN" />
-            <class name="Phase2_Scripts_Key_Flags.TC04_BsaN_CbtY_MunN" />
-            <class name="Phase2_Scripts_Key_Flags.TC05_BsaN_CbtY_PropN" />
-            <class name="Phase2_Scripts_Key_Flags.TC06_BsaY_CbtY_PropN" />
-            <class name="Phase2_Scripts_Key_Flags.TC07_BsaN_CbtY_PropN" />-->
+			<!--<class name="Key_Flags.TC01_BsaN_CbtN_MunN" />
+			<class name="Key_Flags.TC02_BsaY_CbtY_MunN" />
+            <class name="Key_Flags.TC03_BsaY_CbtN_MunN" />
+            <class name="Key_Flags.TC04_BsaN_CbtY_MunN" />
+            <class name="Key_Flags.TC05_BsaN_CbtY_PropN" />
+            <class name="Key_Flags.TC06_BsaY_CbtY_PropN" />
+            <class name="Key_Flags.TC07_BsaN_CbtY_PropN" />-->
+            <class name="Key_Flags.TC08_BsaY_CbtN_PropN" />
 
 
     </classes>
