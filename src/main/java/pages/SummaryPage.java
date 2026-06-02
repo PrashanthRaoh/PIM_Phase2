@@ -3,6 +3,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SummaryPage {
 	private WebDriver driver;
@@ -49,57 +51,6 @@ public class SummaryPage {
 				.findElement(By.cssSelector("#accordion_content_container"));
 	}
 
-//	public WebElement OnholdMessage() {
-//		return driver.findElement(searchInputField)
-//				.getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
-//				.getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
-//				.getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
-//				.getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
-//				.getShadowRoot().findElement(By.cssSelector("#rockTabs"))
-//				.getShadowRoot().findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']"))
-//				.getShadowRoot().findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']"))
-//				.getShadowRoot().findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list"))
-//				.getShadowRoot().findElement(By.cssSelector(".attribute-list-container.multi-attribute-group"))
-//				.findElement(By.cssSelector("div.attribute-group-container-wrapper.full-height:nth-of-type(2)"))
-//				.findElement(By.cssSelector("pebble-accordion"))
-//				.findElement(By.cssSelector("[name='bsapieholdattributeslistruletriggered']"))
-//				.findElement(By.cssSelector("rock-attribute"))
-//				.getShadowRoot().findElement(By.cssSelector("[class='attribute list  referencelist']"))
-//				.findElement(By.cssSelector("[class='attribute-main attribute-non-coalesced-label attribute-non-editable-label']"))
-//				.findElement(By.cssSelector("[class='attribute-edit']"))
-//				.findElement(By.cssSelector("#input"))
-//				.getShadowRoot().findElement(By.cssSelector("[class='attribute-control ']"))
-//				.getShadowRoot().findElement(By.cssSelector("#collectionContainer"))
-//				.getShadowRoot().findElement(By.cssSelector(".d-flex"))
-//				.findElement(By.cssSelector("pebble-tags"))
-//				.getShadowRoot().findElement(By.cssSelector(".container"));
-//	}
-//	public WebElement OnholdMessage() {
-//		return driver.findElement(searchInputField)
-//			    .getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
-//			    .getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
-//			    .getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
-//			    .getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
-//			    .getShadowRoot().findElement(By.cssSelector("#rockTabs"))
-//			    .getShadowRoot().findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']"))
-//			    .getShadowRoot().findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']"))
-//			    .getShadowRoot().findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list"))
-//			    .getShadowRoot().findElement(By.cssSelector(".attribute-list-container.multi-attribute-group"))
-//			    .findElement(By.cssSelector("div.attribute-group-container-wrapper.full-height:nth-of-type(1)"))
-//			    .findElement(By.cssSelector("pebble-accordion"))
-//			    .findElement(By.cssSelector("[name='bsapieholdattributeslistruletriggered']"))
-//			    .findElement(By.cssSelector("rock-attribute"))
-//			    .getShadowRoot().findElement(By.cssSelector("[class='attribute list  referencelist']"))
-//			    .findElement(By.cssSelector("[class='attribute-main attribute-non-coalesced-label attribute-non-editable-label']"))
-//			    .findElement(By.cssSelector("[class='attribute-edit']"))
-//			    .findElement(By.cssSelector("#input"))
-//			    .getShadowRoot().findElement(By.cssSelector("[class='attribute-control ']"))
-//			    .getShadowRoot().findElement(By.cssSelector("#collectionContainer"))
-//			    .getShadowRoot().findElement(By.cssSelector(".d-flex"))
-//			    .findElement(By.cssSelector("pebble-tags"))
-//			    .getShadowRoot().findElement(By.cssSelector(".container"));
-//	}
-	
 	public WebElement BSAPIESection() {
 	return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 			.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -144,6 +95,48 @@ public class SummaryPage {
 				  .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
 				  .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
 				  .findElement(By.cssSelector("div > .d-flex > .tags-container > pebble-tags"));
+	}
+	
+	public WebElement Attributes_tab_dropdown() {
+		return common_element().getShadowRoot()
+			      .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			      .findElement(By.cssSelector("#tab-attributes")).getShadowRoot()
+			      .findElement(By.cssSelector("#dropdown-wrapper"));
+	}
+	
+	public List<WebElement> Attributes_Drop_down_elements() {
+		return common_element().getShadowRoot()
+			      .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			      .findElements(By.cssSelector("[id^='attributes-']"));
+
+	}
+
+	public List<String> Attributes_Drop_down_element_texts() {
+		List<String> options = new ArrayList<>();
+		for (WebElement option : Attributes_Drop_down_elements()) {
+			String text = option.getText().trim();
+			if (!text.isEmpty()) {
+				options.add(text);
+			}
+		}
+		return options;
+	}
+
+	public boolean clickAttributesDropdownOptionByText(String optionText) {
+		String target = optionText == null ? "" : optionText.trim();
+		if (target.isEmpty()) {
+			return false;
+		}
+
+		for (WebElement option : Attributes_Drop_down_elements()) {
+			String text = option.getText().trim();
+			if (!text.isEmpty() && (text.equalsIgnoreCase(target)
+					|| text.toLowerCase().contains(target.toLowerCase()))) {
+				option.click();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

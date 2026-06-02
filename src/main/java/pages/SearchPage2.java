@@ -1,6 +1,8 @@
 package pages;
 
 import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -366,4 +368,20 @@ public class SearchPage2 {
 			    .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
 			    .findElement(By.cssSelector(".base-grid-structure > .base-grid-structure-child-2"));
 	}
+	
+	public List<WebElement> Bearing_Attributes() {
+		 List<WebElement> rsItems = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		    	    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		    	    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+		    	    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+		    	    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+		    	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		    	    .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+		    	    .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+		    	    .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+		    	    .findElements(By.cssSelector("[id^='rs']"));
+		 
+		 return rsItems;
+	}
+	
 }

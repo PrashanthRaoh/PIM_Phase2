@@ -1,0 +1,12 @@
+ "Applied Filters" = "BSA PIE Usecase?=Yes, Catalog Bearing Tool Usecase[Int]?=Yes"
+ "Material ID" = "000000000190063491"
+---------------------------------------
+ "Bore Diameter (in)" = "8.6614"
+ "Bore Diameter (mm)" = "220.000"
+ "Outer Diameter (in)" = "13.3858"
+ "Outer Diameter (mm)" = "340.000"
+ "Total Width Over Inner Ring(s) (in)" = "3.5433"
+ "Total Width Over Inner Ring(s) (mm)" = "90.000"
+ "Total Width Over Outer Ring(s) (in)" = "3.5433"
+ "Total Width Over Outer Ring(s) (mm)" = "90.000"
+---------------------------------------

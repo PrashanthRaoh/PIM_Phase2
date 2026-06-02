@@ -4,29 +4,14 @@
   <test thread-count="5" name="BSAPIEOwner(failed)">
     <parameter name="UseCaseOwner" value="BSAPIEowner"/>
     <classes>
-      <class name="Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN">
+      <class name="Key_Flags.TC11_BsaY_CbtY_InterCompany">
         <methods>
           <include name="initReport"/>
-          <include name="Post_ETL_BsaY_CbtN_MunN" invocation-numbers="0"/>
+          <include name="BsaN_CbtY_MunN"/>
           <include name="setUp"/>
-          <include name="Logout"/>
           <include name="publishReport"/>
         </methods>
-      </class> <!-- Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN -->
+      </class> <!-- Key_Flags.TC11_BsaY_CbtY_InterCompany -->
     </classes>
   </test> <!-- BSAPIEOwner(failed) -->
-  <test thread-count="5" name="CBTUseCaseOwner(failed)">
-    <parameter name="UseCaseOwner" value="CBTUseCaseOwner"/>
-    <classes>
-      <class name="Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN">
-        <methods>
-          <include name="initReport"/>
-          <include name="Post_ETL_BsaY_CbtN_MunN" invocation-numbers="0"/>
-          <include name="Logout"/>
-          <include name="setUp"/>
-          <include name="publishReport"/>
-        </methods>
-      </class> <!-- Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN -->
-    </classes>
-  </test> <!-- CBTUseCaseOwner(failed) -->
 </suite> <!-- Failed suite [PIM_Phase2 Automation_Suite] -->
