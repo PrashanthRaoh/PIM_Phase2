@@ -627,6 +627,48 @@ public String getAttributeLovValueBySearchLabel( SummaryPage summaryPage, String
     return value;
 }
 
+public String getApplicationTypCodevalue( SummaryPage summaryPage, String attributeSearchLabel,  ExtentTest test) {
+	String value = "";
+	try {
+		summaryPage.SearchIcon().click();
+		summaryPage.SearchInputfield().clear();
+		summaryPage.SearchInputfield().sendKeys(attributeSearchLabel);
+		new Actions(driver).moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();
+		Thread.sleep(2000);
+		WebElement targetElement = null;
+
+		try {
+		    targetElement = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		            .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		            .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+		            .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+		            .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+		            .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		            .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+		            .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+		            .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+		            .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+		            .findElement(By.cssSelector(".attribute.list.textbox"))
+		            .findElement(By.cssSelector(".attribute-view-value"));
+		} catch (Exception ignored) {
+		}
+
+		if (targetElement != null) {
+		    value = targetElement.getText() == null ? "" : targetElement.getText().trim();
+		    test.pass(attributeSearchLabel + " value is -- : " + value);
+		} else {
+		    test.warning(attributeSearchLabel + " element not found.");
+		}
+
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+		} catch (Exception e) {
+		    test.warning("Unable to fetch value for " + attributeSearchLabel + ". Reason: " + e.getMessage());
+		}
+
+		return value;
+}
+
 
 public String clickDeleteAndConfirm(HomePage homePage, ExtentTest test) throws IOException, InterruptedException {
   boolean isDeleteButtonVisible = utils.isElementPresent(() -> homePage.DeleteButton_Admin(), "visible");

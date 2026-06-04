@@ -50,17 +50,17 @@
               <ul>
                 <li>
                   <a href="#" panel-name="test-xml-PIM_Phase2_Automation_Suite" class="navigator-link ">
-                    <span>C:\Syndigo_Phase2\pim.phase2\testng.xml</span>
+                    <span>C:\Syndigo_Phase2\pim.phase2\First_Post_ETL_testng.xml</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
                   <a href="#" panel-name="testlist-PIM_Phase2_Automation_Suite" class="navigator-link ">
-                    <span class="test-stats">1 test</span>
+                    <span class="test-stats">2 tests</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
                   <a href="#" panel-name="group-PIM_Phase2_Automation_Suite" class="navigator-link ">
-                    <span>1 group</span>
+                    <span>0 groups</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -103,7 +103,7 @@
                     <div class="method-list-content passed suite-PIM_Phase2_Automation_Suite">
                       <span>
                         <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-PIM_Phase2_Automation_Suite" title="Key_Flags.TC11_BsaY_CbtY_InterCompany" class="method navigator-link" hash-for-method="BsaN_CbtY_MunN">BsaN_CbtY_MunN</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-PIM_Phase2_Automation_Suite" title="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany" class="method navigator-link" hash-for-method="Post_ETL_BsaY_CbtN_MunN(BSAPIEowner)">Post_ETL_BsaY_CbtN_MunN(BSAPIEowner)</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content passed suite-PIM_Phase2_Automation_Suite -->
@@ -121,14 +121,15 @@
           <div class="suite-PIM_Phase2_Automation_Suite-class-passed">
             <div class="main-panel-header rounded-window-top">
               <img src="passed.png"/>
-              <span class="class-name">Key_Flags.TC11_BsaY_CbtY_InterCompany</span>
+              <span class="class-name">First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="BsaN_CbtY_MunN">
-                  </a> <!-- BsaN_CbtY_MunN -->
-                  <span class="method-name">BsaN_CbtY_MunN</span>
+                  <a name="Post_ETL_BsaY_CbtN_MunN(BSAPIEowner)">
+                  </a> <!-- Post_ETL_BsaY_CbtN_MunN(BSAPIEowner) -->
+                  <span class="method-name">Post_ETL_BsaY_CbtN_MunN</span>
+                  <span class="parameters">(BSAPIEowner)</span>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
@@ -136,7 +137,7 @@
         </div> <!-- panel PIM_Phase2_Automation_Suite -->
         <div panel-name="test-xml-PIM_Phase2_Automation_Suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">C:\Syndigo_Phase2\pim.phase2\testng.xml</span>
+            <span class="header-content">C:\Syndigo_Phase2\pim.phase2\First_Post_ETL_testng.xml</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <pre>
@@ -146,9 +147,12 @@
   &lt;test thread-count=&quot;5&quot; name=&quot;BSAPIEOwner&quot;&gt;
     &lt;parameter name=&quot;UseCaseOwner&quot; value=&quot;BSAPIEowner&quot;/&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;Key_Flags.TC11_BsaY_CbtY_InterCompany&quot;/&gt;
+      &lt;class name=&quot;First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany&quot;/&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- BSAPIEOwner --&gt;
+  &lt;test thread-count=&quot;5&quot; name=&quot;CBTUseCaseOwner&quot;&gt;
+    &lt;parameter name=&quot;UseCaseOwner&quot; value=&quot;CBTUseCaseOwner&quot;/&gt;
+  &lt;/test&gt; &lt;!-- CBTUseCaseOwner --&gt;
 &lt;/suite&gt; &lt;!-- PIM_Phase2 Automation_Suite --&gt;
             </pre>
           </div> <!-- main-panel-content rounded-window-bottom -->
@@ -162,6 +166,9 @@
               <li>
                 <span class="test-name">BSAPIEOwner (1 class)</span>
               </li>
+              <li>
+                <span class="test-name">CBTUseCaseOwner (0 classes)</span>
+              </li>
             </ul>
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
@@ -170,14 +177,6 @@
             <span class="header-content">Groups for PIM_Phase2 Automation_Suite</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
-            <div class="test-group">
-              <span class="test-group-name">BSAPIEowner</span>
-              <br/>
-              <div class="method-in-group">
-                <span class="method-in-group-name">BsaN_CbtY_MunN</span>
-                <br/>
-              </div> <!-- method-in-group -->
-            </div> <!-- test-group -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
         <div panel-name="times-PIM_Phase2_Automation_Suite" class="panel">
@@ -196,14 +195,14 @@ data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
 data.addRows(1);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'BsaN_CbtY_MunN')
-data.setCell(0, 2, 'Key_Flags.TC11_BsaY_CbtY_InterCompany')
-data.setCell(0, 3, 59738);
+data.setCell(0, 1, 'Post_ETL_BsaY_CbtN_MunN')
+data.setCell(0, 2, 'First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany')
+data.setCell(0, 3, 50732);
 window.suiteTableData['PIM_Phase2_Automation_Suite']= { tableData: data, tableDiv: 'times-div-PIM_Phase2_Automation_Suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 59 seconds</span>
+              <span class="suite-total-time">Total running time: 50 seconds</span>
               <div id="times-div-PIM_Phase2_Automation_Suite">
               </div> <!-- times-div-PIM_Phase2_Automation_Suite -->
             </div> <!-- times-div -->
@@ -229,22 +228,22 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">Key_Flags.TC11_BsaY_CbtY_InterCompany</div> <!-- chronological-class-name -->
+              <div class="chronological-class-name">First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany</div> <!-- chronological-class-name -->
               <div class="configuration-suite before">
                 <span class="method-name">initReport</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-suite before -->
               <div class="configuration-class before">
                 <span class="method-name">setUp(BSAPIEowner)</span>
-                <span class="method-start">213 ms</span>
+                <span class="method-start">186 ms</span>
               </div> <!-- configuration-class before -->
               <div class="test-method">
-                <span class="method-name">BsaN_CbtY_MunN</span>
-                <span class="method-start">5564 ms</span>
+                <span class="method-name">Post_ETL_BsaY_CbtN_MunN(BSAPIEowner)</span>
+                <span class="method-start">4383 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-suite after">
                 <span class="method-name">publishReport</span>
-                <span class="method-start">65353 ms</span>
+                <span class="method-start">55170 ms</span>
               </div> <!-- configuration-suite after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

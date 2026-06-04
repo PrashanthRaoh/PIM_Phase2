@@ -29,7 +29,7 @@
 <!--			<class name="First_Post_ETL_KeyFlags.TC07_Post_ETL_BsaN_CbtY_PropN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC08_Post_ETL_BsaY_CbtY_PropN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC10_Post_ETL_BsaY_CbtN_PropN" />-->
-			<class name="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany" />
+			<!--<class name="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany" />-->
 			<!---->
 
 		</classes>

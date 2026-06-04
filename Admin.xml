@@ -5,12 +5,14 @@
 		<parameter name="UseCaseOwner" value="SystemAdmin" />
 		<classes>
 			<class name="Admin_Module.TC01_Admin_BsaN_CbtN_MunN" />
-			<class name="Admin_Module.TC02_BsaY_CbtY_MunN" />
-			<class name="Admin_Module.TC03_BsaY_CbtN_MunN" />
-			<class name="Admin_Module.TC04_BsaN_CbtY_MunN" />
-			<class name="Admin_Module.TC05_BsaN_CbtY_PropN" />
-			<class name="Admin_Module.TC06_BsaY_CbtY_PropN" />
-			<class name="Admin_Module.TC07_BsaN_CbtY_PropN" />
+			<class name="Admin_Module.TC02_Admin_BsaY_CbtY_MunN" />
+			<class name="Admin_Module.TC03_Admin_BsaY_CbtN_MunN" />
+			<class name="Admin_Module.TC04_Admin_BsaN_CbtY_MunN" />
+			<class name="Admin_Module.TC05_Admin_BsaN_CbtY_PropN" />
+			<class name="Admin_Module.TC06_Admin_BsaY_CbtY_PropN" />
+			<class name="Admin_Module.TC07_Admin_BsaN_CbtY_PropN" />
+			<class name="Admin_Module.TC08_Admin_BsaY_CbtY_PropN" />
+			<class name="Admin_Module.TC10_Admin_BsaY_CbtN_PropN" />
 			<!---->
 		</classes>
 	</test>

@@ -3,7 +3,6 @@ package Key_Flags;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -22,6 +21,8 @@ import pages.SummaryPage;
 
 /****************************************************************************
  * filter attribute 
+ * Apply Has image filter in the advance search. Only then Bearing dimension drop down 
+ * will be listed
  * "BSA PIE Usecase? =Yes", 
  * Catalog Bearing Tool Usecase[Int]? =Yes 
  ****************************************************************************/
@@ -67,13 +68,8 @@ public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
     		test.pass("Advance Search option clicked");
     		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
     		Thread.sleep(2000);
-//    		digitalssetPage.generalDropdown_second().click();
-//    		Thread.sleep(1000);
-//    		digitalssetPage.HavingNoImagesFilterDropdownValue().click();
-//    		Thread.sleep(1000);
-
     		/**************************************************
-    		 * --------- Select relationship dropdown------- *
+    		 * --------- Select relationship drop down------- *
     		 ********************************************************/
     		digitalssetPage.RelationshipMaindropdown_Obj().click();
     		Thread.sleep(500);
@@ -118,73 +114,93 @@ public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
 		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
 		Thread.sleep(4000);
 		/*************************************************
+		 * Get Application type code value
+		****************************************************/
+		String Applicationtypecodevalue = cbtUtils.getApplicationTypCodevalue(summaryPage, "Application Type Code", test);
+		if(Applicationtypecodevalue!= null) {
+			 test.pass("Application type code value for the record is : " + Applicationtypecodevalue);
+			 System.out.println("Application type code value for the record is : " + Applicationtypecodevalue);
+			 data.put("Application Type code", Applicationtypecodevalue);
+			 NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
+		}else {
+			test.info("Application typecode value for the record is not available or blank ");
+		}
+		/*************************************************
 		 * From Attributes drop down Select Bearing Dimension
 		****************************************************/
 		summaryPage.Attributes_tab_dropdown().click();
 		Thread.sleep(2000);
-
-    List<String> attributesDropDownOptions = summaryPage.Attributes_Drop_down_element_texts();
-    System.out.println("Attributes dropdown options:");
-    for (String option : attributesDropDownOptions) {
-      System.out.println(" - " + option);
-    }
-    test.info("Attributes dropdown options: " + String.join(", ", attributesDropDownOptions));
-
-    boolean hasBearingDimensions = attributesDropDownOptions.stream()
-        .anyMatch(option -> "Bearing Dimensions".equalsIgnoreCase(option.trim()));
-
-    if (!hasBearingDimensions) {
-      String message = "No Bearing Dimensions available for this record. Exiting this test.";
-      System.out.println(message);
-      test.warning(message);
-      return;
-    }
-
-    boolean bearingDimensionsClicked = summaryPage.clickAttributesDropdownOptionByText("Bearing Dimensions");
-    if (bearingDimensionsClicked) {
-      test.pass("Clicked attribute dropdown option: Bearing Dimensions");
-      test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-    } else {
-      String message = "Bearing Dimensions is available but click action failed. Exiting this test.";
-      test.fail(message);
-      return;
-    }
-
-	List<WebElement> rsItems = searchPage.Bearing_Attributes();
-	Map<String, String> attributeMap = new LinkedHashMap<>();
+		/*************************************************
+		 * Get Attributes drop down values
+		****************************************************/
+	    List<String> attributesDropDownOptions = summaryPage.Attributes_Drop_down_element_texts();
+	    System.out.println("Attributes dropdown options:");
+	    for (String option : attributesDropDownOptions) {
+	      System.out.println(" - " + option);
+	    }
+	    test.info("Attributes dropdown options: " + String.join(", ", attributesDropDownOptions));
 	
-	for (WebElement el : rsItems) {
-	    String header = el.getShadowRoot().findElement(By.cssSelector("div > div > div.attribute-view.list > span > span")).getText().trim();
-	    String value = el.getShadowRoot().findElement(By.cssSelector("div > div > div.attribute-view.list > div > span")).getText().trim();
-	    attributeMap.put(header, value);
-	}
-
-	StringBuilder attributeReportSummary = new StringBuilder();
-	for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
-		String attributeLine = entry.getKey() + " :- " + entry.getValue();
-		System.out.println(attributeLine);
-		System.out.println("-----------");
-
-		if (attributeReportSummary.length() > 0) {
-			attributeReportSummary.append("<br>");
+	    boolean hasBearingDimensions = attributesDropDownOptions.stream()
+	        .anyMatch(option -> "Bearing Dimensions".equalsIgnoreCase(option.trim()));
+	
+	    if (!hasBearingDimensions) {
+	      String message = "No Bearing Dimensions available for this record. Exiting this test.";
+	      System.out.println(message);
+	      test.warning(message);
+	      return;
+	    }
+	    /*************************************************
+		 * Click on Bearing Dimensions
+		****************************************************/
+	    boolean bearingDimensionsClicked = summaryPage.clickAttributesDropdownOptionByText("Bearing Dimensions");
+	    if (bearingDimensionsClicked) {
+	      test.pass("Clicked attribute dropdown option: Bearing Dimensions");
+	      test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+	    } else {
+	      String message = "Bearing Dimensions is available but click action failed. Exiting this test.";
+	      test.fail(message);
+	      return;
+	    }
+	    /*************************************************
+		 * Get Each Bearing Dimension header and its value
+		****************************************************/
+		List<WebElement> rsItems = searchPage.Bearing_Attributes();
+		Map<String, String> attributeMap = new LinkedHashMap<>();
+		
+		for (WebElement el : rsItems) {
+		    String header = el.getShadowRoot().findElement(By.cssSelector("div > div > div.attribute-view.list > span > span")).getText().trim();
+		    String value = el.getShadowRoot().findElement(By.cssSelector("div > div > div.attribute-view.list > div > span")).getText().trim();
+		    attributeMap.put(header, value);
 		}
-		attributeReportSummary.append(" \"")
-			.append(entry.getKey())
-			.append("\" = \"")
-			.append(entry.getValue())
-			.append("\"");
-	}
-	test.info("Attributes (notepad format):<br>" + attributeReportSummary);
-
-	Map<String, Object> attributeData = new LinkedHashMap<>();
-	for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
-		attributeData.put(entry.getKey(), entry.getValue());
-	}
-	NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, attributeData);
-	Thread.sleep(2000);
-	homePage.clickSearch_Products_Button().click();
-	utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-	test.pass("Search thing domain displayed");
-	test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-	}
+	
+		StringBuilder attributeReportSummary = new StringBuilder();
+		for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+			String attributeLine = entry.getKey() + " :- " + entry.getValue();
+			System.out.println(attributeLine);
+			System.out.println("-----------");
+	
+			if (attributeReportSummary.length() > 0) {
+				attributeReportSummary.append("<br>");
+			}
+			attributeReportSummary.append(" \"")
+				.append(entry.getKey())
+				.append("\" = \"")
+				.append(entry.getValue())
+				.append("\"");
+		}
+		test.info("Attributes (notepad format):<br>" + attributeReportSummary);
+		 /*************************************************
+		 * Put Each Bearing Dimension header and its value in to a map
+		****************************************************/
+		Map<String, Object> attributeData = new LinkedHashMap<>();
+		for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+			attributeData.put(entry.getKey(), entry.getValue());
+		}
+		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, attributeData);
+		Thread.sleep(2000);
+		homePage.clickSearch_Products_Button().click();
+		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+		test.pass("Search thing domain displayed");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		}
 }
