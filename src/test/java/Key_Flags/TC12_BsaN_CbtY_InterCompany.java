@@ -24,10 +24,10 @@ import pages.SummaryPage;
  * filter attribute 
  * Apply Has image filter in the advance search. Only then Bearing dimension drop down 
  * will be listed
- * "BSA PIE Usecase? =Yes", 
+ * "BSA PIE Usecase? =No", 
  * Catalog Bearing Tool Usecase[Int]? =Yes 
  ****************************************************************************/
-public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
+public class TC12_BsaN_CbtY_InterCompany extends BaseTest {
     ExtentTest test;
     Utils utils;
     HomePage homePage;
@@ -47,6 +47,7 @@ public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
     		SummaryPage summaryPage = new SummaryPage(driver);
     		SearchPage2 searchPage = new SearchPage2(driver);
     		DigitalAsset digitalssetPage = new DigitalAsset(driver);
+    		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
     	    utils = new Utils(driver, test);
     	    CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
     	    String PRE_ETL_Filename = "/Pre_ETL_Artifacts/Key_Flags/" + className+".txt";
@@ -91,7 +92,7 @@ public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
 			 Apply the filters
 			 ********************************************/ 
     	    Map<String, String> filters = new LinkedHashMap<>();
-    	    filters.put("BSA PIE Usecase?", "Yes");
+    	    filters.put("BSA PIE Usecase?", "No");
     	    filters.put("Catalog Bearing Tool Usecase[Int]?", "Yes");
     	    utils.applyBinaryFilters(filters, searchPage, digitalssetPage);
 
@@ -124,7 +125,6 @@ public class TC11_BsaY_CbtY_InterCompany extends BaseTest {
 			test.info("Application typecode value for the record is not available or blank ");
 		}
 		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
-		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
 		BSAPIE_PO.Tabclose_Xmark().click();
 		Thread.sleep(4000);
 		/*************************************************

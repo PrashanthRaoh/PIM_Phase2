@@ -13,7 +13,8 @@
             <class name="Key_Flags.TC07_BsaN_CbtY_PropN" />-->
             <!--<class name="Key_Flags.TC08_BsaY_CbtN_PropN" />-->
 <!--            <class name="Key_Flags.TC10_BsaY_CbtN_PropN" />-->
-            <class name="Key_Flags.TC11_BsaY_CbtY_InterCompany" />
+            <!--<class name="Key_Flags.TC11_BsaY_CbtY_InterCompany" />-->
+            <class name="Key_Flags.TC12_BsaN_CbtY_InterCompany" />
 
 
     </classes>

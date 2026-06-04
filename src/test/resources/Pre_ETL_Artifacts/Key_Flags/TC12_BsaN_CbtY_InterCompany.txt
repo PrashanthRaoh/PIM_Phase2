@@ -1,0 +1,18 @@
+ "Applied Filters" = "BSA PIE Usecase?=No, Catalog Bearing Tool Usecase[Int]?=Yes"
+ "Material ID" = "000000000100209273"
+---------------------------------------
+ "Applied Filters" = "BSA PIE Usecase?=No, Catalog Bearing Tool Usecase[Int]?=Yes"
+ "Material ID" = "000000000100209273"
+ "Application Type code" = "98"
+---------------------------------------
+ "Outer Diameter (in)" = "4.3307"
+ "Outer Diameter (mm)" = "110.000"
+ "Total Width Over Outer Ring(s) (in)" = "0.8858"
+ "Total Width Over Outer Ring(s) (mm)" = "22.500"
+ "Individual Outer Ring Width (in)" = "0.8858"
+ "Individual Outer Ring Width (mm)" = "22.500"
+ "Axial Distance from Cup Backface to Cup Raceway Center (in)" = "0.4429"
+ "Axial Distance from Cup Backface to Cup Raceway Center (mm)" = "11.250"
+ "Cup Stand Zero Rib (in)" = "0.0716"
+ "Cup Stand Zero Rib (mm)" = "1.818"
+---------------------------------------
