@@ -54,6 +54,7 @@ public class TC02_BsaY_CbtY_MunN extends BaseTest {
     	    utils.waitForElement(() -> homePage.sellablematerialtabelement(), "clickable");
     	    homePage.clickSearch_Products_Button().click();
     	    utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+    	    Thread.sleep(5000);
     	    test.pass("Search thing domain displayed"); 
             test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 

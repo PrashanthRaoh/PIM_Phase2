@@ -52,6 +52,7 @@ public class TC08_BsaY_CbtN_PropN extends BaseTest {
 			 ********************************************/    	   
     	    utils.waitForElement(() -> homePage.sellablematerialtabelement(), "clickable");
     	    homePage.clickSearch_Products_Button().click();
+    	    Thread.sleep(5000);
     	    utils.waitForElement(() -> searchPage.getgrid(), "clickable");
     	    test.pass("Search thing domain displayed"); 
             test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());

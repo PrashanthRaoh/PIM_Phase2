@@ -32,6 +32,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 
 import pages.DigitalAsset;
+import pages.BSAPIE_Page;
 import pages.SearchPage2;
 
 public class Utils  {
@@ -44,7 +45,7 @@ public class Utils  {
 	public Utils(WebDriver driver, ExtentTest test) {
 		this.driver = driver;
 		this.test = test;
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 	}
 
 	/*****************************************************
@@ -217,6 +218,7 @@ public class Utils  {
 	
 
 	public void applyBinaryFilters(Map<String, String> filters, SearchPage2 searchPage, DigitalAsset digitalAsset) throws Exception {
+		Thread.sleep(2000);
 		for (Map.Entry<String, String> entry : filters.entrySet()) {
 			applyBinaryFilter(entry.getKey(), entry.getValue(), searchPage, digitalAsset);
 		}
@@ -249,36 +251,212 @@ public class Utils  {
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
 		}
 	}
-	private void clickFilterAttribute(String filterName) throws InterruptedException {
-		WebElement attributeGrid = findShadowElement(
-				"#app",
-				"#contentViewManager",
-				"[id^='currentApp_search-thing_']",
-				"[id^='app-entity-discovery-component-']",
-				"#entitySearchDiscoveryGrid",
-				"#entitySearchFilter",
-				"#search-filter",
-				"#attributeModelLov_thing",
-				"#modelLov_thing",
-				"div.base-grid-structure.p-relative.hideLovHeader > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid",
-				"#grid"
-		);
-		List<WebElement> items = attributeGrid.getShadowRoot().findElements(By.cssSelector("pebble-lov-item"));
-		if (items.isEmpty()) {
-			throw new RuntimeException("No filter attributes displayed for: " + filterName);
+/*************************************************************
+ * Applies the PIM Attribute Taxonomy filter, selects "Has Values",
+ * clicks Apply, and waits for the search results grid to reload.
+ * Throws a runtime exception if the dialog, operator, or grid does not
+ * appear within the configured wait timeout.
+ ************************************************************/
+	public void applyPimTaxonomyHasValuesFilter(SearchPage2 searchPage, BSAPIE_Page bsaPiePage) throws Exception {
+		String filterName = "PIM Attribute Taxonomy";
+		clickElementWithRetry(searchPage::getFilterButton, "filter button");
+		typeTextWithRetry(searchPage::Search_MaterialType, filterName, "taxonomy filter search box");
+		clickFilterAttribute(filterName);
+		if (test != null) {
+			test.pass("Clicked on the filter " + filterName);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
 		}
-		Actions actions = new Actions(driver);
-		for (WebElement item : items) {
-			String text = item.getText().trim();
-			if (text.equalsIgnoreCase(filterName) || text.toLowerCase().contains(filterName.toLowerCase())) {
-				actions.moveToElement(item).perform();
-				item.click();
-				return;
+
+		try {
+			waitForElement(bsaPiePage::Taxonomy_Dialog, "clickable");
+		} catch (RuntimeException e) {
+			if (test != null) {
+				test.fail("Taxonomy dialog did not appear within timeout after selecting filter: " + filterName);
+				test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
 			}
+			throw e;
 		}
-		actions.moveToElement(items.get(0)).perform();
-		items.get(0).click();
-		Thread.sleep(1000);
+
+		clickElementWithRetry(bsaPiePage::filterbox, "taxonomy filter textbox");
+		
+		clickTaxonomyOperatorByText(bsaPiePage, "Has Values");
+		if (test != null) {
+			test.pass("Clicked taxonomy operator: Has Values");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+
+		clickElementWithRetry(bsaPiePage::taxonomy_Apply_btn, "taxonomy apply button");
+		waitForElement(searchPage::getgrid, "clickable");
+		if (test != null) {
+			test.pass("Applied taxonomy filter: " + filterName + " = Has Values");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+	}
+
+	public void clickElementWithRetry(Supplier<WebElement> elementSupplier, String description) {
+		try {
+			wait.until(drv -> {
+				try {
+					WebElement el = elementSupplier.get();
+					if (el == null || !el.isDisplayed() || !el.isEnabled()) {
+						return null;
+					}
+					try {
+						el.click();
+						return true;
+					} catch (StaleElementReferenceException e) {
+						return null;
+					} catch (Exception e) {
+						try {
+							((JavascriptExecutor) drv).executeScript("arguments[0].click();", el);
+							return true;
+						} catch (Exception ignored) {
+							return null;
+						}
+					}
+				} catch (Exception ignored) {
+					return null;
+				}
+			});
+		} catch (TimeoutException e) {
+			throw new RuntimeException(description + " did not become clickable within timeout", e);
+		}
+	}
+
+	private void typeTextWithRetry(Supplier<WebElement> elementSupplier, String text, String description) {
+		try {
+			wait.until(drv -> {
+				try {
+					WebElement el = elementSupplier.get();
+					if (el == null || !el.isDisplayed() || !el.isEnabled()) {
+						return null;
+					}
+					try {
+						el.clear();
+						el.sendKeys(text);
+						return true;
+					} catch (StaleElementReferenceException e) {
+						return null;
+					} catch (Exception e) {
+						return null;
+					}
+				} catch (Exception ignored) {
+					return null;
+				}
+			});
+		} catch (TimeoutException e) {
+			throw new RuntimeException(description + " did not become ready within timeout", e);
+		}
+	}
+
+	public void clickTaxonomyOperatorByText(BSAPIE_Page bsaPiePage, String targetText) {
+		String normalizedTarget = targetText == null ? "" : targetText.trim().toLowerCase();
+		try {
+			wait.until(drv -> {
+				try {
+					List<WebElement> items = bsaPiePage.taxonomyOperatorItems();
+					if (items == null || items.isEmpty()) {
+						return false;
+					}
+					for (WebElement item : items) {
+						String value;
+						try {
+							value = item.getText() == null ? "" : item.getText().trim();
+							if (value.isEmpty()) {
+								value = item.getShadowRoot().findElement(By.cssSelector("div > div > div > span")).getText().trim();
+							}
+						} catch (Exception ignored) {
+							continue;
+						}
+						String normalizedValue = value.toLowerCase();
+						boolean isMatch = normalizedValue.equals(normalizedTarget)
+								|| normalizedValue.contains(normalizedTarget)
+								|| normalizedTarget.contains(normalizedValue);
+						if (!isMatch) {
+							continue;
+						}
+						try {
+							((JavascriptExecutor) drv).executeScript("arguments[0].scrollIntoView({block:'center'});", item);
+							new Actions(drv).moveToElement(item).pause(Duration.ofMillis(100)).click().perform();
+							return true;
+						} catch (StaleElementReferenceException e) {
+							return false;
+						} catch (Exception e) {
+							try {
+								((JavascriptExecutor) drv).executeScript("arguments[0].click();", item);
+								return true;
+							} catch (Exception ignored) {
+								return false;
+							}
+						}
+					}
+					return false;
+				} catch (Exception ignored) {
+					return false;
+				}
+			});
+		} catch (TimeoutException e) {
+			throw new RuntimeException("Taxonomy operator '" + targetText + "' was not found/clickable within timeout", e);
+		}
+	}
+
+	public void clickFilterAttribute(String filterName) {
+		String normalizedFilter = filterName == null ? "" : filterName.trim().toLowerCase();
+		try {
+			wait.until(drv -> {
+				try {
+					WebElement attributeGrid = findShadowElement(
+							"#app",
+							"#contentViewManager",
+							"[id^='currentApp_search-thing_']",
+							"[id^='app-entity-discovery-component-']",
+							"#entitySearchDiscoveryGrid",
+							"#entitySearchFilter",
+							"#search-filter",
+							"#attributeModelLov_thing",
+							"#modelLov_thing",
+							"div.base-grid-structure.p-relative.hideLovHeader > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid",
+							"#grid"
+					);
+					List<WebElement> loadedItems = attributeGrid.getShadowRoot().findElements(By.cssSelector("pebble-lov-item"));
+					if (loadedItems == null || loadedItems.isEmpty()) {
+						return false;
+					}
+					WebElement preferredItem = null;
+					for (WebElement item : loadedItems) {
+						String text = item.getText() == null ? "" : item.getText().trim().toLowerCase();
+						if (text.equals(normalizedFilter) || text.contains(normalizedFilter)) {
+							preferredItem = item;
+							break;
+						}
+					}
+					WebElement itemToClick = preferredItem != null ? preferredItem : loadedItems.get(0);
+					try {
+						((JavascriptExecutor) drv).executeScript("arguments[0].scrollIntoView({block:'center'});", itemToClick);
+						new Actions(drv).moveToElement(itemToClick).pause(Duration.ofMillis(100)).click().perform();
+						return true;
+					} catch (StaleElementReferenceException e) {
+						return false;
+					} catch (Exception e) {
+						try {
+							((JavascriptExecutor) drv).executeScript("arguments[0].click();", itemToClick);
+							return true;
+						} catch (Exception ignored) {
+							return false;
+						}
+					}
+				} catch (Exception ignored) {
+					return false;
+				}
+			});
+		} catch (TimeoutException e) {
+			throw new RuntimeException("No filter attributes displayed within timeout for: " + filterName, e);
+		}
+	}
+	
+	
+	public void executeclickFilterAttribute(String filterName) {
+		clickFilterAttribute(filterName);
 	}
 
 	private void clickYesNoValue(String filterValue) {

@@ -9,9 +9,10 @@
 			<class name="Second_Post_ETL_Key_Flags.TC05_Second_Post_ETL_BsaN_CbtY_PropN" />
 			<class name="Second_Post_ETL_Key_Flags.TC06_Second_Post_ETL_BsaY_CbtY_PropN" />
 			<class name="Second_Post_ETL_Key_Flags.TC07_Second_Post_ETL_BsaN_CbtY_PropN" />-->
-			<!--<class name="Second_Post_ETL_Key_Flags.TC08_Post_ETL_BsaY_CbtY_PropN" />-->
-			<!--<class name="Second_Post_ETL_Key_Flags.TC10_Second_Post_ETL_BsaY_CbtN_PropN" />-->
-			<class name="Second_Post_ETL_Key_Flags.TC11_Second_Post_ETL_BsaY_CbtY_InterCompany" />
+		<!--<class name="Second_Post_ETL_Key_Flags.TC08_Post_ETL_BsaY_CbtY_PropN" />-->
+		<!--<class name="Second_Post_ETL_Key_Flags.TC10_Second_Post_ETL_BsaY_CbtN_PropN" />-->
+		<!--<class name="Second_Post_ETL_Key_Flags.TC11_Second_Post_ETL_BsaY_CbtY_InterCompany" />-->
+		<!--<class name="Second_Post_ETL_Key_Flags.TC12_Second_Post_ETL_BsaN_CbtY_InterCompany" />-->
 		</classes>
 	</test>
 	<test name="CBTUseCaseOwner">
@@ -24,7 +25,8 @@
 			<!--<class name="Second_Post_ETL_Key_Flags.TC07_Second_Post_ETL_BsaN_CbtY_PropN" />-->
 			<!--<class name="Second_Post_ETL_Key_Flags.TC08_Post_ETL_BsaY_CbtY_PropN" />-->
 			<!--<class name="Second_Post_ETL_Key_Flags.TC10_Second_Post_ETL_BsaY_CbtN_PropN" />-->
-			<class name="Second_Post_ETL_Key_Flags.TC11_Second_Post_ETL_BsaY_CbtY_InterCompany" />
+			<!--<class name="Second_Post_ETL_Key_Flags.TC11_Second_Post_ETL_BsaY_CbtY_InterCompany" />-->
+			<class name="Second_Post_ETL_Key_Flags.TC12_Second_Post_ETL_BsaN_CbtY_InterCompany" />
 		</classes>
 	</test>
 </suite>

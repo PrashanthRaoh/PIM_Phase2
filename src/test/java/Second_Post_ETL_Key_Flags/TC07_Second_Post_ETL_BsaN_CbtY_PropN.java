@@ -70,8 +70,9 @@ public class TC07_Second_Post_ETL_BsaN_CbtY_PropN extends BaseTest{
 		    test.fail("Exception occurred while opening entity for Material ID -- " + Matid);
 		    test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		}
-		summaryPage.SearchIcon().click();
-		Thread.sleep(1000);
+		
+//		summaryPage.SearchIcon().click();
+//		Thread.sleep(1000);
 		/*****************************************************************
 		  1) Validate Catalog Bearing Tool Usecase[Int]? = No
 		 **************************************************************** */		

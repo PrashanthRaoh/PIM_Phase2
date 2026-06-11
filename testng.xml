@@ -7,14 +7,18 @@
 			<!--<class name="Key_Flags.TC01_BsaN_CbtN_MunN" />
 			<class name="Key_Flags.TC02_BsaY_CbtY_MunN" />
             <class name="Key_Flags.TC03_BsaY_CbtN_MunN" />
-            <class name="Key_Flags.TC04_BsaN_CbtY_MunN" />
-            <class name="Key_Flags.TC05_BsaN_CbtY_PropN" />
+            <class name="Key_Flags.TC04_BsaN_CbtY_MunN" />-->
+           
+            <!--<class name="Key_Flags.TC05_BsaN_CbtN_PropN" />
             <class name="Key_Flags.TC06_BsaY_CbtY_PropN" />
-            <class name="Key_Flags.TC07_BsaN_CbtY_PropN" />-->
-            <!--<class name="Key_Flags.TC08_BsaY_CbtN_PropN" />-->
-<!--            <class name="Key_Flags.TC10_BsaY_CbtN_PropN" />-->
+            <class name="Key_Flags.TC07_BsaN_CbtY_PropN" />
+            <class name="Key_Flags.TC08_BsaY_CbtN_PropN" />-->
+            <!--<class name="Key_Flags.TC10_BsaN_CbtY_PropY" />-->
+            
             <!--<class name="Key_Flags.TC11_BsaY_CbtY_InterCompany" />-->
-            <class name="Key_Flags.TC12_BsaN_CbtY_InterCompany" />
+            <!--<class name="Key_Flags.TC12_BsaN_CbtY_InterCompany" />-->
+            <class name="Key_Flags.TC13_BsaY_CbtN_InterCompany" />
+            <class name="Key_Flags.TC14_BsaN_CbtN_InterCompany" />
 
 
     </classes>

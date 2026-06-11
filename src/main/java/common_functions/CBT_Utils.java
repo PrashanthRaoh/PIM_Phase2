@@ -591,7 +591,11 @@ public Map<String, String> searchMaterialIdAndOpenDetails(String materialId, Sea
 public String getAttributeLovValueBySearchLabel( SummaryPage summaryPage, String attributeSearchLabel,  ExtentTest test) {
     String value = "";
     try {
-        summaryPage.SearchIcon().click();
+    	if (!summaryPage.SearchInputfield().isDisplayed()) {
+			summaryPage.SearchIcon().click();
+			Thread.sleep(1000);
+		}
+    	summaryPage.SearchIcon().click();
         summaryPage.SearchInputfield().clear();
         summaryPage.SearchInputfield().sendKeys(attributeSearchLabel);
         new Actions(driver).moveToElement(summaryPage.SearchInputfield()).sendKeys(Keys.ENTER).build().perform();

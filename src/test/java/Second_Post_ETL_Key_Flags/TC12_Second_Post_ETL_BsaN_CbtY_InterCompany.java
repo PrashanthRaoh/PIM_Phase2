@@ -18,11 +18,8 @@ import pages.CBT_Page;
 import pages.HomePage;
 import pages.SearchPage2;
 import pages.SummaryPage;
-/*****************************************************************************************
- Validates post-ETL key flags for a selected material (BSAPIE and CBT logins):
- Check if the sellable has updated value  
- ****************************************************************************************/
-public class TC08_Second_Post_ETL_BsaY_CbtY_PropN extends BaseTest{
+
+public class TC12_Second_Post_ETL_BsaN_CbtY_InterCompany extends BaseTest{
 	public ExtentTest test;
 	Map<String, Object> data = new LinkedHashMap<>();
 	@Test
@@ -43,10 +40,8 @@ public class TC08_Second_Post_ETL_BsaY_CbtY_PropN extends BaseTest{
 		System.out.println("Executing Test For User : " + useCaseOwner);
 		test.pass("Home Page is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//		utils.waitForElement(() -> homePage.BSAPIEUsecaseApprovalTab(), "visible");
 		
-		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC08_BsaY_CbtN_PropN.txt";
-//		String POST_ETL_Filename = "/Post_ETL_Artifacts/Key_Flags/TC05_BsaN_CbtY_PropN.txt";
+		String PRE_ETL_Filename =  "Pre_ETL_Artifacts/Key_Flags/TC12_BsaN_CbtY_InterCompany.txt";
 
 		String Matid = NotepadManager.FetchMaterialID(PRE_ETL_Filename);
 		System.out.println("Fetched Material ID: " + Matid);
@@ -64,44 +59,48 @@ public class TC08_Second_Post_ETL_BsaY_CbtY_PropN extends BaseTest{
 		        data.put("Material ID", matid);
 		        Thread.sleep(3000);
 		        utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-		        Thread.sleep(5000);
+		        Thread.sleep(3000);
 		    }
 		} catch (Exception ex) {
 		    ex.printStackTrace();
 		    test.fail("Exception occurred while opening entity for Material ID -- " + Matid);
 		    test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		}
-		
-//		summaryPage.SearchIcon().click();
-//		Thread.sleep(1000);
 		/*****************************************************************
-		  1) Validate BSA PIE Usecase? = No
+		  1) Catalog Bearing Tool Usecase[Int]?  = No
 		 **************************************************************** */		
-		String BSAPIEUsecase_Value = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Usecase?", test);
-		System.out.println("BSA PIE Usecase? is " + BSAPIEUsecase_Value + " Expected is No");
-		if ("No".equalsIgnoreCase(BSAPIEUsecase_Value == null ? "" : BSAPIEUsecase_Value.trim()))
+		String cbtusecaseInt = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Catalog Bearing Tool Usecase[Int]?", test);
+		System.out.println("Catalog Bearing Tool Usecase[Int]? is " + cbtusecaseInt + " Expected is No");
+		if ("No".equalsIgnoreCase(cbtusecaseInt == null ? "" : cbtusecaseInt.trim()))
 		{
-			test.pass("BSA PIE Usecase? is " + BSAPIEUsecase_Value +  " as expected.");
+			test.pass("Catalog Bearing Tool Usecase[Int]? is " + cbtusecaseInt +  " as expected.");
 		}
 		else {
-			test.fail("BSA PIE Usecase? is NOT No . Actual: " + BSAPIEUsecase_Value);
+			test.fail("Catalog Bearing Tool Usecase[Int]? is NOT No. Actual: " + cbtusecaseInt);
 		}
-//		Assert.assertEquals(BSAPIEUsecase_Value == null ? "" : BSAPIEUsecase_Value.trim(), "No", "Expected Munitions Indicator to be No, but got: " + BSAPIEUsecase_Value);
+//		Assert.assertEquals(cbtusecaseInt == null ? "" : cbtusecaseInt.trim(), "No", "Expected Catalog Bearing Tool Usecase[Int]? to be No, but got: " + cbtusecaseInt);
+		try {
+			if (!summaryPage.SearchInputfield().isDisplayed()) {
+				summaryPage.SearchIcon().click();
+				Thread.sleep(1000);
+			}
+		} catch (Exception e) {
+			summaryPage.SearchIcon().click();
+			Thread.sleep(1000);
+		}
 		/*****************************************************************
-		  2) BSA PIE Sellable Product Status = ProprietorySyndicate
+		  2) Catalog Bearing Tool Sellable Product Status = ApplicationTypeSyndicated
 		 **************************************************************** */
-		String bsaPieStatus = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "BSA PIE Sellable Product Status", test);
-		System.out.println("BSA PIE Sellable Product Status " + bsaPieStatus + " as expected");
-		if ("ProprietorySyndicate".equalsIgnoreCase(bsaPieStatus == null ? "" : bsaPieStatus.trim())) {
-			test.pass("BSA PIE Sellable Product Status is ProprietorySyndicate as expected.");
+		String CBTProd_Status = cbtUtils.getAttributeLovValueBySearchLabel(summaryPage, "Catalog Bearing Tool Sellable Product Status", test);
+		System.out.println("Catalog Bearing Tool Sellable Product Status " + CBTProd_Status + " as expected");
+		if ("ApplicationTypeSyndicated".equalsIgnoreCase(CBTProd_Status == null ? "" : CBTProd_Status.trim())) {
+			test.pass("Catalog Bearing Tool Sellable Product Status is ApplicationTypeSyndicated as expected.");
 		}
-		else
-		{
-			test.fail("BSA PIE Sellable Product Status is NOT ProprietorySyndicate. Actual: " + bsaPieStatus);
+		else {
+			test.fail("Catalog Bearing Tool Sellable Product Status expected was ApplicationTypeSyndicated.But Actual status is : " + CBTProd_Status);
 		}
-//		Assert.assertEquals(bsaPieStatus == null ? "" : bsaPieStatus.trim(), "ProprietorySyndicate", "Expected BSA PIE Sellable Product Status to be ProprietorySyndicate, but got: " + bsaPieStatus);
-		Thread.sleep(2000);
+//		Assert.assertEquals(CBTProd_Status == null ? "" : CBTProd_Status.trim(), "ApplicationTypeSyndicated", "Expected Catalog Bearing Tool Sellable Product Status to be ApplicationTypeSyndicated, but got: " + CBTProd_Status);
 		BSAPIE_PO.Tabclose_Xmark().click();
 		Thread.sleep(4000);
-	}
+}
 }

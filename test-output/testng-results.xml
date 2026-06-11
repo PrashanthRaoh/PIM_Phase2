@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-06-04T17:44:05 BST" name="PIM_Phase2 Automation_Suite" finished-at="2026-06-04T17:45:24 BST" duration-ms="79058">
+  <suite started-at="2026-06-11T09:31:32 BST" name="PIM_Phase2 Automation_Suite" finished-at="2026-06-11T09:34:07 BST" duration-ms="155539">
     <groups>
       <group name="BSAPIEowner">
-        <method signature="TC12_BsaN_CbtY_InterCompany.BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC12_BsaN_CbtY_InterCompany@36fc695d]" name="BsaN_CbtY_MunN" class="Key_Flags.TC12_BsaN_CbtY_InterCompany"/>
+        <method signature="TC13_BsaY_CbtN_InterCompany.BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" name="BsaN_CbtY_MunN" class="Key_Flags.TC13_BsaY_CbtN_InterCompany"/>
+        <method signature="TC14_BsaN_CbtN_InterCompany.BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC14_BsaN_CbtN_InterCompany@7c7a06ec]" name="BsaN_CbtY_MunN" class="Key_Flags.TC14_BsaN_CbtN_InterCompany"/>
       </group> <!-- BSAPIEowner -->
     </groups>
-    <test started-at="2026-06-04T17:44:05 BST" name="BSAPIEOwner" finished-at="2026-06-04T17:45:24 BST" duration-ms="79058">
-      <class name="Key_Flags.TC12_BsaN_CbtY_InterCompany">
-        <test-method is-config="true" signature="initReport()[pri:0, instance:Key_Flags.TC12_BsaN_CbtY_InterCompany@36fc695d]" started-at="2026-06-04T17:44:05 BST" name="initReport" finished-at="2026-06-04T17:44:05 BST" duration-ms="193" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- initReport -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:Key_Flags.TC12_BsaN_CbtY_InterCompany@36fc695d]" started-at="2026-06-04T17:44:05 BST" name="setUp" finished-at="2026-06-04T17:44:10 BST" duration-ms="4582" status="PASS">
+    <test started-at="2026-06-11T09:31:32 BST" name="BSAPIEOwner" finished-at="2026-06-11T09:34:07 BST" duration-ms="155539">
+      <class name="Key_Flags.TC14_BsaN_CbtN_InterCompany">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:Key_Flags.TC14_BsaN_CbtN_InterCompany@7c7a06ec]" started-at="2026-06-11T09:32:43 BST" name="setUp" finished-at="2026-06-11T09:32:46 BST" duration-ms="3317" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -25,15 +22,44 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC12_BsaN_CbtY_InterCompany@36fc695d]" started-at="2026-06-04T17:44:10 BST" name="BsaN_CbtY_MunN" finished-at="2026-06-04T17:45:24 BST" duration-ms="74438" status="PASS">
+        <test-method signature="BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC14_BsaN_CbtN_InterCompany@7c7a06ec]" started-at="2026-06-11T09:32:46 BST" name="BsaN_CbtY_MunN" finished-at="2026-06-11T09:34:02 BST" duration-ms="75376" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- BsaN_CbtY_MunN -->
-        <test-method is-config="true" signature="publishReport()[pri:0, instance:Key_Flags.TC12_BsaN_CbtY_InterCompany@36fc695d]" started-at="2026-06-04T17:45:24 BST" name="publishReport" finished-at="2026-06-04T17:45:26 BST" duration-ms="1575" status="PASS">
+        <test-method is-config="true" signature="Logout()[pri:0, instance:Key_Flags.TC14_BsaN_CbtN_InterCompany@7c7a06ec]" started-at="2026-06-11T09:34:02 BST" name="Logout" finished-at="2026-06-11T09:34:07 BST" duration-ms="5433" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Logout -->
+      </class> <!-- Key_Flags.TC14_BsaN_CbtN_InterCompany -->
+      <class name="Key_Flags.TC13_BsaY_CbtN_InterCompany">
+        <test-method is-config="true" signature="initReport()[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" started-at="2026-06-11T09:31:31 BST" name="initReport" finished-at="2026-06-11T09:31:32 BST" duration-ms="173" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initReport -->
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" started-at="2026-06-11T09:31:32 BST" name="setUp" finished-at="2026-06-11T09:31:36 BST" duration-ms="4071" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[BSAPIEowner]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="BsaN_CbtY_MunN()[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" started-at="2026-06-11T09:31:36 BST" name="BsaN_CbtY_MunN" finished-at="2026-06-11T09:32:37 BST" duration-ms="61329" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- BsaN_CbtY_MunN -->
+        <test-method is-config="true" signature="Logout()[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" started-at="2026-06-11T09:32:37 BST" name="Logout" finished-at="2026-06-11T09:32:43 BST" duration-ms="5954" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Logout -->
+        <test-method is-config="true" signature="publishReport()[pri:0, instance:Key_Flags.TC13_BsaY_CbtN_InterCompany@13c9d689]" started-at="2026-06-11T09:34:07 BST" name="publishReport" finished-at="2026-06-11T09:34:10 BST" duration-ms="2914" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- publishReport -->
-      </class> <!-- Key_Flags.TC12_BsaN_CbtY_InterCompany -->
+      </class> <!-- Key_Flags.TC13_BsaY_CbtN_InterCompany -->
     </test> <!-- BSAPIEOwner -->
   </suite> <!-- PIM_Phase2 Automation_Suite -->
 </testng-results>

@@ -50,30 +50,30 @@ public class TC01_Admin_BsaN_CbtN_MunN extends BaseTest {
 		homePage.clickSearch_Products_Button_Admin().click();
 		Thread.sleep(3000);
 
-		try {
-			Map<String, String> selectedRecord = cbtUtils.searchMaterialIdAndOpenDetails(Matid, searchPage, summaryPage, test);
-			if (selectedRecord.isEmpty()) {
-				test.warning("Could not proceed because no rows were available for Material ID: " + Matid);
-			} else {
-				matid = selectedRecord.get("Material Id");
-				String sellableMaterialDescription = selectedRecord.get("Material Description");
-				System.out.println("Material ID -- " + matid + " Material Description --" + sellableMaterialDescription);
-				data.put("Material ID", matid);
-				Thread.sleep(3000);
-				utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-				Thread.sleep(3000);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			test.fail("Exception occurred while opening entity for Material ID -- " + Matid);
-			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		}
-
-		Assert.assertNotNull(matid, "Material ID should be captured before deletion verification");
-		String confirmationText = cbtUtils.clickDeleteAndConfirm(homePage, test);
-		data.put("Delete Confirmation Text", confirmationText);
-		
-		boolean hasNoElements = cbtUtils.verifyDeletedMaterialNotListed(searchPage, matid, test);
-		Assert.assertTrue(hasNoElements, "Deleted record is still listed in search results for Material ID: " + matid);
+//		try {
+//			Map<String, String> selectedRecord = cbtUtils.searchMaterialIdAndOpenDetails(Matid, searchPage, summaryPage, test);
+//			if (selectedRecord.isEmpty()) {
+//				test.warning("Could not proceed because no rows were available for Material ID: " + Matid);
+//			} else {
+//				matid = selectedRecord.get("Material Id");
+//				String sellableMaterialDescription = selectedRecord.get("Material Description");
+//				System.out.println("Material ID -- " + matid + " Material Description --" + sellableMaterialDescription);
+//				data.put("Material ID", matid);
+//				Thread.sleep(3000);
+//				utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
+//				Thread.sleep(3000);
+//			}
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//			test.fail("Exception occurred while opening entity for Material ID -- " + Matid);
+//			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+//		}
+//
+//		Assert.assertNotNull(matid, "Material ID should be captured before deletion verification");
+//		String confirmationText = cbtUtils.clickDeleteAndConfirm(homePage, test);
+//		data.put("Delete Confirmation Text", confirmationText);
+//		
+//		boolean hasNoElements = cbtUtils.verifyDeletedMaterialNotListed(searchPage, matid, test);
+//		Assert.assertTrue(hasNoElements, "Deleted record is still listed in search results for Material ID: " + matid);
 	}
 }

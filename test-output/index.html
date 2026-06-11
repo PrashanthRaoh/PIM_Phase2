@@ -92,7 +92,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">1 method,   1 passed</span>
+                    <span class="method-stats">2 methods,   2 passed</span>
                   </li>
                   <li>
                     <span class="method-list-title passed">Passed methods</span>
@@ -103,7 +103,12 @@
                     <div class="method-list-content passed suite-PIM_Phase2_Automation_Suite">
                       <span>
                         <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-PIM_Phase2_Automation_Suite" title="Key_Flags.TC12_BsaN_CbtY_InterCompany" class="method navigator-link" hash-for-method="BsaN_CbtY_MunN">BsaN_CbtY_MunN</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-PIM_Phase2_Automation_Suite" title="Key_Flags.TC14_BsaN_CbtN_InterCompany" class="method navigator-link" hash-for-method="BsaN_CbtY_MunN">BsaN_CbtY_MunN</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img src="passed.png" width="3%"/>
+                        <a href="#" panel-name="suite-PIM_Phase2_Automation_Suite" title="Key_Flags.TC13_BsaY_CbtN_InterCompany" class="method navigator-link" hash-for-method="BsaN_CbtY_MunN">BsaN_CbtY_MunN</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content passed suite-PIM_Phase2_Automation_Suite -->
@@ -121,7 +126,22 @@
           <div class="suite-PIM_Phase2_Automation_Suite-class-passed">
             <div class="main-panel-header rounded-window-top">
               <img src="passed.png"/>
-              <span class="class-name">Key_Flags.TC12_BsaN_CbtY_InterCompany</span>
+              <span class="class-name">Key_Flags.TC13_BsaY_CbtN_InterCompany</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="BsaN_CbtY_MunN">
+                  </a> <!-- BsaN_CbtY_MunN -->
+                  <span class="method-name">BsaN_CbtY_MunN</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-PIM_Phase2_Automation_Suite-class-passed -->
+          <div class="suite-PIM_Phase2_Automation_Suite-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Key_Flags.TC14_BsaN_CbtN_InterCompany</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
@@ -146,7 +166,8 @@
   &lt;test thread-count=&quot;5&quot; name=&quot;BSAPIEOwner&quot;&gt;
     &lt;parameter name=&quot;UseCaseOwner&quot; value=&quot;BSAPIEowner&quot;/&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;Key_Flags.TC12_BsaN_CbtY_InterCompany&quot;/&gt;
+      &lt;class name=&quot;Key_Flags.TC13_BsaY_CbtN_InterCompany&quot;/&gt;
+      &lt;class name=&quot;Key_Flags.TC14_BsaN_CbtN_InterCompany&quot;/&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- BSAPIEOwner --&gt;
 &lt;/suite&gt; &lt;!-- PIM_Phase2 Automation_Suite --&gt;
@@ -160,7 +181,7 @@
           <div class="main-panel-content rounded-window-bottom">
             <ul>
               <li>
-                <span class="test-name">BSAPIEOwner (1 class)</span>
+                <span class="test-name">BSAPIEOwner (2 classes)</span>
               </li>
             </ul>
           </div> <!-- main-panel-content rounded-window-bottom -->
@@ -194,16 +215,20 @@ data.addColumn('number', 'Number');
 data.addColumn('string', 'Method');
 data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
-data.addRows(1);
+data.addRows(2);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'BsaN_CbtY_MunN')
-data.setCell(0, 2, 'Key_Flags.TC12_BsaN_CbtY_InterCompany')
-data.setCell(0, 3, 74438);
+data.setCell(0, 2, 'Key_Flags.TC14_BsaN_CbtN_InterCompany')
+data.setCell(0, 3, 75376);
+data.setCell(1, 0, 1)
+data.setCell(1, 1, 'BsaN_CbtY_MunN')
+data.setCell(1, 2, 'Key_Flags.TC13_BsaY_CbtN_InterCompany')
+data.setCell(1, 3, 61329);
 window.suiteTableData['PIM_Phase2_Automation_Suite']= { tableData: data, tableDiv: 'times-div-PIM_Phase2_Automation_Suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 1 minutes</span>
+              <span class="suite-total-time">Total running time: 2 minutes</span>
               <div id="times-div-PIM_Phase2_Automation_Suite">
               </div> <!-- times-div-PIM_Phase2_Automation_Suite -->
             </div> <!-- times-div -->
@@ -218,9 +243,18 @@ return data;
         </div> <!-- panel -->
         <div panel-name="ignored-methods-PIM_Phase2_Automation_Suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">0 ignored methods</span>
+            <span class="header-content">2 ignored methods</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
+            <div class="ignored-class-div">
+              <span class="ignored-class-name">Key_Flags.TC14_BsaN_CbtN_InterCompany</span>
+              <div class="ignored-methods-div">
+                <span class="ignored-method-name">initReport</span>
+                <br/>
+                <span class="ignored-method-name">publishReport</span>
+                <br/>
+              </div> <!-- ignored-methods-div -->
+            </div> <!-- ignored-class-div -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
         <div panel-name="chronological-PIM_Phase2_Automation_Suite" class="panel">
@@ -229,22 +263,44 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">Key_Flags.TC12_BsaN_CbtY_InterCompany</div> <!-- chronological-class-name -->
+              <div class="chronological-class-name">Key_Flags.TC13_BsaY_CbtN_InterCompany</div> <!-- chronological-class-name -->
               <div class="configuration-suite before">
                 <span class="method-name">initReport</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-suite before -->
               <div class="configuration-class before">
                 <span class="method-name">setUp(BSAPIEowner)</span>
-                <span class="method-start">212 ms</span>
+                <span class="method-start">204 ms</span>
               </div> <!-- configuration-class before -->
               <div class="test-method">
                 <span class="method-name">BsaN_CbtY_MunN</span>
-                <span class="method-start">4805 ms</span>
+                <span class="method-start">4288 ms</span>
               </div> <!-- test-method -->
+              <div class="configuration-class after">
+                <span class="method-name">Logout</span>
+                <span class="method-start">65622 ms</span>
+              </div> <!-- configuration-class after -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Key_Flags.TC14_BsaN_CbtN_InterCompany</div> <!-- chronological-class-name -->
+              <div class="configuration-class before">
+                <span class="method-name">setUp(BSAPIEowner)</span>
+                <span class="method-start">71578 ms</span>
+              </div> <!-- configuration-class before -->
+              <div class="test-method">
+                <span class="method-name">BsaN_CbtY_MunN</span>
+                <span class="method-start">74896 ms</span>
+              </div> <!-- test-method -->
+              <div class="configuration-class after">
+                <span class="method-name">Logout</span>
+                <span class="method-start">150278 ms</span>
+              </div> <!-- configuration-class after -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Key_Flags.TC13_BsaY_CbtN_InterCompany</div> <!-- chronological-class-name -->
               <div class="configuration-suite after">
                 <span class="method-name">publishReport</span>
-                <span class="method-start">79287 ms</span>
+                <span class="method-start">155752 ms</span>
               </div> <!-- configuration-suite after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

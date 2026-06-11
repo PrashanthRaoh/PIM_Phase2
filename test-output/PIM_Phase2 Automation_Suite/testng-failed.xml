@@ -4,14 +4,14 @@
   <test thread-count="5" name="BSAPIEOwner(failed)">
     <parameter name="UseCaseOwner" value="BSAPIEowner"/>
     <classes>
-      <class name="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany">
+      <class name="Key_Flags.TC11_BsaY_CbtY_InterCompany">
         <methods>
           <include name="initReport"/>
+          <include name="BsaN_CbtY_MunN"/>
           <include name="setUp"/>
-          <include name="Post_ETL_BsaY_CbtN_MunN" invocation-numbers="0"/>
           <include name="publishReport"/>
         </methods>
-      </class> <!-- First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany -->
+      </class> <!-- Key_Flags.TC11_BsaY_CbtY_InterCompany -->
     </classes>
   </test> <!-- BSAPIEOwner(failed) -->
 </suite> <!-- Failed suite [PIM_Phase2 Automation_Suite] -->
