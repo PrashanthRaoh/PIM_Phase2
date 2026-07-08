@@ -3,3 +3,8 @@
  "Total OnHold Items" = "0"
  "CBT Sellable Product Status on Hold items" = []
 ---------------------------------------
+ "Material ID" = "000000000390027957"
+ "CBT Sellable Product Status" = "OnHoldUser"
+ "Total OnHold Items" = "1"
+ "CBT Sellable Product Status on Hold items" = ["Collar Width (mm)"]
+---------------------------------------

@@ -121,42 +121,39 @@ public class TC12_BsaN_CbtY_InterCompany extends BaseTest {
             /*********************************************
 			 Apply the filters
 			 ********************************************/ 
-    	    Map<String, String> filters = new LinkedHashMap<>();
-    	    filters.put("BSA PIE Usecase?", "No");
-    	    filters.put("Catalog Bearing Tool Usecase[Int]?", "Yes");
-    	    utils.applyBinaryFilters(filters, searchPage, digitalssetPage);
+			Map<String, String> filters = new LinkedHashMap<>();
+			filters.put("BSA PIE Usecase?", "No");
+			filters.put("Catalog Bearing Tool Usecase[Int]?", "Yes");
+			utils.applyBinaryFilters(filters, searchPage, digitalssetPage);
 
-		/*********************************************
-		 Select the record and update to Notepad
-		 ********************************************/
-		Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
-		String matid = selectedRecord.get("Material Id");
-		if (selectedRecord.isEmpty()) {
-			test.warning("No record selected. Skipping this iteration.");
-			return;
-		}
-		System.out.println("Selected Material ID: " + matid);
-		String appliedFiltersText = filters.entrySet()
-				.stream()
-				.map(e -> e.getKey() + "=" + e.getValue())
-				.collect(java.util.stream.Collectors.joining(", "));
-		data.put("Applied Filters", appliedFiltersText);
-		data.put("Material ID", matid);
-		Thread.sleep(4000);
-		/*************************************************
-		 * Get Application type code value
-		****************************************************/
-		String Applicationtypecodevalue = cbtUtils.getApplicationTypCodevalue(summaryPage, "Application Type Code", test);
-		if(Applicationtypecodevalue!= null) {
-			 test.pass("Application type code value for the record is : " + Applicationtypecodevalue);
-			 System.out.println("Application type code value for the record is : " + Applicationtypecodevalue);
-			 data.put("Application Type code", Applicationtypecodevalue);
-		}else {
-			test.info("Application typecode value for the record is not available or blank ");
-		}
-		NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
-		BSAPIE_PO.Tabclose_Xmark().click();
-		Thread.sleep(4000);
+			/*********************************************
+			 * Select the record and update to Notepad
+			 ********************************************/
+			Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+			String matid = selectedRecord.get("Material Id");
+			if (selectedRecord.isEmpty()) {
+				test.warning("No record selected. Skipping this iteration.");
+				return;
+			}
+			System.out.println("Selected Material ID: " + matid);
+			String appliedFiltersText = filters.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(java.util.stream.Collectors.joining(", "));
+			data.put("Applied Filters", appliedFiltersText);
+			data.put("Material ID", matid);
+			Thread.sleep(4000);
+			/*************************************************
+			 * Get Application type code value
+			 ****************************************************/
+			String Applicationtypecodevalue = cbtUtils.getApplicationTypCodevalue(summaryPage, "Application Type Code", test);
+			if (Applicationtypecodevalue != null) {
+				test.pass("Application type code value for the record is : " + Applicationtypecodevalue);
+				System.out.println("Application type code value for the record is : " + Applicationtypecodevalue);
+				data.put("Application Type code", Applicationtypecodevalue);
+			} else {
+				test.info("Application typecode value for the record is not available or blank ");
+			}
+			NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
+			BSAPIE_PO.Tabclose_Xmark().click();
+			Thread.sleep(4000);
 		/*************************************************
 		 * From Attributes drop down Select Bearing Dimension
 		****************************************************/

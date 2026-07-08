@@ -2,4 +2,8 @@
  "CBT Sellable Product Status" = "OnHoldUser"
  "Total OnHold Items" = "2"
  "CBT Sellable Product Status on Hold items" = ["(IUO) Inner Ring Crown Radius (in)","(IUO) Inner Raceway Curvature"]
+--------------------------------------- "Material ID" = "000000000390027957"
+ "CBT Sellable Product Status" = "OnHoldUser"
+ "Total OnHold Items" = "1"
+ "CBT Sellable Product Status on Hold items" = ["Collar Width (mm)"]
 ---------------------------------------

@@ -4,7 +4,7 @@
 	<test name="BSAPIEOwner">
 		<parameter name="UseCaseOwner" value="BSAPIEowner" />
 		<classes>
-			<!--<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />
 			<!--<class name="First_Post_ETL_KeyFlags.TC02_Post_ETL_BsaY_CbtY_MunN" />-->
 			<!--<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" /> -->
 			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
@@ -20,24 +20,25 @@
 			<!---->
 		</classes>
 	</test>
-	<test name="CBTUseCaseOwner">
+	
+	<!--<test name="CBTUseCaseOwner">
 		<parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
 		<classes>
-			<!--<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />
+			<class name="First_Post_ETL_KeyFlags.TC01_Post_ETL_BsaN_CbtN_MunN" />
 			<class name="First_Post_ETL_KeyFlags.TC02_Post_ETL_BsaY_CbtY_MunN" />
-			<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" />-->
-			<!--<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC03_Post_ETL_BsaY_CbtN_MunN" />
+			<class name="First_Post_ETL_KeyFlags.TC04_Post_ETL_BsaN_CbtY_MunN" />
 			
-			<!--<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />-->
-			<!--<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />-->
-<!--			<class name="First_Post_ETL_KeyFlags.TC07_Post_ETL_BsaN_CbtY_PropN" />-->
-			<!--<class name="First_Post_ETL_KeyFlags.TC08_Post_ETL_BsaY_CbtY_PropN" />-->
-			<!--<class name="First_Post_ETL_KeyFlags.TC10_Post_ETL_BsaY_CbtN_PropN" />-->
+			<class name="First_Post_ETL_KeyFlags.TC05_Post_ETL_BsaN_CbtY_PropN" />
+			<class name="First_Post_ETL_KeyFlags.TC06_Post_ETL_BsaY_CbtY_PropN" />
+			<class name="First_Post_ETL_KeyFlags.TC07_Post_ETL_BsaN_CbtY_PropN" />
+			<class name="First_Post_ETL_KeyFlags.TC08_Post_ETL_BsaY_CbtY_PropN" />
+			<class name="First_Post_ETL_KeyFlags.TC10_Post_ETL_BsaY_CbtN_PropN" />
 			
-			<!--<class name="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany" />-->
-			<!--<class name="First_Post_ETL_KeyFlags.TC12_Post_ETL_BsaN_CbtY_InterCompany" />-->
-			<!---->
+			<class name="First_Post_ETL_KeyFlags.TC11_Post_ETL_BsaY_CbtY_InterCompany" />
+			<class name="First_Post_ETL_KeyFlags.TC12_Post_ETL_BsaN_CbtY_InterCompany" />
+			
 
 		</classes>
-	</test>
+	</test>-->
 </suite>

@@ -1,8 +1,0 @@
- "Material ID" = "000000000190032635"
- "CBT Sellable Product Status" = "OnHoldSystem"
- "Active Workflow" = "Review Usecase Selection"
----------------------------------------
- "Material ID" = "000000000100208413"
- "CBT Sellable Product Status" = "OnHoldSystem"
- "Active Workflow" = "Review Usecase Selection"
----------------------------------------

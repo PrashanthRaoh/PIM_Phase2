@@ -1,11 +1,17 @@
 package pages;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.aventstack.extentreports.ExtentTest;
 
 public class DigitalAsset {
 	private WebDriver driver;
@@ -16,8 +22,9 @@ public class DigitalAsset {
 	}
 
 	public WebElement common_element() {
-		return driver.findElement(searchInputField).getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
-				.getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+		return driver.findElement(searchInputField).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rockDetailTabs"));
 	}
@@ -75,11 +82,9 @@ public class DigitalAsset {
 	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
 	    .findElement(By.cssSelector("#relationships-hasengineeredpartowned"));
 	}
-	
 
 	public WebElement HasImagesDropdownvalue() {
-		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipModelLov"))
-				.getShadowRoot()
+		return generalDropdown_First().getShadowRoot().findElement(By.cssSelector("#relationshipModelLov")) .getShadowRoot()
 				.findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
 				.getShadowRoot().findElement(By.cssSelector("#grid")).getShadowRoot()
 				.findElement(By.cssSelector("#lit-grid"))
@@ -538,4 +543,190 @@ public class DigitalAsset {
         List<WebElement> closeButtons = tabsContainer.findElements(By.cssSelector("div.tab-title span.dynamic-close"));
         return closeButtons.get(closeButtons.size() - 1);
 	}
+	
+
+	/*******************************
+		Phase 2 DAM objects 
+	*******************************/
+	public WebElement Digital_Asset_Quick_Search() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#navMenu")).getShadowRoot()
+			    .findElement(By.cssSelector("#pageMenuIcon_4"));
+	}
+	
+	public List<WebElement> getGridItems() {
+	    return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	            .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	            .findElement(By.cssSelector("[id^='currentApp_search-digitalasset_rs']")).getShadowRoot()
+	            .findElement(By.cssSelector("[id^='app-entity-discovery-component-rs']")).getShadowRoot()
+	            .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+	            .findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
+	            .findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+	            .findElement(By.cssSelector("#gridTileView")).getShadowRoot()
+	            .findElements(By.cssSelector("[id^='gridItem'] > div > div.text > div.title.block-text > a"));
+	}
+
+	public List<String> getItemNames() {
+	    List<String> names = new ArrayList<>();
+
+	    for (WebElement item : getGridItems()) {
+	        names.add(item.getText().trim());
+	    }
+	    return names;
+	}
+	
+	public WebElement ImageAttributes() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+				.findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']"));
+	}
+
+	/**************************************
+	 * Function to search for Digital asset values 
+	*************************************/
+	public String getAssetAttributeValueBySearchLabel(SummaryPage summaryPage, String attributeSearchLabel, ExtentTest test) {
+    String value = "";
+
+    try {
+        WebElement sf = summaryPage.SearchInputfield();
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(2)) .until(ExpectedConditions.elementToBeClickable(sf));
+        } catch (Exception ignored) {
+            summaryPage.SearchIcon().click();
+            Thread.sleep(1000);
+            sf = summaryPage.SearchInputfield();
+        }
+
+        sf.click();
+        sf.clear();
+        if (!sf.getAttribute("value").isEmpty()) {
+            sf.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
+        sf.sendKeys(attributeSearchLabel, Keys.ENTER);
+        Thread.sleep(2000);
+
+        // Asset Type / Asset Category
+        if (value.isEmpty() && (
+                attributeSearchLabel.equalsIgnoreCase("Asset Type")
+                || attributeSearchLabel.equalsIgnoreCase("Asset Category"))) {
+            try {
+                value = ImageAttributes().getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("#input")).getShadowRoot()
+                        .findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+                        .findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+                        .findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"))
+                        .getText().trim();
+            } catch (Exception e) {
+            }
+        }
+        // Asset Alternate Text
+        if (value.isEmpty() && attributeSearchLabel.equalsIgnoreCase("Asset Alternate Text")) {
+            try {
+                value = ImageAttributes().getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("div > div > #input")).getShadowRoot()
+                        .findElement(By.cssSelector(".attribute-control"))
+                        .getAttribute("value").trim();
+            } catch (Exception e) {
+            }
+        }
+        // Image Height / Image Width / X Resolution / Y Resolution
+        if (value.isEmpty() && (
+                attributeSearchLabel.equalsIgnoreCase("Image Height")
+                || attributeSearchLabel.equalsIgnoreCase("Image Width")
+                || attributeSearchLabel.equalsIgnoreCase("X Resolution")
+                || attributeSearchLabel.equalsIgnoreCase("Y Resolution"))) {
+            try {
+                value = ImageAttributes().getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                        .findElements(By.cssSelector("[id^='rs']")).get(1).getShadowRoot()
+                        .findElement(By.cssSelector("div > div > div.attribute-view.list > div > span"))
+                        .getText().trim();
+            } catch (Exception e) {
+            }
+        }
+        // Original File Name Property
+        if (value.isEmpty() && attributeSearchLabel.equalsIgnoreCase("Original File Name Property")) {
+            try {
+                value = ImageAttributes().getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                        .findElement(By.cssSelector("div > div > .attribute-view-value"))
+                        .getText().trim();
+            } catch (Exception e) {
+            }
+        }
+
+    } catch (Exception e) {
+    }
+    return value;
+}
+
+	public WebElement Avaialbe_BusinessCondition() {
+		return common_element().getShadowRoot()
+		        .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rock-entity-summary-component']")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+		        .findElement(By.cssSelector("#rock-entity-tofix")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='rock-entity-tofix-component']")).getShadowRoot()
+		        .findElement(By.cssSelector("#accordion\\ 0 > div > div > div > div.entity-content.true > div"));
+	}
+	
+	/***************************************************************************
+	 * Page Object representing the Renditions attribute grid  (Asset > Attributes tab > Renditions nested grid) and check for the rows appearing
+	 ************************************************************************/
+	public WebElement getRowContainer() {
+        return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+                .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+                .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+                .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+                .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+                .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+                .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+                .findElement(By.cssSelector("[id^='undefined-attribute-container'] > rock-attribute-manage")).getShadowRoot()
+                .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+                .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+                .findElement(By.cssSelector("div > div > rock-nested-attribute-grid")).getShadowRoot()
+                .findElement(By.cssSelector("#renditions-attributesGrid")).getShadowRoot()
+                .findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+                .findElement(By.cssSelector("#grid")).getShadowRoot()
+                .findElement(By.cssSelector(
+                        "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-auto-height.ag-focus-managed " +
+                        "> div.ag-root.ag-unselectable.ag-layout-auto-height " +
+                        "> div.ag-body-viewport.ag-layout-auto-height.ag-row-no-animation " +
+                        "> div.ag-center-cols-clipper > div"));
+    }
+	/***************************************************************************
+	 * @return list of WebElements, each representing one grid row
+	 **************************************************************************/
+		    public List<WebElement> getRednetionrowsRows() {
+		        return getRowContainer().findElements(By.cssSelector("div.ag-row"));
+		    }
+		    public WebElement getRowByIndex(int rowIndex) {
+		        return getRowContainer().findElement(By.cssSelector("div[row-index='" + rowIndex + "']"));
+		    }
+
+		    /*****************************************************************
+		     * Extracts the Rendition ID/title value from a given row.
+		     * Reads the "title" attribute of the cell mapped to col-id="renditionid"
+		     * (e.g. "white_background", "transparent_background").
+		     * @param row the row WebElement (obtained via getRowByIndex or getRows)
+		     * @return the rendition title/id text for that row
+		     ****************************************************************/
+		    public String getRenditionTitleFromRow(WebElement row) {
+		        return row.findElement(By.cssSelector("div[col-id='renditionid']")).getAttribute("title");
+		    }
+	
 }

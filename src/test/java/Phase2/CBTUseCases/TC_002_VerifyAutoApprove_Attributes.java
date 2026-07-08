@@ -48,7 +48,7 @@ public class TC_002_VerifyAutoApprove_Attributes extends BaseTest {
 		SummaryPage summaryPage = new SummaryPage(driver);
 		SearchPage2 searchPage = new SearchPage2(driver);
 		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
-		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/TC_001_RecordmovesoutoftheReviewUseCaseSelection.txt";
+		String PRE_ETL_Filename = "/Pre_ETL_Artifacts/CBT/" + className+".txt";
 		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
 
 		utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");

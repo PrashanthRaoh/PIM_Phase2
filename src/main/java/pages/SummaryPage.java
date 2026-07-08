@@ -32,7 +32,8 @@ public class SummaryPage {
 	}
 
 	public WebElement SearchIcon() {
-		return common_element().getShadowRoot().findElement(By.cssSelector("rock-entity-attribute-quick-search"));
+		return common_element().getShadowRoot()
+				.findElement(By.cssSelector("rock-entity-attribute-quick-search"));
 
 	}
 	public WebElement SearchInputfield() {

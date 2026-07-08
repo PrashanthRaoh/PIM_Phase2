@@ -1,5 +1,0 @@
- "Material ID" = "000000000190066350"
- "CBT Sellable Product Status" = "OnHoldUser"
- "Total OnHold Items" = "3"
- "CBT Sellable Product Status on Hold items" = ["(IUO) Collar Outer Diameter (in)","(IUO) Collar Outer Diameter (mm)","(IUO) Half Included Cone Angle"]
----------------------------------------
