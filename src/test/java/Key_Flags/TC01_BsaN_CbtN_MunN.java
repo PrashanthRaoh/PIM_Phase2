@@ -31,7 +31,7 @@ public class TC01_BsaN_CbtN_MunN extends BaseTest {
     DigitalAsset digitalssetPage;
 
 
-    @Test(groups = {"KeyFlgs"})
+    @Test(groups = {"KeyFlags"})
     public void BsaN_CbtN_MunN() throws Exception {
         Map<String, Object> data = new LinkedHashMap<>();
         String className = this.getClass().getSimpleName();

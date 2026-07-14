@@ -14,15 +14,24 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import common_functions.BaseTest;
-import common_functions.CBT_Utils;
 import common_functions.Utils;
 import pages.BSAPIE_Page;
 import pages.CBT_Page;
 import pages.DigitalAsset;
 import pages.HomePage;
-import pages.SearchPage2;
 import pages.SummaryPage;
 
+/*************************************************************************************************
+Description : * TC_001_Validating_Asset_Enrichment_flow:
+ * Digital Asset Library -> Select an Image -->Summary tab
+ * Validate "Asset Type" and "Asset Category" attributes have values ->
+ * Verify "Validate Image Attributes" DQ check throws errors "Image height cannot be less than 1650"
+ * and "Image width cannot be less than 1650" on Image Height, Image Width, X Resolution, Y Resolution ->
+ * Verify "Original File Name Property" shows error "Original file name should start with timken or EDT" ->
+ * Verify "Asset Alternate Text" shows Image Name without file extension ->
+ * Attribute tab -> Asset Renditions group -> Verify renditions "transparent_background"
+ * and "white_background" are generated.
+***********************************************************************************************/
 @Test(groups = { "DigitalAssetowner" })
 public class TC_001_Validating_Asset_Enrichment_flow extends BaseTest {
 

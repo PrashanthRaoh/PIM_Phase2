@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PIM_Phase2 Automation_Suite">
+    <test name="DAM_Tests">
+        <parameter name="UseCaseOwner" value="DigitalAssetowner" />
+        <classes>
+            <!--<class name="DAM.TC_001_Validating_Asset_Enrichment_flow" />-->
+            <class name="DAM.TC_002_DAM_Review_Representative_Image_Primary" />
+        </classes>
+    </test>
+  
+  
+</suite>

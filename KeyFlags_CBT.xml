@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="PIM_Phase2 Automation_Suite">
    
-  <!-- <test name="BSAPIEOwner">
-        <parameter name="UseCaseOwner" value="KeyFlgs" />
+   <test name="BSAPIEOwner">
+        <parameter name="UseCaseOwner" value="BSAPIEowner" />
     <classes>
 			<class name="Key_Flags.TC01_BsaN_CbtN_MunN" />
 			<class name="Key_Flags.TC02_BsaY_CbtY_MunN" />
@@ -21,9 +21,9 @@
             <class name="Key_Flags.TC13_BsaY_CbtN_InterCompany" />
             <class name="Key_Flags.TC14_BsaN_CbtN_InterCompany" />
     </classes>
-  </test>-->
+  </test>
   
-  
+  <!--
   <test name="CBTUseCaseOwner">
 	  <parameter name="UseCaseOwner" value="CBTUseCaseOwner" />
     <classes>
@@ -34,10 +34,10 @@
         <class name="Phase2.CBTUseCases.TC_005_ListAllHoldAttributes"/>
         <class name="Phase2.CBTUseCases.TC_007_Validating_CBTUsecasescenarios_Toggle"/>
         
-        <!--***************** POST-ETL Scripts *************** -->
-        <!--<class name="Post_ETL_Scripts.TC_003_PostETL_PartialOnholdCheck"/>
+        ***************** POST-ETL Scripts *************** 
+        <class name="Post_ETL_Scripts.TC_003_PostETL_PartialOnholdCheck"/>
         <class name="Post_ETL_Scripts.TC_005a_PostETL_Partial_HoldAttributes"/>
-        <class name="Post_ETL_Scripts.TC_005b_PostETL_Complete_HoldAttributes"/>-->
+        <class name="Post_ETL_Scripts.TC_005b_PostETL_Complete_HoldAttributes"/>
     </classes>
-  </test>  
+  </test>  -->
 </suite>
