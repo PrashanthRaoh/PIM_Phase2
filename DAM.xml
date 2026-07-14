@@ -5,7 +5,8 @@
         <parameter name="UseCaseOwner" value="DigitalAssetowner" />
         <classes>
             <!--<class name="DAM.TC_001_Validating_Asset_Enrichment_flow" />-->
-            <class name="DAM.TC_002_DAM_Review_Representative_Image_Primary" />
+<!--            <class name="DAM.TC_002_DAM_Review_Representative_Image_Primary" />-->
+            <class name="DAM.TC_006_DAM_ReviewUnclassifiedImages_Count_Zero" />
         </classes>
     </test>
   

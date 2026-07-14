@@ -729,4 +729,15 @@ public class DigitalAsset {
 		        return row.findElement(By.cssSelector("div[col-id='renditionid']")).getAttribute("title");
 		    }
 	
+		    public WebElement Imagerequired_Auto_HasImagesDropdown() {
+		    	return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		    		    .findElement(By.cssSelector("[id^='currentApp_search-thing_rs']")).getShadowRoot()
+		    		    .findElement(By.cssSelector("[id^='app-entity-discovery-component-rs']")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#filter-text")).getShadowRoot()
+		    		    .findElement(By.cssSelector("#pebble__textbox"));
+		    }
 }
