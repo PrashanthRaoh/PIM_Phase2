@@ -3,6 +3,7 @@ package pages;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.SearchContext;
@@ -740,4 +741,204 @@ public class DigitalAsset {
 		    		    .findElement(By.cssSelector("#filter-text")).getShadowRoot()
 		    		    .findElement(By.cssSelector("#pebble__textbox"));
 		    }
+	    public WebElement ImageRequired_Auto_Dropdown() {
+	    	return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	    		    .findElement(By.cssSelector("[id^='currentApp_search-thing_rs']")).getShadowRoot()
+	    		    .findElement(By.cssSelector("[id^='app-entity-discovery-component-rs']")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#filter-text")).getShadowRoot()
+	    		    .findElement(By.cssSelector("#pebble__textbox"));
+	    }
+	    
+	    public SearchContext Dropdown_BaseObject() {
+	        return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	            .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	            .findElement(By.cssSelector("[id^='currentApp_search-thing_rs']")).getShadowRoot()
+	            .findElement(By.cssSelector("[id^='app-entity-discovery-component-rs']")).getShadowRoot()
+	            .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+	            .findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+	            .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+	            .findElement(By.cssSelector("#operators")).getShadowRoot()
+	            .findElement(By.cssSelector("div.base-grid-structure > div.base-grid-structure-child-2 > pebble-grid")).getShadowRoot()
+	            .findElement(By.cssSelector("#grid")).getShadowRoot();  // ← add this
+	    }
+	    
+	    public WebElement SkipAndContinue_Dialog() {
+	    	return common_element().getShadowRoot()
+	        .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='rock-wizard-manage-component']")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component']")).getShadowRoot()
+	        .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+	        .findElement(By.cssSelector("#errorsDialog")).getShadowRoot()
+	        .findElement(By.cssSelector("#dialog > div"));
+	    }
+	    
+    public WebElement SkipAndContinue_Dialog_Continue_btn() {
+	    return common_element().getShadowRoot()
+	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='rock-wizard-manage-component']")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component']")).getShadowRoot()
+	    .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+	    .findElement(By.cssSelector("#skip")).getShadowRoot()
+	    .findElement(By.cssSelector("#simpleButton"));
+	    }
+    
+    public WebElement Assets_dropdownWrapper() {
+		return common_element().getShadowRoot()
+				.findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				.findElement(By.cssSelector("#tab-assets")).getShadowRoot()
+				.findElement(By.cssSelector("#dropdown-wrapper"));
+	}
+    public WebElement Assets_dropdown_Has_Images_Option() {
+	    return common_element().getShadowRoot()
+		    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		    .findElement(By.cssSelector("#assets-hasimagesowned"));
+	    }
+    
+    public WebElement AssetType_SearchImage_Window() {
+    	return common_elementon_searchImage().getShadowRoot()
+        .findElement(By.cssSelector("[id^='rock-relationship-add-component-rs']")).getShadowRoot()
+        .findElement(By.cssSelector("#searchFilter")).getShadowRoot()
+        .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+        .findElement(By.cssSelector("#filterButton")).getShadowRoot()
+        .findElement(By.cssSelector("#buttonTextBox"));
+    }
+    public WebElement AssetType_SearchImage_Window_Inputbox() {   
+		return common_elementon_searchImage().getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-relationship-add-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#searchFilter")).getShadowRoot()
+				.findElement(By.cssSelector("#search-filter")).getShadowRoot()
+				.findElement(By.cssSelector("#refineMoreSearchbox")).getShadowRoot()
+				.findElement(By.cssSelector("#input"));
+	}
+    public WebElement AssetType_SearchList_element() {
+    	return common_elementon_searchImage().getShadowRoot()
+    		    .findElement(By.cssSelector("[id^='rock-relationship-add-component-rs']")).getShadowRoot()
+    		    .findElement(By.cssSelector("#searchFilter")).getShadowRoot()
+    		    .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+    		    .findElement(By.cssSelector("#attributeModelLov_digitalAsset")).getShadowRoot()
+    		    .findElement(By.cssSelector("#modelLov_digitalAsset")).getShadowRoot()
+    		    .findElement(By.cssSelector( "div.base-grid-structure.p-relative.hideLovHeader > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")) .getShadowRoot()
+    		    .findElement(By.cssSelector("#grid")).getShadowRoot()
+    		    .findElement(By.cssSelector( "#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div > pebble-lov-item"))
+    		    .getShadowRoot()
+    		    .findElement(By.cssSelector("div"));
+    }
+    
+    public WebElement Similar_DA_Element() {
+    	 return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+        .findElement(By.cssSelector("#contextDialog")).getShadowRoot()
+        .findElement(By.cssSelector("#rockWizardManage")).getShadowRoot()
+        .findElement(By.cssSelector("[id^='rock-relationship-add-component-rs']"));
+    }
+    public SearchContext getGridShadowRoot() {
+        return Similar_DA_Element().getShadowRoot()
+                .findElement(By.cssSelector("#searchFilter")).getShadowRoot()
+                .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+                .findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
+                .findElement(By.cssSelector("#entityLov")).getShadowRoot()
+                .findElement(By.cssSelector(
+                        "div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid"))
+                .getShadowRoot()
+                .findElement(By.cssSelector("#grid"))
+                .getShadowRoot();
+    }
+    public WebElement Primary_Image_Confirm_button() {
+    	return Similar_DA_Element().getShadowRoot()
+        .findElement(By.cssSelector("#searchFilter")).getShadowRoot()
+        .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+        .findElement(By.cssSelector("#rockEntityLov")).getShadowRoot()
+        .findElement(By.cssSelector("#entityLov")).getShadowRoot()
+        .findElement(By.cssSelector("#confirmButton")).getShadowRoot()
+        .findElement(By.cssSelector("#buttonTextBox"));
+    }
+    
+	public WebElement DA_MoreActions_dropdown() {
+		return Similar_DA_Element().getShadowRoot()
+			    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+			    .findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
+			    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+			    .findElement(By.cssSelector("#relationship_actions")).getShadowRoot()
+			    .findElement(By.cssSelector("#actions")).getShadowRoot()
+			    .findElement(By.cssSelector("#simpleButton"));
+	}
+	
+	public  List<WebElement> DA_AddImagedropdownvalue() {
+		return common_element().getShadowRoot().findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+				.findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
+				.findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+				.findElement(By.cssSelector("#relationship_actions")).getShadowRoot()
+				.findElement(By.cssSelector("#pebbleActionDropdown")).getShadowRoot()
+				.findElements(By.cssSelector("#actionItem"));
+	}
+	
+	public List<WebElement> getImageNames() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	    return wait.until(driver1 -> {
+	        List<WebElement> elements = Similar_DA_Element().getShadowRoot()
+	                .findElement(By.cssSelector("#relatedEntitySearchGrid")).getShadowRoot()
+	                .findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+	                .findElement(By.cssSelector("#gridTileView")).getShadowRoot()
+	                .findElements(By.cssSelector("[id^='gridItem'] > div > div.text > div.title.block-text"));
+
+	        return elements.isEmpty() ? null : elements;
+	    });
+	}
+	public List<WebElement> getImageCheckboxes() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	    return wait.until(driver1 -> {
+	        List<WebElement> elements = Similar_DA_Element().getShadowRoot()
+	                .findElement(By.cssSelector("#relatedEntitySearchGrid")).getShadowRoot()
+	                .findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+	                .findElement(By.cssSelector("#gridTileView")).getShadowRoot()
+	                .findElements(By.cssSelector("[id^='gridItem'] > div > div.photocontent-header > pebble-checkbox"));
+	        return elements.isEmpty() ? null : elements;
+	    });
+	}
+	public WebElement Save_DA_Image_btn() {
+		return Similar_DA_Element().getShadowRoot()
+			    .findElement(By.cssSelector("#next")).getShadowRoot()
+			    .findElement(By.cssSelector("#buttonTextBox"));
+	}
+	
+	public WebElement Summary_Tab() {
+		return common_element().getShadowRoot()
+	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+	    .findElement(By.cssSelector("#tab-summary"));
+	}
+	public WebElement SameDropdownObject() {
+		return common_element().getShadowRoot().findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+		.findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+		.findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+		.findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+		.findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list"));
+	}
+	public WebElement DA_error_Message() {
+		return common_element().getShadowRoot()
+			    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+			    .findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("#error-display > span.error"));
+	}
+	
+	public WebElement Approve_Representative_Image_Primary_dropdown_obj() {
+		return SameDropdownObject().getShadowRoot()
+				.findElements(By.cssSelector("[id^='rs']")).get(3).getShadowRoot()
+				.findElement(By.cssSelector(".attribute-edit > #input")).getShadowRoot()
+				.findElement(By.cssSelector(".attribute-control")).getShadowRoot()
+				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+				.findElement(By.cssSelector(".d-flex"));
+	}
 }
