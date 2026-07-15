@@ -352,6 +352,7 @@ public class TC_002_DAM_Review_Representative_Image_Primary extends BaseTest {
 		 * Expected Result:
 		 * The user should be able to view "DAM: Review Representative Image (Primary)" data quality check.
 		****************************/
+		utils.waitForElement(() -> digitalssetPage.DA_MoreActions_dropdown(), "clickable");
 		digitalssetPage.Summary_Tab().click();
 		Thread.sleep(5000);
 		 List<WebElement> conditions1 = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list"));

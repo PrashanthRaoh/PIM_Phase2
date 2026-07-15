@@ -1,20 +1,25 @@
 package DAM;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
-
 import common_functions.BaseTest;
 import common_functions.CBT_Utils;
 import common_functions.Utils;
@@ -79,7 +84,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		System.out.println("Home Page of Digital Asset is displayed");
 		test.pass("Home Page of Digital Asset is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		/**************************************************************************
 		 * // Step 2: Navigate to "My To-Do's" and click on "Digital Assets  Enrichment" tab 
 		 * // Verify "Enrich Digital Assets" state is displayed
@@ -98,7 +103,6 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		Thread.sleep(2000);
 		test.pass("More details clicked on Enrich Digital Asset tab");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		
 		/******************************************************************************
 		* TC_003_DAM_Review_2D_Line_Drawing
 		* Description:
@@ -111,14 +115,14 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
 				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos"))
-				.getShadowRoot().findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-my-todos")) .getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot()
 				.findElement(By.cssSelector("#moreDetails"))
 				.findElements(By.cssSelector("my-todo-detail-view-list-item"));
-
 		utils.waitForElement(() -> detailItems.get(0), "clickable");
 		System.out.println("There are " + detailItems.size() + " elements ");
 		
@@ -173,51 +177,155 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		Thread.sleep(2000);
 		test.pass("Summary tab is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		
+		List<WebElement> conditions = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list"));
+	    for (int i = 0; i < conditions.size(); i++) {
+	        WebElement cond = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list")).get(i); 
+	        String busscondname = cond.findElement(By.cssSelector("[class*='entity-content']")).getAttribute("title");
+	        System.out.println("Condition " + (i + 1) + " -- " + busscondname);
+	        /***************************
+			 * Step 8:
+			 * The user clicks on the "DAM: Review 2D Line Drawing" data quality check.
+			 * Expected Result:
+			 * The user should be able to view the "Image Required" attribute with "Blank" value.
+			****************************/
+	        if (busscondname.contains("DAM: Review 2D Line Drawing")) {
+	            cond.click();
+	            System.out.println("Clicked on DAM: Review 2D Line Drawing condition");
+	            test.pass("Clicked on DAM: Review 2D Line Drawing condition");
+	    		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+	            break;
+	        }
+	    }
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    wait.until(ExpectedConditions.visibilityOf(digitalssetPage.common_ele_2dlinedrawingDropdown()));
 	/*********************
 	Step 6:
 	Click on the "Asset" tab from the Entity Manage screen.
 	Verify that the "Has Image(s)" relationship section is expanded and displayed.
 	************************/
-
+	    digitalssetPage.Assets_dropdownWrapper().click();
+		Thread.sleep(3000);
+		digitalssetPage.Assets_dropdown_Has_Images_Option().click();
+		Thread.sleep(3000);
 	/*********************
 	Step 7:
 	Click on the "More Actions" button and select the "Add" option.
 	Verify that the "Add Relationship" popup/window is opened successfully.
 	************************/
-
+		utils.waitForElement(() -> digitalssetPage.DA_MoreActions_dropdown(), "clickable");
+		Thread.sleep(1000);
+		test.pass("More actions page displayed to attach a image");
+		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		digitalssetPage.DA_MoreActions_dropdown().click();
+		Thread.sleep(1000);
+		List<WebElement> actionItems = digitalssetPage.DA_AddImagedropdownvalue();
+		for (WebElement item : actionItems) {
+		    String title = item.getAttribute("title");
+		    if (title != null && title.trim().equals("Add")) {
+		        item.click();
+		        Thread.sleep(5000);
+		        System.out.println("Clicked: " + title);
+		        break;
+		    }
+		}
+		utils.waitForElement(() -> digitalssetPage.Search_Images_input(), "clickable");
+		test.pass("Arrived at adding image page");
+		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 	/*********************
 	Step 8:
 	Within the Add Relationship window, click on the "Filter" option.
 	Search for the "Asset Type" filter and select it.
 	Verify that the Asset Type filter panel is displayed successfully.
 	************************/
-
+		digitalssetPage.AssetType_SearchImage_Window().click();
+		Thread.sleep(2000);
+		digitalssetPage.AssetType_SearchImage_Window_Inputbox().sendKeys("Asset Type");
+		Thread.sleep(1000);
+		utils.waitForElement(() -> digitalssetPage.AssetType_SearchList_element(), "clickable");
+		if (digitalssetPage.AssetType_SearchList_element().isDisplayed()) {
+			test.pass("Asset Type filter is displayed");
+			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			digitalssetPage.AssetType_SearchList_element().click();
+			Thread.sleep(2000);
+		}
+		wait.until(driver-> digitalssetPage.getGridShadowRoot().findElements(By.cssSelector("pebble-lov-item")).size() > 0);
+		
+		List<WebElement> items = digitalssetPage.getGridShadowRoot().findElements( By.cssSelector("pebble-lov-item"));
+		System.out.println("Total Items: " + items.size());
 	/*********************
 	Step 9:
 	Select the "2D Line Drawing" option from the Asset Type filter and click on the "Apply" button.
 	Verify that only assets with Asset Type as "2D Line Drawing" are displayed in the results.
 	************************/
-
+		for (int i = 0; i < items.size(); i++) {
+		    WebElement itemText = items.get(i) .getShadowRoot() .findElement(By.cssSelector("div > div"));
+		    String value = itemText.getText().trim();
+		    System.out.println("Row " + (i + 1) + ": " + value);
+		    if (value.equalsIgnoreCase("2D Line Drawing")) {
+		        itemText.click();
+		        Thread.sleep(1000);
+		        break;
+		    }
+		}
+		digitalssetPage.Primary_Image_Confirm_button().click();
+		Thread.sleep(2000);
 	/*********************
 	Step 10:
 	Select the required 2D Line Drawing asset using the corresponding checkbox.
 	Click on the "Save" button.
 	Verify that the selected asset is added successfully without any validation or system errors.
 	************************/
+		List<WebElement> imageNames = digitalssetPage.getImageNames();
+		List<WebElement> imageCheckboxes = digitalssetPage.getImageCheckboxes();
+		Assert.assertFalse(imageNames.isEmpty(), "No images found!");
 
+		if (imageNames.size() != imageCheckboxes.size()) {
+			throw new IllegalStateException("Mismatch between image names (" + imageNames.size() + ") and checkboxes (" + imageCheckboxes.size() + ")");
+		}
+		for (int i = 0; i < imageNames.size(); i++) {
+			System.out.println((i + 1) + ". " + imageNames.get(i).getText().trim());
+		}
+		// Random selection
+		int randomIndex = ThreadLocalRandom.current().nextInt(imageNames.size());
+		String selectedImageName = imageNames.get(randomIndex).getText().trim();
+		System.out.println("Randomly selected image: " + selectedImageName);
+		test.pass("Randomly selected image: " + selectedImageName);
+		// Click corresponding checkbox
+		imageCheckboxes.get(randomIndex).getShadowRoot().findElement(By.cssSelector("#checkboxContainer")).click();
+		System.out.println("Checkbox clicked for: " + selectedImageName);
+		data.put("Image Name", selectedImageName);
+		digitalssetPage.Save_DA_Image_btn().click();
+		Thread.sleep(5000);
 	/*********************
 	Step 11:
 	Click on the newly added "Asset Name" link.
 	Navigate to the DAM Summary page/tab.
 	Verify that the DAM-related validation error is visible.
 	************************/
-
-	/*********************
-	Step 12:
-	Click on the "Summary" tab of the entity.
-	Verify that the "DAM: 2D Line Drawing" Data Quality Check is displayed.
-	************************/
-
+		utils.waitForElement(() -> digitalssetPage.DA_MoreActions_dropdown(), "clickable");
+		/*********************
+		 * Step 12: Click on the "Summary" tab of the entity. Verify that
+		 * the "DAM: 2D Line Drawing" Data Quality Check is displayed.
+		 ************************/
+		digitalssetPage.Summary_Tab().click();
+		Thread.sleep(2000);
+		utils.waitForElement(() -> digitalssetPage.Summarythingsneedtofix_grid(), "clickable");
+		
+		 List<WebElement> conditions1 = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list"));
+		    for (int i = 0; i < conditions1.size(); i++) {
+		        WebElement cond = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list")).get(i); 
+		        String busscondname = cond.findElement(By.cssSelector("[class*='entity-content']")).getAttribute("title");
+		        System.out.println("Condition " + (i + 1) + " -- " + busscondname);
+		        if (busscondname.contains("DAM: Review 2D Line Drawing")) {
+		            cond.click();
+		            System.out.println("Clicked on DAM: 2D Line Drawing condition");
+		            test.pass("Clicked on DAM: Review 2D Line Drawing condition");
+		    		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		            break;
+		        }
+		    }
+		    wait.until(ExpectedConditions.visibilityOf(digitalssetPage.common_ele_2dlinedrawingDropdown()));
 	/*********************
 	Step 13:
 	Click on the "DAM: Review 2D Line Drawing" section from the summary page.
@@ -225,18 +333,101 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 	1. Required
 	2. DAM: Review 2D Line Drawing Images have been deleted, added, or image has been updated
 	************************/
-
+		    WebElement daError = wait.until(ExpectedConditions.visibilityOf(digitalssetPage.DA_error_Message()));
+			Assert.assertTrue(daError.isDisplayed(), "DA error message is not displayed");
+			// Capture and normalize text
+			String actualErrorText = daError.getText().trim().replaceAll("\\s+", " ");
+			System.out.println("DA error text: " + actualErrorText);
+			test.pass("DA error message displayed: " + actualErrorText);
+			// Expected from your Step 16
+			String expectedErrorText = "2D Line Drawing images have been deleted, added, or image has been updated";
+			 Assert.assertEquals(actualErrorText, expectedErrorText, "Mismatch in DA error message text");
 	/*********************
 	Step 14:
 	Update the "Approve 2D Line Drawing?" attribute by selecting the value "Approve".
 	Click on the "Save" button to save the entity.
 	************************/
+			 WebElement approve2dlinedrawing_dropdown = digitalssetPage.common_ele_2dlinedrawingDropdown().getShadowRoot()
+						.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
+						.findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
+				
+				utils.waitForElement(() -> approve2dlinedrawing_dropdown, "visible");
+				Thread.sleep(2000);
+				test.pass("2d line drawing window appeared");
+				test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 
+				approve2dlinedrawing_dropdown.click();
+				Thread.sleep(2000);
+				WebElement approvedropdownvalue = digitalssetPage.common_ele_2dlinedrawingDropdown().
+				getShadowRoot().findElement(By.cssSelector("#lov")).
+				getShadowRoot().findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).
+				getShadowRoot().findElement(By.cssSelector("#grid")).
+				getShadowRoot().findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div > pebble-lov-item")).
+				getShadowRoot().findElement(By.cssSelector("div > div > div > span"));
+				/*******************
+				 * Approve 2d line drawing
+				*******************/
+				approvedropdownvalue.click();
+				Thread.sleep(2000);
+				digitalssetPage.Save_2d_Line_Drawring().click();
+				Thread.sleep(3000);
+				utils.waitForElement(() -> digitalssetPage.Save_2d_Line_Drawring(), "clickable");
+				Thread.sleep(2000);
+				/*************************************************
+			     * --------- Wait for the banner to appear --------
+			     ************************************************/
+			    WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
+			    Function<WebDriver, WebElement> getBannerElement = drv -> {
+			        try {
+			            return drv.findElement(By.cssSelector("#app")).getShadowRoot()
+			                    .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			                    .findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html")).getShadowRoot()
+			                    .findElement(By.cssSelector("#bind-html"));
+			        } catch (Exception e) {
+			            return null;
+			        }
+			    };
+			    WebElement banner = wait1.until(drv -> {
+			        WebElement el = getBannerElement.apply(drv);
+			        return (el != null && el.isDisplayed()) ? el : null;
+			    });
+
+			    String bannerText = banner.getText();
+			    System.out.println("✅ Banner appeared with the text : " + bannerText);
+			    Thread.sleep(3000);
+			    
+				test.pass("Approved 2d Line drawing");
+				test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 	/*********************
 	Step 15:
 	Verify that all validation errors are removed successfully after saving.
 	Verify that the "DAM: Review Secondary Image" Data Quality Check passes successfully.
 	Verify that the DQ check status is displayed in green color, indicating successful completion.
 	************************/
+	cbtpage.CBT_Workflow_Refresh_btn().click();
+	Thread.sleep(5000);
+	wait.until(ExpectedConditions.elementToBeClickable(digitalssetPage.common_ele_2dlinedrawingDropdown()));
+
+	boolean isDaErrorVisible = false;
+	String daErrorText = "";
+	try {
+		WebElement daErrorEl = digitalssetPage.DA_error_Message();
+		if (daErrorEl != null && daErrorEl.isDisplayed()) {
+			isDaErrorVisible = true;
+			daErrorText = daErrorEl.getText().trim();
+		}
+	} catch (Exception e) {
+		isDaErrorVisible = false;
+	}
+	String screenshotPath = Utils.Takescreenshot(driver);
+	if (isDaErrorVisible) {
+		test.fail("DA error message is still visible after refresh. Error text: " + daErrorText);
+		test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
+		Assert.fail("DA error message is still visible after approval and refresh");
+	} else {
+		test.pass("DA error message is not visible after refresh (validation cleared as expected).");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
+	}
+
 }
 }

@@ -858,10 +858,9 @@ public class DigitalAsset {
     }
     
 	public WebElement DA_MoreActions_dropdown() {
-		return Similar_DA_Element().getShadowRoot()
-			    .findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+		return common_element().getShadowRoot()
 			    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
-			    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-rs']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component']")).getShadowRoot()
 			    .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
 			    .findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
 			    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
@@ -869,6 +868,19 @@ public class DigitalAsset {
 			    .findElement(By.cssSelector("#actions")).getShadowRoot()
 			    .findElement(By.cssSelector("#simpleButton"));
 	}
+	
+//	public WebElement More_Actions_2_Dropdown() {
+//		return common_element().getShadowRoot()
+//	    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+//	    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component']")).getShadowRoot()
+//	    .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+//	    .findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
+//	    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+//	    .findElement(By.cssSelector("#relationship_actions")).getShadowRoot()
+//	    .findElement(By.cssSelector("#actions")).getShadowRoot()
+//	    .findElement(By.cssSelector("#simpleButton"));
+//	}
+	
 	
 	public  List<WebElement> DA_AddImagedropdownvalue() {
 		return common_element().getShadowRoot().findElement(By.cssSelector("#rockTabs")).getShadowRoot()
@@ -941,4 +953,5 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#collectionContainer")).getShadowRoot()
 				.findElement(By.cssSelector(".d-flex"));
 	}
+	
 }
