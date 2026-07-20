@@ -287,5 +287,18 @@ public class BSAPIE_Page {
 					.findElement(By.cssSelector("#grid")).getShadowRoot()
 					.findElements(By.cssSelector("pebble-lov-item"));
 		}
+		public WebElement Comments_input() {
+			return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+	        .findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+	        .findElement(By.cssSelector("[id^='stepComments-']")).getShadowRoot()
+	        .findElement(By.cssSelector("#textarea")).getShadowRoot()
+	        .findElement(By.cssSelector("#input-1")).getShadowRoot()
+	        .findElement(By.cssSelector("#textarea"));
+		}
 		
 }

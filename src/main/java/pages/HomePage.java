@@ -139,8 +139,7 @@ public class HomePage {
 	public WebElement Version_manager_Close_btn() {
 		WebElement Version_manager_Close_btn = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
-				.findElement(By.cssSelector(
-						"app-header > app-toolbar > div > div.right-content > div.right-content-bar > rock-header-actions"))
+				.findElement(By.cssSelector( "app-header > app-toolbar > div > div.right-content > div.right-content-bar > rock-header-actions"))
 				.getShadowRoot().findElement(By.cssSelector("#userProfile")).getShadowRoot()
 				.findElement(By.cssSelector("rock-version-manage")).getShadowRoot()
 				.findElement(By.cssSelector("#versionManagerDialog")).getShadowRoot()

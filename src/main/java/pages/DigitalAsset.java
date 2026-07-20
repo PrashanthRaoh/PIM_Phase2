@@ -1080,5 +1080,38 @@ public boolean applyFilterAndSelectOption(
     System.out.println("Rows loaded successfully: " + rowsLoaded);
     return rowsLoaded;
 }
+
+public WebElement Adapt_Commonelement() {
+	return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
+	.findElement(By.cssSelector("[id^='app-entity-discovery-component-rs']")).getShadowRoot()
+	.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+	.findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+	.findElement(By.cssSelector("#search-filter")).getShadowRoot()
+	.findElement(By.cssSelector("#pathSelector"));
+}
+
+	public WebElement Adapt_Input() {
+		return  Adapt_Commonelement().getShadowRoot()
+			.findElement(By.cssSelector("#classification-contextTree")).getShadowRoot()
+			.findElement(By.cssSelector("#classificationSearchBar")).getShadowRoot()
+			.findElement(By.cssSelector("#input"));
+		}
+	
+	public WebElement Adapt_Tree() {
+		return Adapt_Commonelement().getShadowRoot()
+			    .findElement(By.cssSelector("#classification-contextTree")).getShadowRoot()
+			    .findElement(By.cssSelector("#contextTree")).getShadowRoot()
+			    .findElement(By.cssSelector("ul > pebble-tree-node")).getShadowRoot()
+			    .findElement(By.cssSelector("li > div.detailtext-wrapper"));
+	}
+	
+	public WebElement Adapt_Applybutton() {
+		return Adapt_Commonelement().getShadowRoot()
+	    .findElement(By.cssSelector("#download")).getShadowRoot()
+	    .findElement(By.cssSelector("#buttonTextBox"));
+	}
+
 }
 
