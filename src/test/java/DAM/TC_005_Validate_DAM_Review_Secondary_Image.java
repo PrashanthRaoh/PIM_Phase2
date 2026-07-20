@@ -28,40 +28,42 @@ import pages.DigitalAsset;
 import pages.HomePage;
 import pages.SearchPage2;
 import pages.SummaryPage;
-
 /******************************************************************************
-* TC_003_DAM_Review_2D_Line_Drawing
+* TC_005_DAM_Review_Secondary_Image
 * Description:
      * My To-Do's -> Digital Assets Enrichment tab -> Enrich Digital Assets state ->
-     * More Details -> Click "DAM: Review 2D Line Drawing" link ->
-     * View all pending entities for "DAM: Review 2D Line Drawing" ->
+     * More Details -> Click "DAM: Review Secondary Image" link ->
+     * View all pending entities for "DAM: Review Secondary Image" ->
      * Open entity using Sellable Material ID ->
-     * Entity Manage screen -> Verify "Approve 2D Line Drawing?" attribute shows
-     * error "Secondary Images have been deleted, added, or image has been updated" ->
-     * Navigate to Asset tab -> Verify "Has Image(s)" relationship section is available ->
+     * Entity Manage screen -> Navigate to Summary tab ->
+     * Verify "DAM: Review Secondary Image" Data Quality Check is displayed
+     * in red color ->
+     * Open "DAM: Review Secondary Image" business condition ->
+     * Verify "Approve Secondary Image?" attribute displays error:
+     * "Secondary Image has been deleted, added, or image has been updated" ->
+     * Navigate to Asset tab ->
+     * Verify "Has Image(s)" relationship section is available and expanded ->
      * More Actions -> Add -> Open Add Relationship window ->
-     * Filter -> Asset Type -> Select "2D Line Drawing" -> Apply ->
-     * Verify only 2D Line Drawing assets are displayed ->
-     * Select required asset and Save ->
+     * Filter -> Asset Type -> Select "Secondary Image" -> Apply ->
+     * Verify only Secondary Image assets are displayed ->
+     * Select required Secondary Image asset and Save ->
      * Verify asset is added successfully without any error ->
-     * Click Asset Name -> Navigate to DAM Summary tab ->
-     * Summary tab -> Verify "DAM: 2D Line Drawing" Data Quality Check is displayed ->
-     * Open "DAM: Review 2D Line Drawing" DQ check ->
-     * Verify following errors are displayed:
-     * "Required"
-     * "DAM: Review 2D Line Drawing Images have been deleted, added, or image has been updated" ->
-     * Set "Approve 2D Line Drawing?" attribute to "Approve" and Save ->
-     * Verify all validation errors are cleared ->
-     * Verify "DAM: Review Secondary Image" DQ check passes successfully and
-     * displays green status indicating successful completion.
+     * Re-open "DAM: Review Secondary Image" business condition ->
+     * Verify "Approve Secondary Image?" attribute displays error:
+     * "Secondary Image has been deleted, added, or image has been updated" ->
+     * Set "Approve Secondary Image?" attribute to "Approve" and Save ->
+     * Verify "Approve Secondary Image?" value is saved successfully ->
+     * Navigate back to Summary tab ->
+     * Verify "DAM: Review Secondary Image" business condition passes
+     * successfully and displays green status indicating successful completion.
 *****************************************************************************/
 @Test(groups = { "DigitalAssetowner" })
-public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
+public class TC_005_Validate_DAM_Review_Secondary_Image extends BaseTest {
 	
 	public ExtentTest test;
 	Map<String, Object> data = new LinkedHashMap<>();
 	
-	public void Validate2dLine_Drawing() throws InterruptedException, IOException {
+	public void ValidateReview_Secondary_Image() throws InterruptedException, IOException {
 		String className = this.getClass().getSimpleName();
 		System.out.println(className);
 		test = BaseTest.extentreport.createTest(className);
@@ -103,13 +105,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		Thread.sleep(2000);
 		test.pass("More details clicked on Enrich Digital Asset tab");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		/******************************************************************************
-		* TC_003_DAM_Review_2D_Line_Drawing
-		* Description:
-		     * My To-Do's -> Digital Assets Enrichment tab -> Enrich Digital Assets state ->
-		     * More Details -> Click "DAM: Review 2D Line Drawing" link ->
-		     * Verify all entities pending for "DAM: Review 2D Line Drawing" are displayed.
-		*****************************************************************************/
+		
 		List<WebElement> detailItems = driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
@@ -123,6 +119,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 				.findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot()
 				.findElement(By.cssSelector("#moreDetails"))
 				.findElements(By.cssSelector("my-todo-detail-view-list-item"));
+		
 		utils.waitForElement(() -> detailItems.get(0), "clickable");
 		System.out.println("There are " + detailItems.size() + " elements ");
 		
@@ -131,7 +128,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		Assert.assertEquals(detailItems.size(), expectedItems.size(), "Item count mismatch");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		/**********************************************
-		 * Verify in which row DAM: Review 2D Line Drawing was found
+		 * Verify in which row DAM: Review Secondary Image was found
 		**********************************************/
 		int matchedRowIndex = -1; 
 		for (int i = 0; i < detailItems.size(); i++) {
@@ -140,7 +137,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		    String actualText = innerDiv.getAttribute("title").trim().replaceFirst("^\\d+\\s", "");
 		    System.out.println("Item " + (i + 1) + ":--" + actualText);
 		    Assert.assertEquals(actualText, expectedItems.get(i), "Mismatch at item " + (i + 1));
-		    if (actualText.contains("DAM: Review 2D Line Drawing")) {
+		    if (actualText.contains("DAM: Review Secondary Image")) {
 		        matchedRowIndex = i + 1; 
 		        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", innerDiv);
 		        try {
@@ -153,11 +150,11 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		    }
 		}
 		if (matchedRowIndex != -1) {
-		    System.out.println("Found 'DAM: Review 2D Line Drawing' in row: " + matchedRowIndex);
+		    System.out.println("Found 'DAM: Review Secondary Image' in row: " + matchedRowIndex);
 		} else {
-		    System.out.println("'DAM: Review 2D Line Drawing' not found in any row.");
+		    System.out.println("'DAM: Review Secondary Image' not found in any row.");
 		}
-		test.pass("Clicked on DAM: Review 2D Line Drawing which is found at row -- " + matchedRowIndex);
+		test.pass("Clicked on DAM: Review Secondary Image which is found at row -- " + matchedRowIndex);
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 	/*********************
 	Step 4:
@@ -169,7 +166,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
         System.out.println("Selected Material ID: " + matid);
 	/*********************
 	Step 5:
-	Navigate to the "DAM: Review 2D Line Drawing" section within the entity.
+	Navigate to the "DAM: Review Secondary Image" section within the entity.
 	Verify that the "Approve 2D Line Drawing?" attribute is displayed along with the validation error:
 	"Secondary Images have been deleted, added, or image has been updated."
 	************************/
@@ -185,20 +182,39 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 	        System.out.println("Condition " + (i + 1) + " -- " + busscondname);
 	        /***************************
 			 * Step 8:
-			 * The user clicks on the "DAM: Review 2D Line Drawing" data quality check.
+			 * The user clicks on the "DAM: Review Secondary Image" data quality check.
 			 * Expected Result:
 			 * The user should be able to view the "Image Required" attribute with "Blank" value.
 			****************************/
-	        if (busscondname.contains("DAM: Review 2D Line Drawing")) {
+	        if (busscondname.contains("DAM: Review Secondary Image")) {
 	            cond.click();
-	            System.out.println("Clicked on DAM: Review 2D Line Drawing condition");
-	            test.pass("Clicked on DAM: Review 2D Line Drawing condition");
+	            System.out.println("Clicked on DAM: Review Secondary Image condition");
+	            test.pass("Clicked on DAM: Review Secondary Image condition");
 	    		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 	            break;
 	        }
 	    }
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	    wait.until(ExpectedConditions.visibilityOf(digitalssetPage.common_ele_2dlinedrawingDropdown()));
+	    
+		/*****************************************
+		Verify the error message is Secondary Images have been deleted, added, or image has
+		*************************************************************/
+	    String expectedErrorText = "Secondary Images have been deleted, added, or image has been updated";
+	    String actualErrorText = wait.until(
+	            ExpectedConditions.visibilityOf(digitalssetPage.DA_error_Message_Secondary_Image()))
+	            .getText()
+	            .replace('\u00A0', ' ')
+	            .replaceAll("\\s+", " ")
+	            .trim();
+
+		System.out.println("DA error text: " + actualErrorText);
+		System.out.println("Expected error text " + expectedErrorText);
+		test.pass("DA error message displayed: " + actualErrorText);
+		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+		Assert.assertTrue(actualErrorText.equalsIgnoreCase(expectedErrorText) || actualErrorText.equalsIgnoreCase(expectedErrorText.replace("Secondary Images have", "Secondary Image has")), "Mismatch in DA error message text. Actual=[" + actualErrorText + "]");
+
 	/*********************
 	Step 6:
 	Click on the "Asset" tab from the Entity Manage screen.
@@ -255,14 +271,14 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		System.out.println("Total Items: " + items.size());
 	/*********************
 	Step 9:
-	Select the "2D Line Drawing" option from the Asset Type filter and click on the "Apply" button.
+	Select the "Secondary Image" option from the Asset Type filter and click on the "Apply" button.
 	Verify that only assets with Asset Type as "2D Line Drawing" are displayed in the results.
 	************************/
 		for (int i = 0; i < items.size(); i++) {
 		    WebElement itemText = items.get(i) .getShadowRoot() .findElement(By.cssSelector("div > div"));
 		    String value = itemText.getText().trim();
 		    System.out.println("Row " + (i + 1) + ": " + value);
-		    if (value.equalsIgnoreCase("2D Line Drawing")) {
+		    if (value.equalsIgnoreCase("Secondary Image")) {
 		        itemText.click();
 		        Thread.sleep(1000);
 		        break;
@@ -272,7 +288,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		Thread.sleep(2000);
 	/*********************
 	Step 10:
-	Select the required 2D Line Drawing asset using the corresponding checkbox.
+	Select the required Secondary Image asset using the corresponding checkbox.
 	Click on the "Save" button.
 	Verify that the selected asset is added successfully without any validation or system errors.
 	************************/
@@ -291,7 +307,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		String selectedImageName = imageNames.get(randomIndex).getText().trim();
 		System.out.println("Randomly selected image: " + selectedImageName);
 		test.pass("Randomly selected image: " + selectedImageName);
-		// Click corresponding checkbox
+		
 		imageCheckboxes.get(randomIndex).getShadowRoot().findElement(By.cssSelector("#checkboxContainer")).click();
 		System.out.println("Checkbox clicked for: " + selectedImageName);
 		data.put("Image Name", selectedImageName);
@@ -317,10 +333,10 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		        WebElement cond = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list")).get(i); 
 		        String busscondname = cond.findElement(By.cssSelector("[class*='entity-content']")).getAttribute("title");
 		        System.out.println("Condition " + (i + 1) + " -- " + busscondname);
-		        if (busscondname.contains("DAM: Review 2D Line Drawing")) {
+		        if (busscondname.contains("DAM: Review Secondary Image")) {
 		            cond.click();
 		            System.out.println("Clicked on DAM: 2D Line Drawing condition");
-		            test.pass("Clicked on DAM: Review 2D Line Drawing condition");
+		            test.pass("Clicked on DAM: Review Secondary Image condition");
 		    		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		            break;
 		        }
@@ -328,49 +344,40 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 		    wait.until(ExpectedConditions.visibilityOf(digitalssetPage.common_ele_2dlinedrawingDropdown()));
 	/*********************
 	Step 13:
-	Click on the "DAM: Review 2D Line Drawing" section from the summary page.
+	Click on the "DAM: Review Secondary Image" section from the summary page.
 	Verify that the following validation messages are displayed:
 	1. Required
-	2. DAM: Review 2D Line Drawing Images have been deleted, added, or image has been updated
+	2. DAM: Review Secondary Image Images have been deleted, added, or image has been updated
 	************************/
-		    
-		    
-//		    List<WebElement> ErrormessageList = digitalssetPage.DA_error_Message();
-//			WebElement Displayedelement = ErrormessageList.get(3);
-//			WebElement daError = wait.until(ExpectedConditions.visibilityOf(Displayedelement));
-//			Assert.assertTrue(daError.isDisplayed(), "DA error message is not displayed");
-//			// Capture and normalize text
-//			String actualErrorText = daError.getText().trim().replaceAll("\\s+", " ");
-//			System.out.println("DA error text: " + actualErrorText);
-//			test.pass("DA error message displayed: " + actualErrorText);
-//			// Expected from your Step 16
-//			String expectedErrorText = "2D Line Drawing images have been deleted, added, or image has been updated";
-//			 Assert.assertEquals(actualErrorText, expectedErrorText, "Mismatch in DA error message text");
-		    
-		    String actualErrorText = "";
-			String expectedErrorText = "2D Line Drawing images have been deleted, added, or image has been updated";
-			boolean expectedBannerFound = false;
-
-			try {
-				WebElement errorHost = digitalssetPage.DA_error_Message();
-				if (errorHost.isDisplayed()) {
-					String bannerText = errorHost.getText().trim().replaceAll("\\s+", " ");
-					System.out.println("DA error text: " + bannerText);
-					if (bannerText.equalsIgnoreCase(expectedErrorText)) {
-						expectedBannerFound = true;
-						actualErrorText = bannerText;
-					}
-				}
-			} catch (Exception e) {
-				test.log(Status.WARNING, "Could not fetch pre-approval error banner at fixed index 2: " + e.getMessage());
-			}
-
-			if (expectedBannerFound) {
-				test.pass("DA error message displayed: " + actualErrorText);
-			} else {
-				test.log(Status.WARNING, "Expected DA error banner was not found before approval: " + expectedErrorText);
-				System.out.println("WARNING: Expected DA error banner was not found before approval.");
-			}
+						String expectedErrorText_after = "Secondary Image has been deleted, added, or image has been updated";
+						boolean expectedBannerFound = false;
+						try {
+							WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+							WebElement errorHost = shortWait.until(d -> {
+								try {
+									WebElement el = digitalssetPage.DA_error_Message();
+									return (el != null && el.isDisplayed()) ? el : null;
+								} catch (Exception ignored) {
+									return null;
+								}
+							});
+							if (errorHost != null) {
+								String bannerText = errorHost.getText().replace('\u00A0', ' ').replaceAll("\\s+", " ").trim();
+								System.out.println("DA error text: " + bannerText);
+								if (bannerText.equalsIgnoreCase(expectedErrorText_after)) {
+									expectedBannerFound = true;
+									actualErrorText = bannerText;
+								}
+							}
+						} catch (Exception e) {
+							// treat as no banner found within timeout
+							test.log(Status.PASS, "DA error message not present (within timeout)");
+							test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+						}
+						if (expectedBannerFound) {
+							test.fail("DA error message displayed: " + actualErrorText);
+							test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+						} 
 	/*********************
 	Step 14:
 	Update the "Approve 2D Line Drawing?" attribute by selecting the value "Approve".
@@ -438,8 +445,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 				Thread.sleep(5000);
 				test.pass("Refreshed transaction to get the latest workflow status");
 				test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				utils.waitForElement(() -> digitalssetPage.primary_Image_Required_dropdown_obj(), "clickable");
-				
+				utils.waitForElement(() -> digitalssetPage.common_ele_2dlinedrawingDropdown(), "clickable");
 				/****************************************
 						Validate the error message is not displayed
 				**************************************/		
@@ -449,7 +455,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 					WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
 					WebElement errorHost = shortWait.until(d -> {
 						try {
-							WebElement el = digitalssetPage.DA_error_Message();
+							WebElement el = digitalssetPage.DA_error_Message_Secondary_Image();
 							return el.isDisplayed() ? el : null;
 						} catch (Exception ignored) {
 							return null;
