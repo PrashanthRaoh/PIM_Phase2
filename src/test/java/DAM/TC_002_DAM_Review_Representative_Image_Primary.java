@@ -222,7 +222,7 @@ public class TC_002_DAM_Review_Representative_Image_Primary extends BaseTest {
 		boolean overrideApplied = digitalssetPage.applyFilterAndSelectOption(searchPage, "Image Required? (Override)", () -> digitalssetPage.ImageRequired_Auto_Dropdown(), "Has No Value");
 		Assert.assertTrue(overrideApplied, "Failed to apply filter: Image Required? (Override) -> Has No Value");
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-
+		Thread.sleep(5000);
 		/***************************
 		 * Step 5:
 		 * The user clicks on the "Filter" option and searches "Image Required? (Override)"

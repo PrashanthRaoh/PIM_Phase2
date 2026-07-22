@@ -251,6 +251,33 @@ public class Utils  {
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
 		}
 	}
+
+	public void applyLovFilter(String filterName, String filterValue, SearchPage2 searchPage, DigitalAsset digitalAsset) throws Exception {
+		searchPage.getFilterButton().click();
+		waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
+		WebElement materialTypeSearch = searchPage.Search_MaterialType();
+		materialTypeSearch.clear();
+		materialTypeSearch.sendKeys(filterName);
+		Thread.sleep(1000);
+
+		clickFilterAttribute(filterName);
+		Thread.sleep(1000);
+		clickLovValue(filterValue);
+		Thread.sleep(1000);
+		if (test != null) {
+			test.pass("Selected filter: " + filterName + " = " + filterValue);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+
+		digitalAsset.Status_Apply_btn().click();
+		Thread.sleep(2000);
+		waitForElement(() -> searchPage.getgrid(), "clickable");
+		Thread.sleep(2000);
+		if (test != null) {
+			test.pass("Applied filter: " + filterName + " = " + filterValue);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Takescreenshot(driver)).build());
+		}
+	}
 /*************************************************************
  * Applies the PIM Attribute Taxonomy filter, selects "Has Values",
  * clicks Apply, and waits for the search results grid to reload.
@@ -460,6 +487,10 @@ public class Utils  {
 	}
 
 	private void clickYesNoValue(String filterValue) {
+		clickLovValue(filterValue);
+	}
+
+	private void clickLovValue(String filterValue) {
 		WebElement valueGrid = findShadowElement(
 				"#app",
 				"#contentViewManager",
@@ -476,10 +507,11 @@ public class Utils  {
 
 		List<WebElement> items = valueGrid.getShadowRoot().findElements(By.cssSelector("pebble-lov-item"));
 		if (items.isEmpty()) {
-			throw new RuntimeException("No Yes/No values displayed for filter");
+			throw new RuntimeException("No LOV values displayed for filter");
 		}
 		for (WebElement item : items) {
-			if (item.getText().trim().equalsIgnoreCase(filterValue)) {
+			String itemText = item.getText() == null ? "" : item.getText().trim();
+			if (itemText.equalsIgnoreCase(filterValue)) {
 				item.click();
 				return;
 			}

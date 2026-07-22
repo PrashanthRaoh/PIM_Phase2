@@ -13,8 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
@@ -40,7 +38,6 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#rockDetailTabs"));
 	}
-
 	public WebElement TotalRowsText() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -422,7 +419,18 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#confirmButton")).getShadowRoot()
 				.findElement(By.cssSelector("#buttonTextBox"));
 	}
-
+	public WebElement HasNo_Images_Apply_btn() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+		        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='currentApp_search-thing']")).getShadowRoot()
+		        .findElement(By.cssSelector("[id^='app-entity-discovery-component']")).getShadowRoot()
+		        .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+		        .findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+		        .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+		        .findElements(By.cssSelector("[id^='rs']")).get(1).getShadowRoot()
+		        .findElement(By.cssSelector("#buttonTextBox"));
+	}
+	
 	public WebElement Use_Case_Attributes_selection() {
 		return common_element().getShadowRoot()
 				.findElement(By.cssSelector("#rockTabs")).getShadowRoot()
@@ -745,6 +753,19 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#filter-text")).getShadowRoot()
 				.findElement(By.cssSelector("#pebble__textbox"));
 	}
+	
+	public WebElement Enter_Valuestosearch_input() {
+		return driver.findElement(By.cssSelector("#app"))
+			    .getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
+			    .getShadowRoot().findElement(By.cssSelector("[id^='currentApp_search-thing_']"))
+			    .getShadowRoot().findElement(By.cssSelector("[id^='app-entity-discovery-component-']"))
+			    .getShadowRoot().findElement(By.cssSelector("#entitySearchDiscoveryGrid"))
+			    .getShadowRoot().findElement(By.cssSelector("#entitySearchFilter"))
+			    .getShadowRoot().findElement(By.cssSelector("#search-filter"))
+			    .getShadowRoot().findElement(By.cssSelector("#textCollection"))
+			    .getShadowRoot().findElement(By.cssSelector("#txtInputTag"))
+			    .getShadowRoot().findElement(By.cssSelector("#pebble__textbox"));
+	}
 	public WebElement ImageRequired_Auto_Dropdown() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -768,8 +789,6 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#operators")).getShadowRoot()
 				.findElement(By.cssSelector("div.base-grid-structure > div.base-grid-structure-child-2 > pebble-grid")).getShadowRoot()
 				.findElement(By.cssSelector("#grid")).getShadowRoot();
-																																																																																																																																																																																											// add
-																																																																																																																																																																																											// this
 	}
 
 	public WebElement SkipAndContinue_Dialog() {
@@ -999,20 +1018,13 @@ public class DigitalAsset {
  * @return true if option is selected and rows are loaded after Apply; false otherwise
  * @throws InterruptedException if thread sleep is interrupted
  ****************************/
-public boolean applyFilterAndSelectOption(
-        SearchPage2 searchPage,
-        String filterName,
-        Supplier<WebElement> dropdownSupplier,
-        String optionText) throws InterruptedException {
-
+public boolean applyFilterAndSelectOption( SearchPage2 searchPage, String filterName, Supplier<WebElement> dropdownSupplier, String optionText) throws InterruptedException {
     searchPage.getFilterButton().click();
     utils.waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
-
     WebElement materialTypeSearch = searchPage.Search_MaterialType();
     materialTypeSearch.clear();
     materialTypeSearch.sendKeys(filterName);
     Thread.sleep(1000);
-
     utils.clickFilterAttribute(filterName);
     Thread.sleep(1000);
 
@@ -1021,41 +1033,32 @@ public boolean applyFilterAndSelectOption(
     Thread.sleep(1000);
 
     List<WebElement> lovRows = this.Dropdown_BaseObject() .findElements(By.cssSelector("#lit-grid div.ag-row[row-index] pebble-lov-item"));
-
     List<String> optionTexts = new ArrayList<>();
     WebElement optionToClick = null;
 
     for (WebElement lovRow : lovRows) {
-        WebElement innerDiv = lovRow.getShadowRoot()
-				.findElement(By.cssSelector("div > div"));
+        WebElement innerDiv = lovRow.getShadowRoot() .findElement(By.cssSelector("div > div"));
         String text = innerDiv.getText().trim();
         optionTexts.add(text);
         System.out.println("Row text: " + text);
-
         if (text.equalsIgnoreCase(optionText)) {
             optionToClick = lovRow;
             break;
         }
     }
-
     System.out.println("All dropdown options: " + optionTexts);
-
     if (optionToClick == null) {
         return false;
     }
-
-    WebElement clickableDiv = optionToClick.getShadowRoot()
-				.findElement(By.cssSelector("div > div"));
+    WebElement clickableDiv = optionToClick.getShadowRoot() .findElement(By.cssSelector("div > div"));
     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", clickableDiv);
     clickableDiv.click();
     System.out.println("Clicked dropdown option: " + optionText);
-
     this.Status_Apply_btn().click();
     Thread.sleep(5000);
 
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     wait.pollingEvery(Duration.ofMillis(500));
-
     Boolean rowsLoaded = wait.until(d -> {
         try {
             WebElement rowContainer = d.findElement(By.cssSelector("#app")).getShadowRoot()
@@ -1076,9 +1079,50 @@ public boolean applyFilterAndSelectOption(
             return false;
         }
     });
-
     System.out.println("Rows loaded successfully: " + rowsLoaded);
     return rowsLoaded;
+}
+public boolean Applyfilter_HasNoImagesandApply(SearchPage2 searchPage, String filterName, Supplier<WebElement> dropdownSupplier, String optionText) throws InterruptedException {
+	searchPage.getFilterButton().click();
+	utils.waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
+	WebElement materialTypeSearch = searchPage.Search_MaterialType();
+	materialTypeSearch.clear();
+	materialTypeSearch.sendKeys(filterName);
+	Thread.sleep(1000);
+	utils.clickFilterAttribute(filterName);
+	Thread.sleep(1000);
+	utils.waitForElement(dropdownSupplier::get, "clickable");
+	Enter_Valuestosearch_input().click();
+	Enter_Valuestosearch_input().sendKeys("V");
+	Thread.sleep(1000);
+	dropdownSupplier.get().click();
+	Thread.sleep(1000);
+	
+	List<WebElement> lovRows = this.Dropdown_BaseObject() .findElements(By.cssSelector("#lit-grid div.ag-row[row-index] pebble-lov-item"));
+	List<String> optionTexts = new ArrayList<>();
+	WebElement optionToClick = null;
+	
+	for (WebElement lovRow : lovRows) {
+		WebElement innerDiv = lovRow.getShadowRoot() .findElement(By.cssSelector("div > div"));
+		String text = innerDiv.getText().trim();
+		optionTexts.add(text);
+		System.out.println("Row text: " + text);
+		if (text.equalsIgnoreCase(optionText)) {
+			optionToClick = lovRow;
+			break;
+		}
+	}
+	System.out.println("All dropdown options: " + optionTexts);
+	if (optionToClick == null) {
+		return false;
+	}
+	WebElement clickableDiv = optionToClick.getShadowRoot() .findElement(By.cssSelector("div > div"));
+	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", clickableDiv);
+	clickableDiv.click();
+	System.out.println("Clicked dropdown option: " + optionText);
+	this.HasNo_Images_Apply_btn().click();
+	Thread.sleep(5000);
+	return true;
 }
 
 public WebElement Adapt_Commonelement() {
@@ -1106,12 +1150,61 @@ public WebElement Adapt_Commonelement() {
 			    .findElement(By.cssSelector("ul > pebble-tree-node")).getShadowRoot()
 			    .findElement(By.cssSelector("li > div.detailtext-wrapper"));
 	}
-	
 	public WebElement Adapt_Applybutton() {
 		return Adapt_Commonelement().getShadowRoot()
 	    .findElement(By.cssSelector("#download")).getShadowRoot()
 	    .findElement(By.cssSelector("#buttonTextBox"));
 	}
+	public WebElement CageMaterial_Type_Dropdownvalue() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='currentApp_search-thing']")).getShadowRoot()
+			    .findElement(By.cssSelector("[id^='app-entity-discovery-component']")).getShadowRoot()
+			    .findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+			    .findElement(By.cssSelector("#entitySearchFilter")).getShadowRoot()
+			    .findElement(By.cssSelector("#search-filter")).getShadowRoot()
+			    .findElement(By.cssSelector("#attributeModelLov_taxonomyModel")).getShadowRoot()
+			    .findElement(By.cssSelector("#modelLov_taxonomyModel")).getShadowRoot()
+			    .findElement(By.cssSelector("pebble-grid")).getShadowRoot()
+			    .findElement(By.cssSelector("#grid")).getShadowRoot()
+			    .findElement(By.cssSelector("pebble-lov-item")).getShadowRoot()
+			    .findElement(By.cssSelector("div > div"));
+	}
+	public WebElement HasNoImagesexist_text() {
+		      return common_element().getShadowRoot()
+				      .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				      .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-']")).getShadowRoot()
+				      .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+				      .findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
+				      .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+				      .findElement(By.cssSelector("#bedrock_grid_hasimages")).getShadowRoot()
+				      .findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+				      .findElement(By.cssSelector("div"));
+			}
 
+	public void Search_Adapt(DigitalAsset digitalssetPage,ExtentTest test) throws IOException, InterruptedException {
+		utils.waitForElement(() -> digitalssetPage.Adapt_Input(), "clickable");
+		test.pass("Refine by window appeared");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		digitalssetPage.Adapt_Input().sendKeys("ADAPT");
+		digitalssetPage.Adapt_Input().sendKeys(Keys.ENTER);
+		utils.waitForElement(() -> digitalssetPage.Adapt_Tree(), "clickable");
+		test.pass("Selection tree displayed after entering the search Keyword Adapt");
+		digitalssetPage.Adapt_Tree().click();
+		Thread.sleep(2000);
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		digitalssetPage.Adapt_Applybutton().click();
+		Thread.sleep(5000);
+	}
+	public WebElement zero_Images_Text() {
+		return  common_element().getShadowRoot()
+				    .findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				    .findElement(By.cssSelector("[id^='rock-relationship-split-screen-component-']")).getShadowRoot()
+				    .findElement(By.cssSelector("#undefined-relationship-container > rock-relationship-manage")).getShadowRoot()
+				    .findElement(By.cssSelector("#entityRelationshipSearchResult_hasimages")).getShadowRoot()
+				    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
+				    .findElement(By.cssSelector("#bedrock_grid_hasimages")).getShadowRoot()
+				    .findElement(By.cssSelector("#gridHeader > div > span.text-ellipsis.m-r-5.m-l-5.page-range"));
+	}
 }
 

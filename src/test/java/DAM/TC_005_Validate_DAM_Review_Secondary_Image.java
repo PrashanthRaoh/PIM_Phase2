@@ -196,7 +196,6 @@ public class TC_005_Validate_DAM_Review_Secondary_Image extends BaseTest {
 	    }
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	    wait.until(ExpectedConditions.visibilityOf(digitalssetPage.common_ele_2dlinedrawingDropdown()));
-	    
 		/*****************************************
 		Verify the error message is Secondary Images have been deleted, added, or image has
 		*************************************************************/
@@ -214,7 +213,6 @@ public class TC_005_Validate_DAM_Review_Secondary_Image extends BaseTest {
 		test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 
 		Assert.assertTrue(actualErrorText.equalsIgnoreCase(expectedErrorText) || actualErrorText.equalsIgnoreCase(expectedErrorText.replace("Secondary Images have", "Secondary Image has")), "Mismatch in DA error message text. Actual=[" + actualErrorText + "]");
-
 	/*********************
 	Step 6:
 	Click on the "Asset" tab from the Entity Manage screen.

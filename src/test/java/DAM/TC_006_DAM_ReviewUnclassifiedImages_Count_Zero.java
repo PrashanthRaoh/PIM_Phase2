@@ -75,7 +75,17 @@ public class TC_006_DAM_ReviewUnclassifiedImages_Count_Zero extends BaseTest {
 		 * (Primary) // 3. DAM: Review Secondary Image // 4. DAM: Review
 		 * Unclassified Images
 		 *************************************************************************/
-		List<WebElement> detailItems = driver.findElement(By.cssSelector("#app")).getShadowRoot().findElement(By.cssSelector("#contentViewManager")).getShadowRoot().findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot().findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot().findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot().findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos")).getShadowRoot().findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot().findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot().findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot().findElement(By.cssSelector("#moreDetails")).findElements(By.cssSelector("my-todo-detail-view-list-item"));
+		List<WebElement> detailItems = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
+				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot()
+				.findElement(By.cssSelector("#moreDetails")).findElements(By.cssSelector("my-todo-detail-view-list-item"));
 
 		Map<String, Integer> detailItemMap = new LinkedHashMap<>();
 
