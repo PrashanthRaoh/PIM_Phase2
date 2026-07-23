@@ -95,172 +95,68 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
 		test.pass("Home Page is displayed");
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		utils.waitForElement(() -> homePage.BSAPIEUsecaseApprovalTab(), "visible");
-		/**************************************************
-		 * ***** Click on Use case ApprovalTab
-		 **************************************************/
-//		Thread.sleep(3000);
-//		homePage.BSAPIEUsecaseApprovalTab().click();
-//		Thread.sleep(5000);
-//		test.pass("Clicked on Approval tab");
-//		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//		Thread.sleep(2000);
-//		/********************************************
-//		 * Get number of items under use case approvals
-//		 ***************************************/
-//		List<WebElement> summaryElements = BSAPIE_PO.BSAPIE_SummaryElements();
-//		System.out.println("Total items: " + summaryElements.size());
-//
-//		List<String> expectedItems = Arrays.asList("Pending Usecase Approval - BSA PIE","On Hold - BSA PIE (User Selected)", "On Hold - BSA PIE (Rule Triggered)");
-//		Assert.assertEquals(summaryElements.size(), expectedItems.size(), "Item count mismatch");
-//		/***************************
-//		 * Step 3: Click on "More Details" for the "Pending Usecase Approval BSA PIE" state. Expected Result: The queue details for pending
-//		 * entities should be displayed.
-//		 ***************************/
-//		WebElement detailsEnrichment = homePage.Moredetails_MarketingEnrich().getShadowRoot().findElement(By.cssSelector("#viewDetails > span"));
-//		try {
-//			detailsEnrichment.click();
-//		} catch (Exception e) {
-//			((JavascriptExecutor) driver).executeScript("arguments[0].click();", detailsEnrichment);
-//		}
-//		Thread.sleep(2000);
-//		test.pass("Clicked More Details for Pending Usecase Approval - BSA PIE");
-//		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-///***************************
-// * Step 4:	
-// * Open an entity from the "Ready for Transition" queue.
-// * Expected Result:
-// * Selected entity should open successfully in Entity Manage screen.
-// ***************************/
-//		List<WebElement> detailItems = BSAPIE_PO.BSA_ApprovalTab_Items();
-//		for (WebElement item : detailItems) {
-//			WebElement buttonTextBox = item.getShadowRoot().findElement(By.cssSelector("#button-text-box"));
-//			String title = buttonTextBox.getAttribute("title").trim();
-//			System.out.println(title);
-//
-//			if (title.toLowerCase().contains("ready for transition")) {
-//				try {
-//					buttonTextBox.click();
-//				} catch (Exception e) {
-//					((JavascriptExecutor) driver).executeScript("arguments[0].click();", buttonTextBox);
-//				}
-//				Thread.sleep(5000);
-//				break;
-//			}
-//		}
-//		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-//		test.pass("Clicked ready for transition business condition");
-//		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-///***************************
-// * Step 5:
-// * Verify the entity is currently in
-// * "Pending for Usecase Approval - BSAPIE" workflow state.
-// * Expected Result:
-// * Workflow state should match the expected BSAPIE approval stage.
-// ***************************/
-//	Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
-//	String matid = selectedRecord.get("Material Id");
-//	System.out.println("Selected Material ID: " + matid);
-//	Thread.sleep(4000);
-//
-//	utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
-//	Thread.sleep(2000);
-//	test.pass("Summary tab is displayed");
-//	test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//	
-//	List<WebElement> steps = BSAPIE_PO.Workflows();
-//	
-//	String expectedTitle = "Pending Usecase Approval - BSA PIE";
-//	WebElement activeStep = BSAPIE_PO.getInProgressWorkflowStep(steps, expectedTitle);
-//	String activeStepName = activeStep.getShadowRoot()
-//	    .findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
-//	    .getAttribute("title");
-//
-//	System.out.println("✅ Active workflow is : " + activeStepName);
-//	
-//	if (activeStepName.equals(expectedTitle)) {
-//	    test.pass("Active workflow is : " + activeStepName + " as expected");
-//	    test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//	    Assert.assertEquals(activeStepName, expectedTitle, "Active step  does not match expected title");
-//	} else {
-//	    test.fail("Active workflow is NOT : " + activeStepName + " as expected");
-//	    test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-//	}
-//	/***************************
-//	 * Step 6:
-//	 * Verify the following workflow actions are available:
-//	 * 1. Approve
-//	 * 2. Reject to Marketing Enrichment
-//	 * 3. Reject to Representative Image (Primary)
-//	 * 4. Terminate
-//	 * Expected Result:
-//	 * All expected workflow action buttons/options should be displayed.
-//	 ***************************/
-//	List<WebElement> buttons = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-//	        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-//	        .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
-//	        .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
-//	        .findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
-//	        .findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
-//	        .findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
-//	        .findElements(By.cssSelector("[id^='action-button-']"));
-//
-//	Map<String, WebElement> workflowButtons = new LinkedHashMap<>();
-//	for (WebElement btn : buttons) {
-//		WebElement buttonTextBox = btn.getShadowRoot().findElement(By.cssSelector("#buttonTextBox"));
-//		String buttonText = buttonTextBox.getText().trim();
-//		workflowButtons.put(buttonText, buttonTextBox);
-//		System.out.println(buttonText);
-//	}
-//	test.info("Available workflow buttons: " + String.join(", ", workflowButtons.keySet()));
-//	List<String> expectedButtons = Arrays.asList("Approve", "Reject to Marketing Enrichment", "Reject to Representative Image (Primary)", "Terminate");
-//
-//	for (String expected : expectedButtons) {
-//		Assert.assertTrue(workflowButtons.containsKey(expected), "Expected button not found: " + expected + " | Actual buttons: " + workflowButtons.keySet());
-//	}
-///***************************
-// * Step 7:
-// * Enter comments in the workflow comments box.
-// * Select "Reject to Representative Image (Primary)" action.
-// * Expected Result:
-// * Entity should be rejected successfully to
-// * "Representative Image (Primary)" review stage.
-// ***************************/
-//	BSAPIE_PO.Comments_input().sendKeys("Rejection from BSA PIE");
-//	WebElement rejectToRepresentativeImageButton = workflowButtons.get("Reject to Representative Image (Primary)");
-//	Assert.assertNotNull(rejectToRepresentativeImageButton, "Reject to Representative Image (Primary) button not found");
-//	try {
-//		rejectToRepresentativeImageButton.click();
-//	} catch (Exception e) {
-//		((JavascriptExecutor) driver).executeScript("arguments[0].click();", rejectToRepresentativeImageButton);
-//	}
-//	Thread.sleep(2000);
-//	test.pass("Entered comments and clicked Reject to Representative Image (Primary)");
-//	test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//
-//	WebElement banner = wait.until(d -> {
-//	    try {
-//	        WebElement el = d.findElement(By.cssSelector("#app")).getShadowRoot()
-//	                .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
-//	                .findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html")).getShadowRoot()
-//	                .findElement(By.cssSelector("#bind-html"));
-//	        return el.isDisplayed() ? el : null;
-//	    } catch (Exception e) {
-//	        return null;
-//	    }
-//	});
-//	String bannerText = banner.getText().trim();
-//	System.out.println("Banner text: " + bannerText);
-	
-	
-/***************************
- * Step 9:
- * Capture the Sellable Material ID / Material ID
- * for further validation in Digital Asset workflow.
- * Expected Result:
- * Material ID should be stored successfully for next steps.
- ***************************/
-	
+		BSAPIE_PO.runUsecaseApprovalRepeatedSteps(homePage, searchPage, utils, test);
+
+		Map<String, String> selectedRecord = cbtUtils.selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+		String matid = selectedRecord.get("Material Id");
+		System.out.println("Selected Material ID: " + matid);
+		data.put("First BSA PIE Material ID", matid);
+		Thread.sleep(4000);
+
+		utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
+		Thread.sleep(2000);
+		test.pass("Summary tab is displayed");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+		String expectedTitle = "Pending Usecase Approval - BSA PIE";
+		List<String> expectedButtons = Arrays.asList("Approve", "Reject to Marketing Enrichment", "Reject to Representative Image (Primary)", "Terminate");
+		String firstActiveStepName = BSAPIE_PO.verifyInProgressWorkflow(expectedTitle, test);
+		Map<String, WebElement> firstWorkflowButtons = BSAPIE_PO.verifyWorkflowButtons(expectedButtons, test);
+		data.put("First BSA PIE Active Workflow", firstActiveStepName);
+		data.put("First BSA PIE Workflow Buttons", String.join(", ", firstWorkflowButtons.keySet()));
+		
+		///***************************
+		// * Step 7:
+		// * Enter comments in the workflow comments box.
+		// * Select "Reject to Representative Image (Primary)" action.
+		// * Expected Result:
+		// * Entity should be rejected successfully to
+		// * "Representative Image (Primary)" review stage.
+		// ***************************/
+			BSAPIE_PO.Comments_input().sendKeys("Rejection from BSA PIE");
+			WebElement rejectToRepresentativeImageButton = firstWorkflowButtons.get("Reject to Representative Image (Primary)");
+			Assert.assertNotNull(rejectToRepresentativeImageButton, "Reject to Representative Image (Primary) button not found");
+			try {
+				rejectToRepresentativeImageButton.click();
+			} catch (Exception e) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", rejectToRepresentativeImageButton);
+			}
+			Thread.sleep(2000);
+			test.pass("Entered comments and clicked Reject to Representative Image (Primary)");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+			WebElement banner = wait.until(d -> {
+			    try {
+			        WebElement el = d.findElement(By.cssSelector("#app")).getShadowRoot()
+			                .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			                .findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html")).getShadowRoot()
+			                .findElement(By.cssSelector("#bind-html"));
+			        return el.isDisplayed() ? el : null;
+			    } catch (Exception e) {
+			        return null;
+			    }
+			});
+			String bannerText = banner.getText().trim();
+			System.out.println("Banner text: " + bannerText);
+	/***************************
+	 * Step 9:
+	 * Capture the Sellable Material ID / Material ID
+	 * for further validation in Digital Asset workflow.
+	 * Expected Result:
+	 * Material ID should be stored successfully for next steps.
+	 ***************************/
+		
 /***************************
  * Step 10:
  * Logout from BSA PIE End Use Case Owner session.
@@ -310,7 +206,6 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
  * Expected Result:
  * Matching entity should be displayed in the search results.
  ***************************/
-		String matid = "000000000100038907";
 		try {
 			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 			searchPage.searchthingdomain_Input_Mat_Id().click();
@@ -353,7 +248,6 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
 		for (int i = 0; i < workflowLabels.size(); i++) {
 			System.out.println("Digital Asset step " + (i + 1) + ": " + workflowLabels.get(i));
 		}
-
 		String expectedTitle_Digitalworkflow = "Enrich Digital Assets";
 		String activeStepName_Digitalworkflow = digitalssetPage.getInProgressWorkflowTitle();
 
@@ -374,7 +268,6 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
  * Expected Result:
  * Business condition should be shown as failed/pending review.
  ***************************/
-	
 	 List<WebElement> conditions1 = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list"));
 	    for (int i = 0; i < conditions1.size(); i++) {
 	        WebElement cond = digitalssetPage.Summarythingsneedtofix_grid().findElements(By.cssSelector(".data-list")).get(i); 
@@ -397,7 +290,6 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
  * Expected Result:
  * Rejection message should be visible exactly as expected.
  ***************************/
-
 /***************************
  * Step 19:
  * Set "Approve Representative Image (Primary)?"
@@ -419,26 +311,21 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
 	boolean noWorkflowFound = false;
 	for (int attempt = 1; attempt <= 2; attempt++) {
 		try {
-			List<WebElement> stepsAfterSubmit = digitalssetPage.DA_WorkflowSteps();
-			workflowCountAfterSubmit = stepsAfterSubmit.size();
+			workflowCountAfterSubmit = digitalssetPage.getActiveWorkflowCount();
 		} catch (Exception ignored) {
 			workflowCountAfterSubmit = 0;
 		}
-
 		if (workflowCountAfterSubmit == 0) {
 			noWorkflowFound = true;
-			test.pass("No workflows are present after submission on attempt " + attempt + ".");
+			test.pass("No workflows are present after refreshing on attempt " + attempt + ".");
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			break;
 		}
-
-		test.log(Status.WARNING,
-				"Attempt " + attempt + ": workflows still present (count: " + workflowCountAfterSubmit + "). Refreshing and retrying.");
+		test.log(Status.WARNING,"Attempt " + attempt + ": workflows still present (count: " + workflowCountAfterSubmit + "). Refreshing and retrying.");
 		digitalssetPage.Workflow_Refresh_btn().click();
 		Thread.sleep(5000);
 		utils.waitForElement(() -> digitalssetPage.primary_Image_Required_dropdown_obj(), "clickable");
 	}
-
 	if (!noWorkflowFound) {
 		test.fail("Expected no workflows after 2 attempts, but found: " + workflowCountAfterSubmit);
 		test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
@@ -455,61 +342,120 @@ public class TC_007_Reject_to_Representative_Image_Primary extends BaseTest {
  * Expected Result:
  * Entity should no longer remain pending in Digital Assets review.
  ***************************/
+		switchUser("BSAPIEowner", BSAPIE_PO);
+		System.out.println("Logged in as BSA PIE owner");
+		BSAPIE_PO.runUsecaseApprovalRepeatedSteps(homePage, searchPage, utils, test);
 		
+		searchPage.searchthingdomain_Input_Mat_Id().click();
+		searchPage.searchthingdomain_Input_Mat_Id().clear();
+		searchPage.searchthingdomain_Input_Mat_Id().sendKeys(matid);
+		searchPage.searchthingdomain_Input_Mat_Id() .sendKeys(Keys.ENTER);
+		test.pass("Material id " + matid + " is searched in Search thing domain");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath( Utils.Takescreenshot(driver)).build());
+		Thread.sleep(5000);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		Map<String, String> selectedRecord_Again = cbtUtils .selectRandomRowAndOpenDetails(searchPage, summaryPage, test);
+		System.out.println("Selected Record is  - " +selectedRecord_Again);
+		data.put("Material ID", matid);
+		Thread.sleep(1000);
+		utils.waitForElement(() -> summaryPage.Things_INeedToFix(), "visible");
+		Thread.sleep(2000);
+		test.pass("Summary tab is displayed for second BSA PIE attempt");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 
+		String secondActiveStepName = BSAPIE_PO.verifyInProgressWorkflow(expectedTitle, test);
+		Map<String, WebElement> secondWorkflowButtons = BSAPIE_PO.verifyWorkflowButtons(expectedButtons, test);
+		data.put("Second BSA PIE Active Workflow", secondActiveStepName);
+		data.put("Second BSA PIE Workflow Buttons", String.join(", ", secondWorkflowButtons.keySet()));
+		test.pass("Action buttons displayed for BSA PIE");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		
+		BSAPIE_PO.Comments_input().sendKeys("Approving the record");
+		WebElement ApproveRepresentativeImageButton = secondWorkflowButtons.get("Approve");
+		Assert.assertNotNull(ApproveRepresentativeImageButton, "Approve button not found");
+		try {
+			ApproveRepresentativeImageButton.click();
+		} catch (Exception e) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", ApproveRepresentativeImageButton);
+		}
+		Thread.sleep(5000);
+		test.pass("Entered comments and clicked Approve the record");
+		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+	
+		WebElement banner1 = wait.until(d -> {
+		    try {
+		        WebElement el = d.findElement(By.cssSelector("#app")).getShadowRoot()
+		                .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+		                .findElement(By.cssSelector("#pebbleAppToast > pebble-echo-html")).getShadowRoot()
+		                .findElement(By.cssSelector("#bind-html"));
+		        return el.isDisplayed() ? el : null;
+		    } catch (Exception e) {
+		        return null;
+		    }
+		});
+		String bannerText1 = banner1.getText().trim();
+		System.out.println("Banner text: " + bannerText1);
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-////
-////// Login as Digital Asset owner
-////loginPage.LogintoPIM("DigitalAssetowner");
-////utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");
-////System.out.println("Logged in as Digital Asset owner");
-//
-//		
-//		
+		int bsapieWorkflowCountAfterApproval = -1;
+		boolean noBSAPIEWorkflowFound = false;
+		for (int attempt = 1; attempt <= 2; attempt++) {
+			try {
+				BSAPIE_PO.Workflow_Refresh_btn().click();
+			} catch (Exception e) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", BSAPIE_PO.Workflow_Refresh_btn());
+			}
+			Thread.sleep(5000);
+			utils.waitForElement(() -> BSAPIE_PO.Workflow_Refresh_btn(), "clickable");
+			try {
+				bsapieWorkflowCountAfterApproval = BSAPIE_PO.getActiveBSAPIEWorkflowCount();
+			} catch (Exception ignored) {
+				bsapieWorkflowCountAfterApproval = 0;
+			}
 
+			if (bsapieWorkflowCountAfterApproval == 0) {
+				noBSAPIEWorkflowFound = true;
+				test.pass("No BSA PIE workflows are listed after refreshing on attempt " + attempt + ".");
+				test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				break;
+			}
+
+			if (attempt < 2) {
+				test.log(Status.WARNING, "Attempt " + attempt + ": BSA PIE workflows still present (count: "
+						+ bsapieWorkflowCountAfterApproval + "). Refreshing and retrying.");
+			}
+		}
+		if (!noBSAPIEWorkflowFound) {
+			test.fail("Expected no BSA PIE workflows after 2 refresh attempts, but found: " + bsapieWorkflowCountAfterApproval);
+			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		}
+		Assert.assertTrue(noBSAPIEWorkflowFound, "Expected no BSA PIE workflows after 2 refresh attempts.");
 }
 
 
-
-
-
-private void switchUser(String userKey, CBT_Page cbtpage) throws Exception {
+	
+/************************
+Function to switch user
+************************/
+private void switchUser(String userKey, Object pageObject) throws Exception {
     homePage = new HomePage(driver);
-
     try {
         homePage.AppHeader_Administrator().click();
-        Thread.sleep(1000);
+        Thread.sleep(500);
         homePage.Logout_btn().click();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id='username']")));
         Thread.sleep(1000);
     } catch (Exception ignored) {
-        // already on login page
     }
-
     loginPage.LogintoPIM(userKey);
-    utils.waitForElement(() -> cbtpage.SellableMaterialTabcontent(), "clickable");
+
+	// Generic post-login wait based on requested landing page type.
+	if (pageObject instanceof CBT_Page) {
+		CBT_Page cbtPage = (CBT_Page) pageObject;
+		utils.waitForElement(() -> cbtPage.SellableMaterialTabcontent(), "clickable");
+	} else if (pageObject instanceof BSAPIE_Page) {
+		homePage = new HomePage(driver);
+		utils.waitForElement(() -> homePage.BSAPIEUsecaseApprovalTab(), "visible");
+	}
 }
 }

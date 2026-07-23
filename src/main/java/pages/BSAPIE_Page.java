@@ -1,7 +1,10 @@
 package pages;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -9,15 +12,12 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
-
 import common_functions.Utils;
 
 public class BSAPIE_Page {
-
 	private WebDriver driver;
 	private By searchInputField = By.cssSelector("#app");
 
@@ -83,7 +83,6 @@ public class BSAPIE_Page {
 		        SearchContext stepShadow = step.getShadowRoot();
 		        String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
 		            .getAttribute("title");
-
 		        boolean inProgress = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
 		        System.out.println((i + 1) + ": " + actualTitle + (inProgress ? " (In Progress)" : ""));
 		        if (expectedTitle.equals(actualTitle)) {
@@ -96,6 +95,51 @@ public class BSAPIE_Page {
 		        }
 		    }
 		    throw new AssertionError("❌ '" + expectedTitle + "' not found in the workflow.");
+		}
+
+		public String verifyInProgressWorkflow(String expectedTitle, ExtentTest test) throws IOException {
+			List<WebElement> steps = Workflows();
+			WebElement activeStep = getInProgressWorkflowStep(steps, expectedTitle);
+			String activeStepName = activeStep.getShadowRoot()
+					.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span")) .getAttribute("title");
+
+			System.out.println("✅ Active workflow is : " + activeStepName);
+			if (activeStepName.equals(expectedTitle)) {
+				test.pass("Active workflow is : " + activeStepName + " as expected");
+				test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				Assert.assertEquals(activeStepName, expectedTitle, "Active step does not match expected title");
+			} else {
+				test.fail("Active workflow is NOT : " + activeStepName + " as expected");
+				test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+				Assert.fail("Active workflow is NOT : " + activeStepName + " as expected");
+			}
+			return activeStepName;
+		}
+
+		public Map<String, WebElement> verifyWorkflowButtons(List<String> expectedButtons, ExtentTest test) {
+			List<WebElement> buttons = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+					.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+					.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+					.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+					.findElements(By.cssSelector("[id^='action-button-']"));
+
+			Map<String, WebElement> workflowButtons = new LinkedHashMap<>();
+			for (WebElement btn : buttons) {
+				WebElement buttonTextBox = btn.getShadowRoot().findElement(By.cssSelector("#buttonTextBox"));
+				String buttonText = buttonTextBox.getText().trim();
+				workflowButtons.put(buttonText, buttonTextBox);
+				System.out.println(buttonText);
+			}
+
+			test.info("Available workflow buttons: " + String.join(", ", workflowButtons.keySet()));
+			for (String expected : expectedButtons) {
+				Assert.assertTrue(workflowButtons.containsKey(expected),
+						"Expected button not found: " + expected + " | Actual buttons: " + workflowButtons.keySet());
+			}
+			return workflowButtons;
 		}
 		
 		public WebElement BSAPIE_Record_Status() {
@@ -114,7 +158,6 @@ public class BSAPIE_Page {
 					.getShadowRoot().findElement(By.cssSelector("#collectionContainer"))
 					.getShadowRoot().findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
 		}
-		
 		/*******************
 		 * Close the last tab
 		*******************/
@@ -173,6 +216,77 @@ public class BSAPIE_Page {
 	            .findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
 	            .findElements(By.cssSelector("pebble-step"));
 		}
+
+		private WebElement workflowSidebarPanel() {
+			return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+					.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+					.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+					.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+					.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']"));
+		}
+		
+		public int getActiveBSAPIEWorkflowCount() {
+			WebElement panel = workflowSidebarPanel();
+			SearchContext panelShadow = panel.getShadowRoot();
+			WebElement workflowsContent;
+			try {
+				workflowsContent = panelShadow.findElement(By.cssSelector("#workflows-content"));
+			} catch (Exception ignored) {
+				workflowsContent = panel;
+			}
+			String normalizedPanelText = workflowsContent.getText() == null ? ""
+					: workflowsContent.getText().toLowerCase().replaceAll("\\s+", " ").trim();
+			if (normalizedPanelText.contains("no active workflows")) {
+				return 0;
+			}
+
+			List<WebElement> accordions = workflowsContent.findElements(By.cssSelector("pebble-accordion[id^='accordion']"));
+			int bsapieWorkflowCount = 0;
+			for (WebElement accordion : accordions) {
+				String style = accordion.getAttribute("style");
+				boolean hiddenByStyle = style != null && style.toLowerCase().contains("display: none");
+				if (!accordion.isDisplayed() || hiddenByStyle) {
+					continue;
+				}
+
+				StringBuilder workflowText = new StringBuilder(accordion.getText() == null ? "" : accordion.getText());
+				for (WebElement step : accordion.findElements(By.cssSelector("pebble-step"))) {
+					try {
+						workflowText.append(' ').append(step.getShadowRoot()
+								.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
+								.getAttribute("title"));
+					} catch (Exception ignored) {
+					}
+				}
+				String normalizedWorkflowText = workflowText.toString().toLowerCase().replaceAll("\\s+", " ").trim();
+				if (normalizedWorkflowText.contains("bsa pie") || normalizedWorkflowText.contains("bsapie")) {
+					bsapieWorkflowCount++;
+				}
+			}
+
+			if (bsapieWorkflowCount == 0) {
+				for (WebElement step : panelShadow.findElements(By.cssSelector("pebble-step"))) {
+					String style = step.getAttribute("style");
+					boolean hiddenByStyle = style != null && style.toLowerCase().contains("display: none");
+					if (!step.isDisplayed() || hiddenByStyle) {
+						continue;
+					}
+					try {
+						String title = step.getShadowRoot()
+								.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
+								.getAttribute("title");
+						String normalizedTitle = title == null ? "" : title.toLowerCase().replaceAll("\\s+", " ").trim();
+						if (normalizedTitle.contains("bsa pie") || normalizedTitle.contains("bsapie")) {
+							bsapieWorkflowCount++;
+						}
+					} catch (Exception ignored) {
+					}
+				}
+			}
+			return bsapieWorkflowCount;
+		}
 		
 		public WebElement Refresh_btn() {
 			return driver.findElement(By.cssSelector("#app")).getShadowRoot()
@@ -198,8 +312,7 @@ public class BSAPIE_Page {
 		}
 		
 		public WebElement MunitionIndicator_Tab() {
-			return common_Munition_Indicatortab().getShadowRoot()
-	        .findElement(By.cssSelector("#pebble-tag"));
+			return common_Munition_Indicatortab().getShadowRoot() .findElement(By.cssSelector("#pebble-tag"));
 		}
 		
 		public WebElement MunitionIndiacator_Yes_Remove_Icon() {
@@ -232,8 +345,7 @@ public class BSAPIE_Page {
 		public WebElement MunitionIndicator_NO_Checkbox() {
 		    return commonMunitionCheckboxParent().getShadowRoot()
 		            .findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div.ag-row.ag-row-no-focus.ag-row-even.ag-row-level-0.ag-row-position-absolute.ag-row-first > div > pebble-lov-item"))
-		            .getShadowRoot()
-		            .findElement(By.cssSelector("div > div"));
+		            .getShadowRoot() .findElement(By.cssSelector("div > div"));
 		}
 		
 		public WebElement MunitionIndicator_YES_Checkbox() {
@@ -267,7 +379,6 @@ public class BSAPIE_Page {
             	    .findElement(By.cssSelector("#search-filter")).getShadowRoot()
             	    .findElement(By.cssSelector("#pathSelector"));
 		}
-		
 		public WebElement filterbox() {
 			return Taxonomy_Dialog().getShadowRoot()
      	    .findElement(By.cssSelector("#classification-contextTree")).getShadowRoot()
@@ -324,7 +435,6 @@ public class BSAPIE_Page {
 			Assert.assertFalse(detailItems.isEmpty(), "No queue items found under More Details");
 			utils.waitForElement(() -> detailItems.get(0), "clickable");
 			System.out.println("There are " + detailItems.size() + " elements");
-
 			Assert.assertEquals(detailItems.size(), expectedItems.size(), "Item count mismatch");
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			int matchedRowIndex = -1;
@@ -348,18 +458,59 @@ public class BSAPIE_Page {
 					break;
 				}
 			}
-
 			if (matchedRowIndex == -1) {
 				Assert.fail("'" + queueToClick + "' not found in More Details list.");
 			}
-
 			test.pass("Clicked on " + queueToClick + " which is found at row -- " + matchedRowIndex);
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 			test.pass("Clicked on " + queueToClick);
 			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
 			return matchedRowIndex;
+		}
+
+		public void runUsecaseApprovalRepeatedSteps(HomePage homePage, SearchPage2 searchPage, Utils utils, ExtentTest test) throws Exception {
+			Thread.sleep(3000);
+			homePage.BSAPIEUsecaseApprovalTab().click();
+			Thread.sleep(5000);
+			test.pass("Clicked on Approval tab");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			Thread.sleep(2000);
+
+			List<WebElement> summaryElements = BSAPIE_SummaryElements();
+			System.out.println("Total items: " + summaryElements.size());
+			List<String> expectedItems = Arrays.asList("Pending Usecase Approval - BSA PIE", "On Hold - BSA PIE (User Selected)", "On Hold - BSA PIE (Rule Triggered)");
+			Assert.assertEquals(summaryElements.size(), expectedItems.size(), "Item count mismatch");
+
+			WebElement detailsEnrichment = homePage.Moredetails_MarketingEnrich().getShadowRoot() .findElement(By.cssSelector("#viewDetails > span"));
+			try {
+				detailsEnrichment.click();
+			} catch (Exception e) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", detailsEnrichment);
+			}
+			Thread.sleep(2000);
+			test.pass("Clicked More Details for Pending Usecase Approval - BSA PIE");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+			List<WebElement> detailItems = BSA_ApprovalTab_Items();
+			for (WebElement item : detailItems) {
+				WebElement buttonTextBox = item.getShadowRoot().findElement(By.cssSelector("#button-text-box"));
+				String title = buttonTextBox.getAttribute("title").trim();
+				System.out.println(title);
+
+				if (title.toLowerCase().contains("ready for transition")) {
+					try {
+						buttonTextBox.click();
+					} catch (Exception e) {
+						((JavascriptExecutor) driver).executeScript("arguments[0].click();", buttonTextBox);
+					}
+					Thread.sleep(5000);
+					break;
+				}
+			}
+			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+			test.pass("Clicked ready for transition business condition");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		}
 
 		public List<WebElement> BSAPIE_SummaryElements(){
@@ -374,8 +525,6 @@ public class BSAPIE_Page {
 				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
 				.findElements(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary"));
 		}
-		
-
 		public void verifyMaterialIsNotListed(SearchPage2 searchPage, String matid, Utils utils, ExtentTest test) throws Exception {
 			searchPage.Search_things_BreadCrum().click();
 			Thread.sleep(2000);

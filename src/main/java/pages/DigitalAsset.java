@@ -257,6 +257,52 @@ public class DigitalAsset {
 		return labels;
 	}
 
+	private WebElement DA_WorkflowSidebarPanel() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+				.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']"));
+	}
+
+	public int getActiveWorkflowCount() {
+		WebElement panel = DA_WorkflowSidebarPanel();
+		SearchContext panelShadow = panel.getShadowRoot();
+		String panelText;
+		try {
+			panelText = panelShadow.findElement(By.cssSelector("#workflows-content")).getText();
+		} catch (Exception ignored) {
+			panelText = panel.getText();
+		}
+		String normalizedText = panelText == null ? "" : panelText.toLowerCase().replaceAll("\\s+", " ").trim();
+
+		// Empty-state message takes precedence over template/hidden stepper elements.
+		if (normalizedText.contains("no active workflows")) {
+			return 0;
+		}
+
+		List<WebElement> accordions;
+		try {
+			accordions = panelShadow.findElement(By.cssSelector("#workflows-content"))
+					.findElements(By.cssSelector("pebble-accordion[id^='accordion']"));
+		} catch (Exception ignored) {
+			accordions = panelShadow.findElements(By.cssSelector("pebble-accordion[id^='accordion']"));
+		}
+		int visibleCount = 0;
+		for (WebElement accordion : accordions) {
+			String style = accordion.getAttribute("style");
+			boolean hiddenByStyle = style != null && style.toLowerCase().contains("display: none");
+			if (accordion.isDisplayed() && !hiddenByStyle) {
+				visibleCount++;
+			}
+		}
+
+
+		return visibleCount;
+	}
+
 	public String getInProgressWorkflowTitle() {
 		for (WebElement step : DA_WorkflowSteps()) {
 			String stepClass = step.getAttribute("class");
@@ -1042,28 +1088,33 @@ public class DigitalAsset {
 			throws IOException, InterruptedException {
 		String actualErrorText = "";
 		boolean expectedBannerFound = false;
+		String bannerWarningMessage = "Expected DA error banner was not found before approval: " + expectedErrorText;
 
 		try {
 			WebElement errorHost = DA_error_Message();
 			if (errorHost.isDisplayed()) {
 				String bannerText = errorHost.getText().trim().replaceAll("\\s+", " ");
+				actualErrorText = bannerText;
 				System.out.println("DA error text: " + bannerText);
 				if (bannerText.equalsIgnoreCase(expectedErrorText)) {
 					expectedBannerFound = true;
-					actualErrorText = bannerText;
+				} else {
+					bannerWarningMessage = "DA error banner text did not match before approval. Expected: "
+							+ expectedErrorText + " | Actual: " + actualErrorText;
 				}
 			}
 		} catch (Exception e) {
-			test.log(Status.WARNING, "Could not fetch pre-approval error banner: " + e.getMessage());
+			bannerWarningMessage = "Could not fetch pre-approval error banner: " + e.getMessage()
+					+ " | Expected: " + expectedErrorText;
 		}
-
 		if (expectedBannerFound) {
 			test.pass("DA error message displayed: " + actualErrorText);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		} else {
-			test.log(Status.WARNING, "Expected DA error banner was found before approval: " + expectedErrorText);
-			System.out.println("WARNING: Expected DA error banner was found before approval.");
+			test.log(Status.WARNING, bannerWarningMessage);
+			test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			System.out.println("WARNING: " + bannerWarningMessage);
 		}
-
 		Approve_Representative_Image_Primary_dropdown_obj().click();
 		WebElement approveBtn = SameDropdownObject().getShadowRoot()
 				.findElements(By.cssSelector("[id^='rs']")).get(3).getShadowRoot()
@@ -1074,9 +1125,9 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#grid")).getShadowRoot()
 				.findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div > pebble-lov-item")).getShadowRoot()
 				.findElement(By.cssSelector("div > div"));
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		approveBtn.click();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		Save_2d_Line_Drawring().click();
 		Thread.sleep(3000);
 
