@@ -1,10 +1,20 @@
 package pages;
 
+import java.io.IOException;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+
+import common_functions.Utils;
 
 public class BSAPIE_Page {
 
@@ -74,11 +84,8 @@ public class BSAPIE_Page {
 		        String actualTitle = stepShadow.findElement(By.cssSelector("#label > #connectedBadge > #step-heading > #textWrapper > #step-title > span"))
 		            .getAttribute("title");
 
-		        boolean inProgress = step.getAttribute("class") != null &&
-		                             step.getAttribute("class").contains("iron-selected");
-
+		        boolean inProgress = step.getAttribute("class") != null && step.getAttribute("class").contains("iron-selected");
 		        System.out.println((i + 1) + ": " + actualTitle + (inProgress ? " (In Progress)" : ""));
-
 		        if (expectedTitle.equals(actualTitle)) {
 		            if (inProgress) {
 		                System.out.println("✅ As Expected: '" + expectedTitle + "' is In Progress.");
@@ -88,25 +95,24 @@ public class BSAPIE_Page {
 		            }
 		        }
 		    }
-
 		    throw new AssertionError("❌ '" + expectedTitle + "' not found in the workflow.");
 		}
 		
 		public WebElement BSAPIE_Record_Status() {
 			return driver.findElement(By.cssSelector("#app"))
-			.getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
-			.getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
-			.getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
-			.getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
-			.getShadowRoot().findElement(By.cssSelector("#rockTabs"))
-			.getShadowRoot().findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']"))
-			.getShadowRoot().findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']"))
-			.getShadowRoot().findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list"))
-			.getShadowRoot().findElement(By.cssSelector("[id^='rs']"))
-			.getShadowRoot().findElement(By.cssSelector("#input"))
-			.getShadowRoot().findElement(By.cssSelector("bedrock-lov"))
-			.getShadowRoot().findElement(By.cssSelector("#collectionContainer"))
-			.getShadowRoot().findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
+					.getShadowRoot().findElement(By.cssSelector("#contentViewManager"))
+					.getShadowRoot().findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']"))
+					.getShadowRoot().findElement(By.cssSelector("[id^='app-entity-manage-component-rs']"))
+					.getShadowRoot().findElement(By.cssSelector("#rockDetailTabs"))
+					.getShadowRoot().findElement(By.cssSelector("#rockTabs"))
+					.getShadowRoot().findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']"))
+					.getShadowRoot().findElement(By.cssSelector("[id^='rock-attribute-manage-component-rs']"))
+					.getShadowRoot().findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list"))
+					.getShadowRoot().findElement(By.cssSelector("[id^='rs']"))
+					.getShadowRoot().findElement(By.cssSelector("#input"))
+					.getShadowRoot().findElement(By.cssSelector("bedrock-lov"))
+					.getShadowRoot().findElement(By.cssSelector("#collectionContainer"))
+					.getShadowRoot().findElement(By.cssSelector("#collection_container_wrapper > div.d-flex > div.tags-container"));
 		}
 		
 		/*******************
@@ -132,7 +138,6 @@ public class BSAPIE_Page {
 				.findElement(By.cssSelector("#tab-attributes")).getShadowRoot()
 				.findElement(By.cssSelector("#dropdown-wrapper"));
 		}
-		
 		public WebElement Attributenotdisplayed() {
 			return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
@@ -158,8 +163,7 @@ public class BSAPIE_Page {
 		        	  .findElement(By.cssSelector("[id^='rs']"));
 		}
 		
-		
-		public List<WebElement>  Workflows() {
+		public List<WebElement> Workflows() {
 			return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 	            .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
 	            .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
@@ -223,8 +227,6 @@ public class BSAPIE_Page {
 		            .findElement(By.cssSelector("#entityLov")).getShadowRoot()
 		            .findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).getShadowRoot()
 		            .findElement(By.cssSelector("#grid"));
-//		            
-//		            .findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div"));
 		}
 		
 		public WebElement MunitionIndicator_NO_Checkbox() {
@@ -301,4 +303,120 @@ public class BSAPIE_Page {
 	        .findElement(By.cssSelector("#textarea"));
 		}
 		
+		public List<WebElement> BSA_ApprovalTab_Items() {
+			return  driver.findElement(By.cssSelector("#app")).getShadowRoot()
+			        .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+			        .findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
+			        .findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
+			        .findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
+			        .findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
+			        .findElement(By.cssSelector("#rock-my-todos")).getShadowRoot()
+			        .findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+			        .findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot()
+			        .findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
+			        .findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot()
+			        .findElement(By.cssSelector("#moreDetails"))
+			        .findElements(By.cssSelector("my-todo-detail-view-list-item"));
+		}
+
+		public int clickApprovalQueueItem(SearchPage2 searchPage, Utils utils, ExtentTest test, List<String> expectedItems, String queueToClick) throws InterruptedException, IOException {
+			List<WebElement> detailItems = BSA_ApprovalTab_Items();
+			Assert.assertFalse(detailItems.isEmpty(), "No queue items found under More Details");
+			utils.waitForElement(() -> detailItems.get(0), "clickable");
+			System.out.println("There are " + detailItems.size() + " elements");
+
+			Assert.assertEquals(detailItems.size(), expectedItems.size(), "Item count mismatch");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			int matchedRowIndex = -1;
+
+			for (int i = 0; i < detailItems.size(); i++) {
+				WebElement summary = detailItems.get(i);
+				WebElement innerDiv = summary.getShadowRoot().findElement(By.cssSelector("#button-text-box"));
+				String actualText = innerDiv.getAttribute("title").trim().replaceFirst("^\\d+\\s", "");
+				System.out.println("Item " + (i + 1) + ":--" + actualText);
+				Assert.assertEquals(actualText, expectedItems.get(i), "Mismatch at item " + (i + 1));
+
+				if (actualText.contains(queueToClick)) {
+					matchedRowIndex = i + 1;
+					js.executeScript("arguments[0].scrollIntoView({block: 'center'});", innerDiv);
+					try {
+						innerDiv.click();
+					} catch (Exception e) {
+						js.executeScript("arguments[0].click();", innerDiv);
+					}
+					Thread.sleep(5000);
+					break;
+				}
+			}
+
+			if (matchedRowIndex == -1) {
+				Assert.fail("'" + queueToClick + "' not found in More Details list.");
+			}
+
+			test.pass("Clicked on " + queueToClick + " which is found at row -- " + matchedRowIndex);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+			test.pass("Clicked on " + queueToClick);
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+			return matchedRowIndex;
+		}
+
+		public List<WebElement> BSAPIE_SummaryElements(){
+		return  driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_home_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-dashboard-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot().findElement(By.cssSelector("#rock-my-todos"))
+				.getShadowRoot().findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
+				.findElements(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary"));
+		}
+		
+
+		public void verifyMaterialIsNotListed(SearchPage2 searchPage, String matid, Utils utils, ExtentTest test) throws Exception {
+			searchPage.Search_things_BreadCrum().click();
+			Thread.sleep(2000);
+			utils.waitForElement(() -> searchPage.getgrid(), "clickable");
+			test.pass("Navigated back to search thing");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+
+			searchPage.searchthingdomain_Input_Mat_Id().click();
+			searchPage.searchthingdomain_Input_Mat_Id().clear();
+			searchPage.searchthingdomain_Input_Mat_Id().sendKeys(matid);
+			searchPage.searchthingdomain_Input_Mat_Id().sendKeys(Keys.ENTER);
+			Thread.sleep(5000);
+
+			try {
+				String txt = searchPage.rowsdisplayedtext().getText();
+				String result = txt.split(" / ")[1];
+				int zeroRows = Integer.parseInt(result);
+				System.out.println(zeroRows);
+				Assert.assertEquals(zeroRows, 0);
+				test.pass(matid + " completion is 100%. Hence not visible");
+				test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			} catch (Exception e) {
+				WebElement rowsRedefined = driver.findElement(By.cssSelector("#app")).getShadowRoot()
+						.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+						.findElement(By.cssSelector("[id^='currentApp_search-thing_']")).getShadowRoot()
+						.findElement(By.cssSelector("[id^='app-entity-discovery-component-']")).getShadowRoot()
+						.findElement(By.cssSelector("#entitySearchDiscoveryGrid")).getShadowRoot()
+						.findElement(By.cssSelector("#entitySearchGrid")).getShadowRoot()
+						.findElement(By.cssSelector("#entityGrid")).getShadowRoot()
+						.findElement(By.cssSelector("#pebbleGridContainer > pebble-grid")).getShadowRoot()
+						.findElement(By.cssSelector("#grid"));
+				List<WebElement> displayedRows = rowsRedefined.getShadowRoot().findElements(By.cssSelector(
+						"#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div> div.ag-row.ag-row-even.ag-row-level-0"));
+
+				if (!displayedRows.isEmpty()) {
+					System.out.println("Records found for the search criteria");
+					test.fail(matid + " completion is NOT 100%. Please verify");
+					test.log(Status.FAIL,
+							MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+					Assert.fail(matid + " is still visible after rejection.");
+				}
+			}
+		}
 }

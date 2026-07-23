@@ -307,7 +307,7 @@ public Map<String, String> selectRandomRowAndOpenDetails(SearchPage2 searchPage,
     }
     test.warning("Unable to select a stable row after " + maxAttempts + " attempts. Could not proceed.");
     test.log(Status.WARNING, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-    return result; // empty map, no hard failure
+    return result; 
 }
 public static String getActiveWorkflowAfterRefresh(WebDriver driver, CBT_Page cbtpage, ExtentTest test)
 		throws IOException {

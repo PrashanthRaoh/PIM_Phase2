@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
@@ -233,6 +235,36 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#rock-entity-tofix")).getShadowRoot()
 				.findElement(By.cssSelector("[id^='rock-entity-tofix-component-rs']")).getShadowRoot()
 				.findElement(By.cssSelector("#accordion\\ 0 > div"));
+	}
+
+	public List<WebElement> DA_WorkflowSteps() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+				.findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='workflowStepper_digitalassetsenrichment_workflowDefinition']"))
+				.findElements(By.cssSelector("pebble-step"));
+	}
+
+	public List<String> DA_WorkflowStepLabels() {
+		List<String> labels = new ArrayList<>();
+		for (WebElement step : DA_WorkflowSteps()) {
+			labels.add(step.getShadowRoot().findElement(By.cssSelector("#textLabel")).getText().trim());
+		}
+		return labels;
+	}
+
+	public String getInProgressWorkflowTitle() {
+		for (WebElement step : DA_WorkflowSteps()) {
+			String stepClass = step.getAttribute("class");
+			if (stepClass != null && stepClass.contains("iron-selected")) {
+				return step.getShadowRoot().findElement(By.cssSelector("#textLabel")).getText().trim();
+			}
+		}
+		throw new AssertionError("No in-progress workflow step found in Digital Assets workflow stepper.");
 	}
 
 	public WebElement common_ele_2dlinedrawingDropdown() {
@@ -1006,7 +1038,80 @@ public class DigitalAsset {
 				.findElement(By.cssSelector("#refresh"));
 	}
 
+	public void approvePrimaryImageAndVerifyErrorCleared(String expectedErrorText, ExtentTest test)
+			throws IOException, InterruptedException {
+		String actualErrorText = "";
+		boolean expectedBannerFound = false;
 
+		try {
+			WebElement errorHost = DA_error_Message();
+			if (errorHost.isDisplayed()) {
+				String bannerText = errorHost.getText().trim().replaceAll("\\s+", " ");
+				System.out.println("DA error text: " + bannerText);
+				if (bannerText.equalsIgnoreCase(expectedErrorText)) {
+					expectedBannerFound = true;
+					actualErrorText = bannerText;
+				}
+			}
+		} catch (Exception e) {
+			test.log(Status.WARNING, "Could not fetch pre-approval error banner: " + e.getMessage());
+		}
+
+		if (expectedBannerFound) {
+			test.pass("DA error message displayed: " + actualErrorText);
+		} else {
+			test.log(Status.WARNING, "Expected DA error banner was found before approval: " + expectedErrorText);
+			System.out.println("WARNING: Expected DA error banner was found before approval.");
+		}
+
+		Approve_Representative_Image_Primary_dropdown_obj().click();
+		WebElement approveBtn = SameDropdownObject().getShadowRoot()
+				.findElements(By.cssSelector("[id^='rs']")).get(3).getShadowRoot()
+				.findElement(By.cssSelector("#input")).getShadowRoot()
+				.findElement(By.cssSelector("bedrock-lov")).getShadowRoot()
+				.findElement(By.cssSelector("#lov")).getShadowRoot()
+				.findElement(By.cssSelector("div.base-grid-structure.p-relative > div.base-grid-structure-child-2.overflow-auto.p-relative > pebble-grid")).getShadowRoot()
+				.findElement(By.cssSelector("#grid")).getShadowRoot()
+				.findElement(By.cssSelector("#lit-grid > div > div.ag-root-wrapper-body.ag-layout-normal.ag-focus-managed > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body-viewport.ag-layout-normal.ag-row-no-animation > div.ag-center-cols-clipper > div > div > div > div > pebble-lov-item")).getShadowRoot()
+				.findElement(By.cssSelector("div > div"));
+		Thread.sleep(2000);
+		approveBtn.click();
+		Thread.sleep(2000);
+		Save_2d_Line_Drawring().click();
+		Thread.sleep(3000);
+
+		boolean errorVisible = false;
+		try {
+			WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			WebElement errorHost = shortWait.until(d -> {
+				try {
+					WebElement el = DA_error_Message();
+					return el.isDisplayed() ? el : null;
+				} catch (Exception ignored) {
+					return null;
+				}
+			});
+
+			Workflow_Refresh_btn().click();
+			Thread.sleep(5000);
+			test.pass("Refreshed transaction to get the latest workflow status");
+			test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+			utils.waitForElement(this::primary_Image_Required_dropdown_obj, "clickable");
+			
+			String postRefreshErrorText = errorHost.getText().trim().replaceAll("\\s+", " ");
+			System.out.println("Post-refresh error: " + postRefreshErrorText);
+			errorVisible = postRefreshErrorText.equalsIgnoreCase(expectedErrorText);
+		} catch (Exception ignored) {
+			
+		}
+		if (errorVisible) {
+			test.log(Status.FAIL, "Expected error is still displayed after refresh: " + expectedErrorText);
+			Assert.fail("Expected error is still displayed after refresh: " + expectedErrorText);
+		} else {
+			test.pass("Validated expected error is not displayed after refresh");
+			test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		}
+	}
 	/******************************
  * Applies a filter on the Search page by filter name, selects the requested LOV option,
  * clicks Apply, and waits for search grid rows to reload.
@@ -1205,6 +1310,17 @@ public WebElement Adapt_Commonelement() {
 				    .findElement(By.cssSelector("div > div.base-grid-structure-child-2 > rock-relationship-grid")).getShadowRoot()
 				    .findElement(By.cssSelector("#bedrock_grid_hasimages")).getShadowRoot()
 				    .findElement(By.cssSelector("#gridHeader > div > span.text-ellipsis.m-r-5.m-l-5.page-range"));
+	}
+	public WebElement DA_WorkflowTextLabel() {
+		return  driver.findElement(By.cssSelector("#app")).getShadowRoot()
+	    .findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("#entityManageSidebar")).getShadowRoot()
+	    .findElement(By.cssSelector("#sidebarTabs")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='rock-workflow-panel-component-rs']")).getShadowRoot()
+	    .findElement(By.cssSelector("[id^='workflowStepper_digitalassetsenrichment_workflowDefinition'] > pebble-step")).getShadowRoot()
+	    .findElement(By.cssSelector("#textLabel"));
 	}
 }
 

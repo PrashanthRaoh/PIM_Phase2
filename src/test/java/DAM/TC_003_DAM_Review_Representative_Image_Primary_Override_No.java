@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,6 +20,7 @@ import com.aventstack.extentreports.Status;
 import common_functions.BaseTest;
 import common_functions.CBT_Utils;
 import common_functions.Utils;
+import pages.BSAPIE_Page;
 import pages.CBT_Page;
 import pages.DigitalAsset;
 import pages.HomePage;
@@ -77,6 +77,7 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 		SummaryPage summaryPage = new SummaryPage(driver);
 		SearchPage2 searchPage = new SearchPage2(driver);
 		DigitalAsset digitalssetPage = new DigitalAsset(driver);
+		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
 		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
 		
 		/***************************
@@ -104,64 +105,16 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 		/**********************************
 		* Verify in which row DAM: Review Representative Image (Primary) was found
 		************************************/
-		List<WebElement> detailItems = driver.findElement(By.cssSelector("#app")).getShadowRoot()
-				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='currentApp_home_']")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='app-dashboard-component-']")).getShadowRoot()
-				.findElement(By.cssSelector("rock-layout > rock-dashboard-widgets")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='rs']")).getShadowRoot()
-				.findElement(By.cssSelector("#rock-my-todos")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='rock-my-todos-component-rs']")).getShadowRoot()
-				.findElement(By.cssSelector("#rock-my-todos-tabs")).getShadowRoot()
-				.findElement(By.cssSelector("[id^='my-todo-summary-list-component-rs']")).getShadowRoot()
-				.findElement(By.cssSelector("pebble-list-view > pebble-list-item > my-todo-summary")).getShadowRoot()
-				.findElement(By.cssSelector("#moreDetails"))
-				.findElements(By.cssSelector("my-todo-detail-view-list-item"));
-
-		utils.waitForElement(() -> detailItems.get(0), "clickable");
-		System.out.println("There are " + detailItems.size() + " elements ");
-		
+		String queueToClick = "DAM: Review Representative Image (Primary)";
 		List<String> expectedItems = Arrays.asList("Ready for transition", "DAM: Review 2D Line Drawing","DAM: Review Representative Image (Primary)", "DAM: Review Secondary Image",
 				"DAM: Review Unclassified Images");
-		Assert.assertEquals(detailItems.size(), expectedItems.size(), "Item count mismatch");
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		
-		/**********************************************
-		 * Verify in which row DAM: Review Representative Image (Primary) was found
-		**********************************************/
-		int matchedRowIndex = -1; 
-		for (int i = 0; i < detailItems.size(); i++) {
-		    WebElement summary = detailItems.get(i);
-		    WebElement innerDiv = summary.getShadowRoot().findElement(By.cssSelector("#button-text-box"));
-		    String actualText = innerDiv.getAttribute("title").trim().replaceFirst("^\\d+\\s", "");
-		    System.out.println("Item " + (i + 1) + ":--" + actualText);
-		    Assert.assertEquals(actualText, expectedItems.get(i), "Mismatch at item " + (i + 1));
-		    if (actualText.contains("DAM: Review Representative Image (Primary)")) {
-		        matchedRowIndex = i + 1; 
-		        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", innerDiv);
-		        try {
-		            innerDiv.click();
-		        } catch (Exception e) {
-		            js.executeScript("arguments[0].click();", innerDiv);
-		        }
-		        Thread.sleep(5000);
-		        break;
-		    }
+		int matchedRowIndex;
+		try {
+			matchedRowIndex = BSAPIE_PO.clickApprovalQueueItem(searchPage, utils, test, expectedItems, queueToClick);
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to click queue item: " + queueToClick, e);
 		}
-		if (matchedRowIndex != -1) {
-		    System.out.println("Found 'DAM: Review Representative Image (Primary)' in row: " + matchedRowIndex);
-		} else {
-		    System.out.println("'DAM: Review Representative Image (Primary)' not found in any row.");
-		}
-		test.pass("Clicked on DAM: Review Representative Image (Primary) which is found at row -- " + matchedRowIndex);
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-
-		/***************************************
-		 * ****Clicked on DAM: Review Representative Image (Primary)  ****
-		 ***************************************/
-		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-		test.pass("Clicked on DAM: Review Representative Image (Primary)");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
+		System.out.println("Found '" + queueToClick + "' in row: " + matchedRowIndex);
 
 		/***************************
 		 * Step 3:
@@ -420,13 +373,12 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 		 * i) The user should be able to view "At least One Image should Linked To Sellable Product" error removed from the "Image Required?" attribute.
 		 * ii) The user should be able to view "Representative Image (Primary) has been deleted, added, or image has been updated" on the "Approve Representative Image (Primary)?" attribute.
 		****************************/
-	   String actualErrorText = "";
+		    String actualErrorText = "";
 			String expectedErrorText = "Representative Image (Primary) has been deleted, added, or image has been updated";
 			boolean expectedBannerFound = false;
 
 			try {
 				WebElement errorHost = digitalssetPage.DA_error_Message();
-
 				if (errorHost.isDisplayed()) {
 					String bannerText = errorHost.getText().trim().replaceAll("\\s+", " ");
 					System.out.println("DA error text: " + bannerText);

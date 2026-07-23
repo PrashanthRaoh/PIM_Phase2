@@ -25,7 +25,7 @@ import pages.SummaryPage;
 
 /******************************************************************************
 
- * TC_009_Validate_Image_Auto_Assignment
+ * TC_009_Validate_Image_Auto_Assignment_Cage_Brass
  * Description:
  * Login as Attribute Owner - Digital Assets ->
  * Verify user is logged into PIM successfully ->
@@ -64,7 +64,7 @@ import pages.SummaryPage;
  * No image is auto-assigned to the material.
 *****************************************************/
 
-public class TC_010_Image_auto_assignment extends BaseTest {
+public class TC_010_Image_auto_assignment_Cage_Brass extends BaseTest {
 	public ExtentTest test;
 	Map<String, Object> data = new LinkedHashMap<>();
 
