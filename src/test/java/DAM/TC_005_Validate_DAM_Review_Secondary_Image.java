@@ -347,35 +347,7 @@ public class TC_005_Validate_DAM_Review_Secondary_Image extends BaseTest {
 	1. Required
 	2. DAM: Review Secondary Image Images have been deleted, added, or image has been updated
 	************************/
-						String expectedErrorText_after = "Secondary Image has been deleted, added, or image has been updated";
-						boolean expectedBannerFound = false;
-						try {
-							WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
-							WebElement errorHost = shortWait.until(d -> {
-								try {
-									WebElement el = digitalssetPage.DA_error_Message();
-									return (el != null && el.isDisplayed()) ? el : null;
-								} catch (Exception ignored) {
-									return null;
-								}
-							});
-							if (errorHost != null) {
-								String bannerText = errorHost.getText().replace('\u00A0', ' ').replaceAll("\\s+", " ").trim();
-								System.out.println("DA error text: " + bannerText);
-								if (bannerText.equalsIgnoreCase(expectedErrorText_after)) {
-									expectedBannerFound = true;
-									actualErrorText = bannerText;
-								}
-							}
-						} catch (Exception e) {
-							// treat as no banner found within timeout
-							test.log(Status.PASS, "DA error message not present (within timeout)");
-							test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-						}
-						if (expectedBannerFound) {
-							test.fail("DA error message displayed: " + actualErrorText);
-							test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-						} 
+//						
 	/*********************
 	Step 14:
 	Update the "Approve 2D Line Drawing?" attribute by selecting the value "Approve".

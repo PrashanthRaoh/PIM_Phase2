@@ -40,12 +40,6 @@ public class TC_006_DAM_ReviewUnclassifiedImages_Count_Zero extends BaseTest {
 
 		homePage = new HomePage(driver);
 		CBT_Page cbtpage = new CBT_Page(driver);
-		SummaryPage summaryPage = new SummaryPage(driver);
-		SearchPage2 searchPage = new SearchPage2(driver);
-		DigitalAsset digitalssetPage = new DigitalAsset(driver);
-		BSAPIE_Page BSAPIE_PO = new BSAPIE_Page(driver);
-		CBT_Utils cbtUtils = new CBT_Utils(driver, utils);
-
 		/**************************************************************************
 		 * // Step 1: Navigate to My-ToDo's page and click on the "Digital
 		 * Assets Enrichment" tab.

@@ -334,25 +334,12 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 	2. DAM: Review 2D Line Drawing Images have been deleted, added, or image has been updated
 	************************/
 		    
-		    
-//		    List<WebElement> ErrormessageList = digitalssetPage.DA_error_Message();
-//			WebElement Displayedelement = ErrormessageList.get(3);
-//			WebElement daError = wait.until(ExpectedConditions.visibilityOf(Displayedelement));
-//			Assert.assertTrue(daError.isDisplayed(), "DA error message is not displayed");
-//			// Capture and normalize text
-//			String actualErrorText = daError.getText().trim().replaceAll("\\s+", " ");
-//			System.out.println("DA error text: " + actualErrorText);
-//			test.pass("DA error message displayed: " + actualErrorText);
-//			// Expected from your Step 16
-//			String expectedErrorText = "2D Line Drawing images have been deleted, added, or image has been updated";
-//			 Assert.assertEquals(actualErrorText, expectedErrorText, "Mismatch in DA error message text");
-		    
 		    String actualErrorText = "";
 			String expectedErrorText = "2D Line Drawing images have been deleted, added, or image has been updated";
 			boolean expectedBannerFound = false;
 
 			try {
-				WebElement errorHost = digitalssetPage.DA_error_Message();
+				WebElement errorHost = digitalssetPage.DA_2dLine_Drawing_error_Message();
 				if (errorHost.isDisplayed()) {
 					String bannerText = errorHost.getText().trim().replaceAll("\\s+", " ");
 					System.out.println("DA error text: " + bannerText);
@@ -438,8 +425,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 				Thread.sleep(5000);
 				test.pass("Refreshed transaction to get the latest workflow status");
 				test.log(Status.INFO, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-				utils.waitForElement(() -> digitalssetPage.primary_Image_Required_dropdown_obj(), "clickable");
-				
+				utils.waitForElement(() -> digitalssetPage.common_ele_2dlinedrawingDropdown(), "clickable");
 				/****************************************
 						Validate the error message is not displayed
 				**************************************/		
@@ -449,7 +435,7 @@ public class TC_004_Validate_DAM_Review_2D_Line_Drawing extends BaseTest {
 					WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
 					WebElement errorHost = shortWait.until(d -> {
 						try {
-							WebElement el = digitalssetPage.DA_error_Message();
+							WebElement el = digitalssetPage.DA_2dLine_Drawing_error_Message();
 							return el.isDisplayed() ? el : null;
 						} catch (Exception ignored) {
 							return null;

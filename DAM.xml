@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="PIM_Phase2 Automation_Suite">
-    <!--<test name="DAM_Tests">
+    <test name="DAM_Tests">
         <parameter name="UseCaseOwner" value="DigitalAssetowner" />
         <classes>
             <class name="DAM.TC_001_Validating_Asset_Enrichment_flow" />
@@ -14,13 +14,12 @@
             <class name="DAM.TC_009_Image_auto_assignment_Cage_Steel_HasNoValue" />
              <class name="DAM.TC_010_Image_auto_assignment_Cage_Brass" />
         </classes>
-    </test>-->
+    </test>
     
     <test name="DAM_BSAPIE_To_DigitalAsset_Flow">
         <parameter name="UseCaseOwner" value="BSAPIEowner" />
         <classes>
             <class name="DAM.TC_007_Reject_to_Representative_Image_Primary" />
-           
         </classes>
     </test>
   

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -132,11 +134,13 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 		****************************/
 		boolean autoApplied = digitalssetPage.applyFilterAndSelectOption( searchPage,"Image Required? (Auto)", () -> digitalssetPage.ImageRequired_Auto_Dropdown(), "Has No Value");
 		Assert.assertTrue(autoApplied, "Failed to apply filter: Image Required? (Auto) -> Has No Value");
+		Thread.sleep(5000);
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 
 		// Filter 2
 		boolean overrideApplied = digitalssetPage.applyFilterAndSelectOption(searchPage, "Image Required? (Override)", () -> digitalssetPage.ImageRequired_Auto_Dropdown(), "Has No Value");
 		Assert.assertTrue(overrideApplied, "Failed to apply filter: Image Required? (Override) -> Has No Value");
+		Thread.sleep(5000);
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 		/***************************
 		 * Step 6:
@@ -338,7 +342,21 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 		System.out.println("Randomly selected image: " + selectedImageName);
 		test.pass("Randomly selected image: " + selectedImageName);
 		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		imageCheckboxes.get(randomIndex).getShadowRoot().findElement(By.cssSelector("#checkboxContainer")).click();
+		Thread.sleep(3000);
+		
+		WebElement checkboxContainer = imageCheckboxes.get(randomIndex)
+				.getShadowRoot()
+				.findElement(By.cssSelector("#checkboxContainer"));
+		((JavascriptExecutor) driver).executeScript(
+				"arguments[0].scrollIntoView({block:'center', inline:'center'});",
+				checkboxContainer);
+		wait.until(ExpectedConditions.elementToBeClickable(checkboxContainer));
+		try {
+			checkboxContainer.click();
+		} catch (ElementClickInterceptedException e) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkboxContainer);
+		}
+		
 		System.out.println("Checkbox clicked for: " + selectedImageName);
 		data.put("Image Name", selectedImageName);
 		digitalssetPage.Save_DA_Image_btn().click();
@@ -462,5 +480,4 @@ public class TC_003_DAM_Review_Representative_Image_Primary_Override_No extends 
 	}
 }
 
-	
-	
+

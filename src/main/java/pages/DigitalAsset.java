@@ -1050,6 +1050,20 @@ public class DigitalAsset {
 				.findElements(By.cssSelector("[id^='rs']")).get(3).getShadowRoot()
 				.findElement(By.cssSelector("#error-display > span.error"));
 	}
+	public WebElement DA_2dLine_Drawing_error_Message() {
+		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
+				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='currentApp_entity-manage_rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='app-entity-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#rockDetailTabs")).getShadowRoot()
+				.findElement(By.cssSelector("#rockTabs")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-wizard-manage-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("[id^='rock-attribute-split-screen-component-rs']")).getShadowRoot()
+				.findElement(By.cssSelector("#undefined-attribute-container > rock-attribute-manage")).getShadowRoot()
+				.findElement(By.cssSelector("#rock-attribute-list-container > rock-attribute-list")).getShadowRoot()
+				.findElements(By.cssSelector("[id^='rs']")).get(0).getShadowRoot()
+				.findElement(By.cssSelector("#error-display > span.error"));
+	}
 	public WebElement DA_error_Message_Secondary_Image() {
 		return driver.findElement(By.cssSelector("#app")).getShadowRoot()
 				.findElement(By.cssSelector("#contentViewManager")).getShadowRoot()

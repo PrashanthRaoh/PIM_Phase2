@@ -14,6 +14,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import common_functions.BaseTest;
+import common_functions.NotepadManager;
 import common_functions.Utils;
 import pages.BSAPIE_Page;
 import pages.CBT_Page;
@@ -176,6 +177,7 @@ public class TC_001_Validating_Asset_Enrichment_flow extends BaseTest {
 			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		}
 		Assert.assertTrue(validPrefix, "Original File Name Property should start with 'timken' or 'EDT', but was: " + originalFileNameProperty);
+		data.put("Original File Name Property ",originalFileNameProperty);
 		/********************************************************
 		 * Validate searched property: Asset Alternate Text should not be empty
 		 ******************************************************/
@@ -191,6 +193,7 @@ public class TC_001_Validating_Asset_Enrichment_flow extends BaseTest {
 			test.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
 		}
 		Assert.assertFalse(assetAlternateTextTrimmed.isEmpty(), "Asset Alternate Text is empty");
+		data.put("Asset Alternate Text ",assetAlternateTextTrimmed);
 		/********************************************************
 		 Validate searched property: Asset Alternate Text should not contain any file extension
 		 ******************************************************/
@@ -258,5 +261,6 @@ public class TC_001_Validating_Asset_Enrichment_flow extends BaseTest {
 		System.out.println("Row " + i + " -> Rendition ID: " + title);
 		test.pass("Row " + i + " -> Rendition ID: " + title);
 	}
+	 NotepadManager.ReadWriteNotepad(PRE_ETL_Filename, data);
   }
 }

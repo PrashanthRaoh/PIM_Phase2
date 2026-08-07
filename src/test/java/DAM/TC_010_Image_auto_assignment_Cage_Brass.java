@@ -134,16 +134,14 @@ public class TC_010_Image_auto_assignment_Cage_Brass extends BaseTest {
 		 * Step 8: Apply the "Image Required?" filter with value "No".
 		 *************************************************************/
 		Map<String, String> filters = new LinkedHashMap<>();
-		filters.put("Image Required", "Yes");
+		filters.put("Image Required", "No");
 		
-		utils.applyBinaryFilter("Image Required", "Yes", searchPage, digitalssetPage);
+		utils.applyBinaryFilter("Image Required", "No", searchPage, digitalssetPage);
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 		
-		filters.put("Sellable Material Description", "Yes");
-		
-		utils.applyBinaryFilter("Sellable Material Description", "Yes", searchPage, digitalssetPage);
-		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
-
+		/*************************************************************
+		 * Step 9: Apply the "Cage Material Type" filter with value "Brass".
+		 *************************************************************/
 		searchPage.getFilterButton().click();
 		utils.waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
 		searchPage.Search_MaterialType().clear();
@@ -173,9 +171,7 @@ public class TC_010_Image_auto_assignment_Cage_Brass extends BaseTest {
 		for (WebElement item : items) {
 			texts.add(item.getShadowRoot().findElement(By.cssSelector("div > div")).getText().trim());
 		}
-
-		int index = texts.indexOf("Steel");
-
+		int index = texts.indexOf("Brass");
 		if (index != -1) {
 			items.get(index).getShadowRoot().findElement(By.cssSelector("div > div")).click();
 		}
@@ -184,21 +180,6 @@ public class TC_010_Image_auto_assignment_Cage_Brass extends BaseTest {
 		Thread.sleep(2000);
 		utils.waitForElement(() -> searchPage.getgrid(), "clickable");
 		Thread.sleep(2000);
-		/*************************************************************
-		 * Step 9: Apply the "Cage Material Type" filter with value "Brass".
-		 *************************************************************/
-		searchPage.getFilterButton().click();
-		utils.waitForElement(() -> searchPage.Search_MaterialType(), "clickable");
-		materialTypeSearch.clear();
-		materialTypeSearch.sendKeys("Cage Material Type");
-		Thread.sleep(1000);
-		
-		utils.waitForElement(() -> digitalssetPage.CageMaterial_Type_Dropdownvalue(), "clickable");
-		test.pass("Cage Material drop down appeared");
-		test.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Utils.Takescreenshot(driver)).build());
-		digitalssetPage.CageMaterial_Type_Dropdownvalue().click();
-		Thread.sleep(1000);
-		
 		/*************************************************************
 		 * Step 10: Verify the sellable material IDs are filtered
 		 * based on the selected criteria.
